@@ -156,50 +156,74 @@ package treefortress.spriter
 			update(time * 1000);
 		}
 		
-		public function update(elapsed:int = 0, forceNextFrame:Boolean = false):void {
-			if(!_isPlaying){ return; }; // Exit if we're not currently playing
+		public function update(elapsed:int = 0, forceNextFrame:Boolean = false):void 
+		{
+			if (!_isPlaying)
+				return; // Exit if we're not currently playing
 			
 			position += elapsed * playbackSpeed;
+			
 			updateCallbacks();
 			
 			minX = minY = int.MAX_VALUE;
 			startTime = frame.time;
-			endTime = nextFrame? nextFrame.time : 0;
+			endTime = nextFrame ? nextFrame.time : 0;
 			
-			if(endTime == 0 || endTime > animation.length){ endTime = animation.length; }
+			if (endTime == 0 || endTime > animation.length)
+			{
+				endTime = animation.length;
+			}
 			lastTime = getTimer();
 			
 			//Determine whether we need to advance a frame
 			advanceFrame = false;
 			//Clip is just starting...
-			if(position == 0 || frameIndex == -1){ advanceFrame = true; }
+			if (position == 0 || frameIndex == -1)
+			{
+				advanceFrame = true;
+			}
 			//Key frame has been passed
-			if(position > endTime){ 
+			if (position > endTime)
+			{ 
 				advanceFrame = true; 
 				//Reached the end of the timeline, don't advance keyFrame
-				if(frameIndex == animation.mainline.keys.length - 2){
+				if (frameIndex == animation.mainline.keys.length - 2)
+				{
 					advanceFrame = false;
 				}
 			}
 			//Animation has completed, or Explicit override 
-			if(position > animation.length || forceNextFrame){ 
+			if (position > animation.length || forceNextFrame)
+			{ 
 				advanceFrame = true; 
 			}
-			if(advanceFrame){
+			if (advanceFrame)
+			{
 				//Advance playhead
-				if(frameIndex < animation.mainline.keys.length - 2){
-					if(frameIndex == -1){ frameIndex = 0; }
-					while(animation.mainline.keys[frameIndex].time < position){
+				if (frameIndex < animation.mainline.keys.length - 2)
+				{
+					if (frameIndex == -1)
+					{
+						frameIndex = 0;
+					}
+					while (animation.mainline.keys[frameIndex].time < position)
+					{
 						frameIndex++;
-						if(frameIndex > animation.mainline.keys.length - 2){
+						if (frameIndex > animation.mainline.keys.length - 2)
+						{
 							frameIndex = animation.mainline.keys.length - 2;
 							break; 
 						}
 					}
-					if(animation.mainline.keys[frameIndex].time > position){
+					if (animation.mainline.keys[frameIndex].time > position)
+					{
 						frameIndex--;
 					}
-				} else { frameIndex = 0; }
+				}
+				else
+				{
+					frameIndex = 0;
+				}
 				
 				//trace("ADVANCE FRAME: " + position);
 				//Animation complete?
@@ -212,23 +236,34 @@ package treefortress.spriter
 					}
 					
 					//Loop or stop pakying...
-					if(animation.looping){
+					if (animation.looping)
+					{
 						frameIndex = 0;
-					} else {
+					}
+					else 
+					{
 						_isPlaying = false;
 					}
 					animationComplete.dispatch(this);
-					if(!_isPlaying){ return; }	
+					if (!_isPlaying)
+					{ 
+						return; 
+					}	
 				}
 				
-				if(frameIndex > 0 || animation.looping){
+				if (frameIndex > 0 || animation.looping)
+				{
 					frame = animation.mainline.keys[frameIndex];
-					if(animation.mainline.keys.length > frameIndex + 1){
+					if (animation.mainline.keys.length > frameIndex + 1)
+					{
 						nextFrame = animation.mainline.keys[frameIndex + 1];
 					}
 					startTime = frame.time;
 					endTime = nextFrame? nextFrame.time : 0;
-					if(endTime == 0){ endTime = animation.length; }
+					if (endTime == 0)
+					{ 
+						endTime = animation.length; 
+					}
 				}
 				
 				firstRun = container.numChildren == 0;
@@ -236,62 +271,85 @@ package treefortress.spriter
 				optimizedRemoveChildren();
 				childImages.length = 0;
 				
-				for(i = 0, l = frame.refs.length; i < l; i++){
+				for (i = 0, l = frame.refs.length; i < l; i++)
+				{
 					timelineId = frame.refs[i].timeline;
-					if(animation.timelineList[timelineId].keys.length == 0){ continue; }
+					if (animation.timelineList[timelineId].keys.length == 0)
+					{ 
+						continue; 
+					}
 					child = animation.timelineList[timelineId].keys[frame.refs[i].key].child;
-					if(!child.piece){ continue; }
+					if (!child.piece)
+					{ 
+						continue; 
+					}
 					
 					//Create one image/timeline, and cache it off.
 					image = imagesByTimeline[timelineId];
-					if(!image){
+					if (!image)
+					{
 						image = createImageByName(child.piece.name);
 						imagesByTimeline[timelineId] = image;
 					}
 					childImages.push(image);
 					
 					//Add the child to displayList if it isn't already
-					if(!image.parent){
+					if (!image.parent)
+					{
 						container.addChild(image);
 					}
 					//Make sure the image has the textures it's supposed to (one timeline can have multiple images). 
-					if(texturesByImage[image] != getTexture(child.piece.name)){
+					if (texturesByImage[image] != getTexture(child.piece.name))
+					{
 						texturesByImage[image] = getTexture(child.piece.name);
 						image.texture = texturesByImage[image];
 					}
 					//If this piece is set to be ignored, do not update any of it's position data
-					if(ignoredPieces[image.name]){ continue; }
+					if (ignoredPieces[image.name])
+					{ 
+						continue; 
+					}
 					
 					image.pivotX = child.pixelPivotX;
 					image.pivotY = child.pixelPivotY;
 					
 					image.x = child.x;
-					if(image.x < minX){ minX = image.x; }
+					if (image.x < minX)
+					{ 
+						minX = image.x;
+					}
 					
 					image.y = -child.y;
-					if(image.y < minY){ minY = image.y; }
+					if (image.y < minY)
+					{ 
+						minY = image.y;
+					}
 					
 					image.scaleX = child.scaleX;
 					image.scaleY = child.scaleY;
 					image.rotation = fixRotation(child.angle) * TO_RADS;
 				}
 				//Measure this animation
-				if(isNaN(animationWidth) && isNaN(animationWidth) && frameIndex == 0){
+				if (isNaN(animationWidth) && isNaN(animationWidth) && frameIndex == 0)
+				{
 					animationWidth = Math.abs(minX * 2) + container.width;
 					animationHeight =  Math.abs(minY * 2) + container.height;
 				}
 			}
 			
 			//Small, Incremental interpolated update
-			if(position < endTime){
-				
+			if (position < endTime)
+			{
 				spinDir = 0;
 				
-				for(i = 0, l = frame.refs.length; i < l; i++){
-					
+				for (i = 0, l = frame.refs.length; i < l; i++)
+				{
 					//Get the most recent previous timeline for reference
 					timeline = animation.timelineList[frame.refs[i].timeline];
-					if(!timeline.keys.length){ continue; }
+					if (!timeline.keys.length)
+					{ 
+						continue; 
+					}
 					
 					var lerpStart:Number = startTime;
 					var lerpEnd:Number = endTime;
@@ -300,22 +358,31 @@ package treefortress.spriter
 					key = timeline.keys[0];
 					
 					//Find the previous and next key's for this particular timeline.
-					for(var i2:int = 0, l2:int = timeline.keys.length; i2 < l2; i2++){
+					for (var i2:int = 0, l2:int = timeline.keys.length; i2 < l2; i2++)
+					{
 						//Looks for end frame
-						if(timeline.keys[i2].time > position){
-							if(!nextChild){
+						if (timeline.keys[i2].time > position)
+						{
+							if (!nextChild)
+							{
 								nextChild = timeline.keys[i2].child;
 								lerpEnd = timeline.keys[i2].time;
-							} else { break; }
+							} 
+							else 
+							{ 
+								break; 
+							}
 						} 
 						//Look for start frame
-						if(timeline.keys[i2].time <= position){
+						if (timeline.keys[i2].time <= position)
+						{
 							child = timeline.keys[i2].child;
 							lerpStart = timeline.keys[i2].time;
 						}
 					}
 					//If we couldn't find a next frame, this animation file is probably missing an endFrame. Substitute startFrame.
-					if(!nextChild){ 
+					if (!nextChild)
+					{ 
 						nextChild = timeline.keys[0].child; 
 						lerpEnd = animation.length;
 					}
@@ -324,37 +391,47 @@ package treefortress.spriter
 					lerpAmount = (position - lerpStart)/(lerpEnd - lerpStart);
 					
 					image = imagesByTimeline[timeline.id];
-					if(!image){
+					if (!image)
+					{
 						image = createImageByName(child.piece.name);
 						imagesByTimeline[timelineId] = image;
 					}
 					//If this piece is set to be ignored, do not update any of it's position data
-					if(ignoredPieces[image.name]){ continue; }
+					if (ignoredPieces[image.name])
+					{ 
+						continue; 
+					}
 					
-					if(child.pixelPivotX != nextChild.pixelPivotX){
+					if (child.pixelPivotX != nextChild.pixelPivotX)
+					{
 						image.pivotX = lerp(child.pixelPivotX, nextChild.pixelPivotX, lerpAmount);
 					}
-					if(child.pixelPivotY != nextChild.pixelPivotY){
+					if (child.pixelPivotY != nextChild.pixelPivotY)
+					{
 						image.pivotY = lerp(child.pixelPivotY, nextChild.pixelPivotY, lerpAmount);
 					}
-					if(child.x != nextChild.x){
+					if (child.x != nextChild.x)
+					{
 						image.x = lerp(child.x, nextChild.x, lerpAmount);
 					}
 					if(child.y != nextChild.y){
 						image.y = lerp(-child.y, -nextChild.y, lerpAmount);
 					}
-					if(child.scaleX != nextChild.scaleX){
+					if (child.scaleX != nextChild.scaleX)
+					{
 						image.scaleX = lerp(child.scaleX, nextChild.scaleX, lerpAmount);
 					}
-					if(child.scaleY != nextChild.scaleY){
+					if (child.scaleY != nextChild.scaleY)
+					{
 						image.scaleY = lerp(child.scaleY, nextChild.scaleY, lerpAmount);
 					}
-					if(child.alpha != nextChild.alpha){
+					if (child.alpha != nextChild.alpha)
+					{
 						image.alpha = lerp(child.alpha, nextChild.alpha, lerpAmount);
 					}
 					
-					if(child.angle != nextChild.angle){
-						
+					if (child.angle != nextChild.angle)
+					{
 						//Rotate to closest direction (ignore 'dir' for now, it's unsupported in the current Spriter A4 build)
 						angle1 = child.angle;
 						angle2 = nextChild.angle;
