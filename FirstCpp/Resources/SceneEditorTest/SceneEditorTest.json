@@ -1,0 +1,125 @@
+{
+  "classname": "CCNode",
+  "name": null,
+  "canedit": true,
+  "objecttag": 10000,
+  "rotation": 0,
+  "scalex": 1,
+  "scaley": 1,
+  "visible": 1,
+  "x": 0,
+  "y": 0,
+  "zorder": 1,
+  "gameobjects": [
+    {
+      "__type": "ComGameObjectSurrogate:#EditorCommon.JsonModel",
+      "classname": "CCNode",
+      "name": null,
+      "canedit": true,
+      "objecttag": 10008,
+      "rotation": 0,
+      "scalex": 1,
+      "scaley": 1,
+      "visible": 1,
+      "x": 160,
+      "y": 95,
+      "zorder": 1,
+      "gameobjects": [],
+      "components": [
+        {
+          "__type": "ComSpriteSurrogate:#EditorCommon.JsonModel.Component",
+          "classname": "CCSprite",
+          "name": "CCSprite",
+          "file": null,
+          "fileData": {
+            "path": "SceneEditorTest/elephant01.png",
+            "plistFile": null,
+            "resourceType": 0
+          }
+        }
+      ]
+    },
+    {
+      "__type": "ComGameObjectSurrogate:#EditorCommon.JsonModel",
+      "classname": "CCNode",
+      "name": null,
+      "canedit": true,
+      "objecttag": 10009,
+      "rotation": 0,
+      "scalex": 1,
+      "scaley": 1,
+      "visible": 1,
+      "x": 230,
+      "y": 280,
+      "zorder": 1,
+      "gameobjects": [],
+      "components": [
+        {
+          "__type": "ComParticleSystemSurrogate:#EditorCommon.JsonModel.Component",
+          "classname": "CCParticleSystemQuad",
+          "name": "CCParticleSystemQuad",
+          "file": null,
+          "fileData": {
+            "path": "SceneEditorTest/Particles/BurstPipe.plist",
+            "plistFile": null,
+            "resourceType": 0
+          }
+        }
+      ]
+    },
+    {
+      "__type": "ComGameObjectSurrogate:#EditorCommon.JsonModel",
+      "classname": "CCNode",
+      "name": "butterFlyFish",
+      "canedit": true,
+      "objecttag": 10010,
+      "rotation": 45,
+      "scalex": 1,
+      "scaley": 1,
+      "visible": 1,
+      "x": 389,
+      "y": 140,
+      "zorder": 1,
+      "gameobjects": [],
+      "components": [
+        {
+          "__type": "ComArmatureAdapterSurrogate:#EditorCommon.JsonModel.Component",
+          "classname": "CCArmature",
+          "name": "butterFlyFish",
+          "file": null,
+          "fileData": {
+            "path": "SceneEditorTest/fishes/Butterflyfish/Butterflyfish.ExportJson",
+            "plistFile": null,
+            "resourceType": 0
+          },
+          "selectedactionname": null
+        }
+      ]
+    }
+  ],
+  "CanvasSize": {
+    "_height": 320,
+    "_width": 480
+  },
+  "Version": "0.3.0.0",
+  "components": [
+    {
+      "__type": "ComSceneSurrogate:#EditorCommon.JsonModel.Component",
+      "classname": "CCScene",
+      "name": "CCScene",
+      "scenename": "SceneEditorTest"
+    },
+    {
+      "__type": "ComSimpleAudioSurrogate:#EditorCommon.JsonModel.Component",
+      "classname": "CCBackgroundAudio",
+      "name": "CCBackgroundAudio",
+      "file": null,
+      "fileData": {
+        "path": "SceneEditorTest/fish.mp3",
+        "plistFile": null,
+        "resourceType": 0
+      },
+      "loop": 0
+    }
+  ]
+}

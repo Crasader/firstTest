@@ -1,0 +1,169 @@
+{
+  "classname": "CCNode",
+  "name": "Node",
+  "canedit": true,
+  "objecttag": 10000,
+  "rotation": 0,
+  "scalex": 1,
+  "scaley": 1,
+  "visible": 1,
+  "x": 0,
+  "y": 0,
+  "zorder": 0,
+  "gameobjects": [
+    {
+      "__type": "ComGameObjectSurrogate:#EditorCommon.JsonModel",
+      "classname": "CCNode",
+      "name": null,
+      "canedit": true,
+      "objecttag": 10005,
+      "rotation": 0,
+      "scalex": 1,
+      "scaley": 1,
+      "visible": 1,
+      "x": 480,
+      "y": 320,
+      "zorder": 1,
+      "gameobjects": [],
+      "components": [
+        {
+          "__type": "ComSpriteSurrogate:#EditorCommon.JsonModel.Component",
+          "classname": "CCSprite",
+          "name": "bg",
+          "file": null,
+          "fileData": {
+            "path": null,
+            "plistFile": null,
+            "resourceType": 0
+          }
+        }
+      ]
+    },
+    {
+      "__type": "ComGameObjectSurrogate:#EditorCommon.JsonModel",
+      "classname": "CCNode",
+      "name": null,
+      "canedit": true,
+      "objecttag": 10011,
+      "rotation": 0,
+      "scalex": 1,
+      "scaley": 1,
+      "visible": 1,
+      "x": 365.71429443359375,
+      "y": 548.57147216796875,
+      "zorder": 1,
+      "gameobjects": [
+        {
+          "__type": "ComGameObjectSurrogate:#EditorCommon.JsonModel",
+          "classname": "CCNode",
+          "name": null,
+          "canedit": true,
+          "objecttag": 10012,
+          "rotation": 0,
+          "scalex": 1,
+          "scaley": 1,
+          "visible": 1,
+          "x": -50.000003814697266,
+          "y": -70.000007629394531,
+          "zorder": 1,
+          "gameobjects": [],
+          "components": [
+            {
+              "__type": "ComSpriteSurrogate:#EditorCommon.JsonModel.Component",
+              "classname": "CCSprite",
+              "name": "leftpos0",
+              "file": null,
+              "fileData": {
+                "path": "elephant01.png",
+                "plistFile": null,
+                "resourceType": 0
+              }
+            }
+          ]
+        },
+        {
+          "__type": "ComGameObjectSurrogate:#EditorCommon.JsonModel",
+          "classname": "CCNode",
+          "name": null,
+          "canedit": true,
+          "objecttag": 10013,
+          "rotation": 0,
+          "scalex": 1,
+          "scaley": 1,
+          "visible": 1,
+          "x": -51.428581237792969,
+          "y": -211.42860412597656,
+          "zorder": 1,
+          "gameobjects": [],
+          "components": [
+            {
+              "__type": "ComSpriteSurrogate:#EditorCommon.JsonModel.Component",
+              "classname": "CCSprite",
+              "name": "leftpos1",
+              "file": null,
+              "fileData": {
+                "path": "elephant01.png",
+                "plistFile": null,
+                "resourceType": 0
+              }
+            }
+          ]
+        },
+        {
+          "__type": "ComGameObjectSurrogate:#EditorCommon.JsonModel",
+          "classname": "CCNode",
+          "name": null,
+          "canedit": true,
+          "objecttag": 10014,
+          "rotation": 0,
+          "scalex": 1,
+          "scaley": 1,
+          "visible": 1,
+          "x": -50.000007629394531,
+          "y": -361.4285888671875,
+          "zorder": 1,
+          "gameobjects": [],
+          "components": [
+            {
+              "__type": "ComSpriteSurrogate:#EditorCommon.JsonModel.Component",
+              "classname": "CCSprite",
+              "name": "leftpos2",
+              "file": null,
+              "fileData": {
+                "path": "elephant01.png",
+                "plistFile": null,
+                "resourceType": 0
+              }
+            }
+          ]
+        }
+      ],
+      "components": []
+    }
+  ],
+  "CanvasSize": {
+    "_height": 640,
+    "_width": 960
+  },
+  "Version": "0.4.0.0",
+  "components": [
+    {
+      "__type": "ComSceneSurrogate:#EditorCommon.JsonModel.Component",
+      "classname": "CCScene",
+      "name": "CCScene",
+      "scenename": "WarScene"
+    },
+    {
+      "__type": "ComSimpleAudioSurrogate:#EditorCommon.JsonModel.Component",
+      "classname": "CCBackgroundAudio",
+      "name": "CCBackgroundAudio",
+      "file": null,
+      "fileData": {
+        "path": "",
+        "plistFile": null,
+        "resourceType": 0
+      },
+      "loop": 0
+    }
+  ]
+}
