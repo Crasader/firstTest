@@ -7,7 +7,32 @@ Bullet::Bullet(void)
 
 Bullet::~Bullet(void)
 {
+	
+}
 
+void Bullet::onEnter()
+{
+	CCNode::onEnter();
+
+	scheduleUpdate();
+}
+
+void Bullet::onExit()
+{
+	if (mAvatar != NULL)
+	{
+		mAvatar->removeFromParent();
+		mAvatar = NULL;
+	}
+
+	mId = NULL;
+	mParent = NULL;
+	mFromNode = NULL;
+	mToNode = NULL;
+
+	unscheduleUpdate();
+	stopAllActions();
+	CCNode::onExit();
 }
 
 bool Bullet::init()
@@ -34,11 +59,11 @@ void Bullet::setAvatar(CCArmature* avatar)
 }
 
 // 初始化子弹
-void Bullet::initBullet(int id, CCNode* parent, CCPoint& fromPos, CCNode* toNode)
+void Bullet::initBullet(int id, CCNode* parent, CCNode* fromNode, CCNode* toNode)
 {
 	mId = id;
 	mParent = parent;
-	mFromPos = fromPos;
+	mFromNode = fromNode;
 	mToNode = toNode;
 
 	// 通过id到表中查询子弹的具体数据信息
@@ -46,8 +71,28 @@ void Bullet::initBullet(int id, CCNode* parent, CCPoint& fromPos, CCNode* toNode
 	av->getAnimation()->playByIndex(0);
 	setAvatar(av);
 
-	setPosition(fromPos);
+	setPosition(mFromNode->getPosition());
 	parent->addChild(this);
 
-	scheduleUpdate();
+	// 子弹移动动画
+	CCFiniteTimeAction* mv = CCSequence::create(
+		CCMoveTo::create(0.2, toNode->getPosition()),
+		CCCallFunc::create(this, callfunc_selector(Bullet::moveComplete)),
+		NULL);
+
+	runAction(mv);
+}
+
+void Bullet::moveComplete()
+{
+	if (mToNode != NULL)
+	{
+		((PartenerView*)mToNode)->getController()->beAttack(260.0f);
+		if (((PartenerView*)mToNode)->getSelfInfo()->hp <= 0)
+		{
+			((PersonView*)mFromNode)->setTarget(NULL);
+			WarModel::shardWarModel()->removeEntity(mToNode);
+		}
+	}
+	removeFromParent(); // 从父对象移除
 }

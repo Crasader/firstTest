@@ -3,11 +3,14 @@
 
 PersonView::PersonView(void):mTarget(NULL), mAvatar(NULL), mController(NULL), mCurState(STAND)
 {
+	mInfo = PersonVo::create();
+	CC_SAFE_RETAIN(mInfo);
 }
 
 
 PersonView::~PersonView(void)
 {
+	CC_SAFE_RELEASE_NULL(mInfo);
 }
 
 // 设置形象
@@ -121,7 +124,12 @@ void PersonView::changeState(PERSON_STATE state)
 // 设置基本信息
 void PersonView::setInfo(PersonVo* info)
 {
+	if (mInfo != NULL)
+	{
+		CC_SAFE_RELEASE_NULL(mInfo);
+	}
 	mInfo = info;
+	mInfo->retain();
 }
 
 // 获取基本信息
@@ -151,4 +159,21 @@ void PersonView::onAnimationComplete(CCArmature * arm, MovementEventType etype, 
 PERSON_STATE PersonView::getState()
 {
 	return mCurState;
+}
+
+PersonVo* PersonView::getSelfInfo()
+{
+	return mInfo;
+}
+
+// 死出去
+void PersonView::dieOut()
+{
+	removeFromParent();
+}
+
+// 获取自身
+CCNode* PersonView::getSelfEntity()
+{
+	return this;
 }

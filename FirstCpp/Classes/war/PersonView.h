@@ -33,6 +33,9 @@ public:
 	virtual CCNode* getTarget(); // 获取进攻目标
 	virtual void changeState(PERSON_STATE state); // 改变状态
 	virtual PERSON_STATE getState(); // 获取当前状态
+	virtual PersonVo* getSelfInfo(); // 获取单位的数据信息
+	virtual void dieOut(); // 死出去
+	virtual CCNode* getSelfEntity(); // 获取自己
 
 protected:
 	CCArmature* mAvatar; // 形象

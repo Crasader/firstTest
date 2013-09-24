@@ -9,3 +9,8 @@ PersonVo::~PersonVo(void)
 {
 
 }
+
+bool PersonVo::init()
+{
+	return true;
+}

@@ -13,6 +13,9 @@ public:
 	PersonVo(void);
 	~PersonVo(void);
 
+	CREATE_FUNC(PersonVo);
+	virtual bool init();
+
 	string name;
 	int posId;
 	int gender;

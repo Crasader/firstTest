@@ -23,6 +23,8 @@ public:
 	void useSkill(int skillId); // 使用技能
 	void simpleAttack(float dt); // 普通攻击
 
+	virtual int beAttack(float aValue); // 遭受攻击
+
 protected:
 	float mSpeed; // 速度
 	float actionSpeedX; // x方向执行速度

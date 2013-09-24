@@ -1,6 +1,6 @@
 #include "PartenerVo.h"
 
-PartenerVo::PartenerVo(void)
+PartenerVo::PartenerVo(void):PersonVo()
 {
 
 }

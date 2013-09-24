@@ -4,6 +4,8 @@
 #include "war/WarModel.h"
 #include "EnumCommon.h"
 #include "SceneManager.h"
+#include "proto/Person.pb.h"
+#include <fstream>
 
 //引入扩展类
 #include "cocos-ext.h"
@@ -172,40 +174,67 @@ void GameWorld::initGame(void)
 	//	}
 	//}
 
-	//CCArray* partener = WarModel::shardWarModel()->getPartenerArray();
-	//for (int i = 0; i < 3; i++)
-	//{
-	//	PartenerView* p1 = PartenerView::create();
-	//	PartenerVo* pinfo1 = PartenerVo::create();
-	//	pinfo1->name = "fuwanghero";
-	//	pinfo1->posId = i;
-	//	pinfo1->gender = 1;
-	//	pinfo1->pngName = "fuwang/FuWang0.png";
-	//	pinfo1->xmlName = "fuwang/FuWang0.plist";
-	//	pinfo1->jsonName = "fuwang/FuWang.ExportJson";
-	//	p1->setInfo(pinfo1);
-	//	partener->addObject(p1);
-	//}
+	CCArray* partener = WarModel::shardWarModel()->getPartenerArray();
+	for (int i = 0; i < 3; i++)
+	{
+		PartenerView* p1 = PartenerView::create();
+		PartenerVo* pinfo1 = PartenerVo::create();
+		pinfo1->name = "fuwanghero";
+		pinfo1->posId = i;
+		pinfo1->gender = 1;
+		pinfo1->pngName = "fuwang/FuWang0.png";
+		pinfo1->xmlName = "fuwang/FuWang0.plist";
+		pinfo1->jsonName = "fuwang/FuWang.ExportJson";
+		p1->setInfo(pinfo1);
+		partener->addObject(p1);
+	}
 
-	//CCArray* enemy = WarModel::shardWarModel()->getEnemyArray();
-	//for (int i = 0; i < 3; i++)
-	//{
-	//	PartenerView* p1 = PartenerView::create();
-	//	PartenerVo* pinfo1 = PartenerVo::create();
-	//	pinfo1->name = "fuwanghero";
-	//	pinfo1->posId = i;
-	//	pinfo1->gender = 1;
-	//	pinfo1->pngName = "fuwang/FuWang0.png";
-	//	pinfo1->xmlName = "fuwang/FuWang0.plist";
-	//	pinfo1->jsonName = "fuwang/FuWang.ExportJson";
-	//	p1->setInfo(pinfo1);
-	//	enemy->addObject(p1);
-	//}
+	CCLog("init over");
+
+	CCArray* enemy = WarModel::shardWarModel()->getEnemyArray();
+	for (int i = 0; i < 3; i++)
+	{
+		PartenerView* p1 = PartenerView::create();
+		PartenerVo* pinfo1 = PartenerVo::create();
+		pinfo1->name = "fuwanghero";
+		pinfo1->posId = i;
+		pinfo1->gender = 1;
+		pinfo1->pngName = "fuwang/FuWang0.png";
+		pinfo1->xmlName = "fuwang/FuWang0.plist";
+		pinfo1->jsonName = "fuwang/FuWang.ExportJson";
+		p1->setInfo(pinfo1);
+		enemy->addObject(p1);
+	}
 
 	//CCDataReaderHelper::sharedDataReaderHelper()->addDataFromFileAsync();
 	//CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(string("fuwang/FuWang0.plist").c_str(), string("fuwang/FuWang0.png").c_str());
-	
+	//
 
+	//Table_Avatar table = Table_Avatar::default_instance();
+	//::google::protobuf::RepeatedPtrField<::Tile_Avatar> ve = table.tlist();
+	//for (int i = 0; i < 5; i++)
+	//{
+	//	Tile_Avatar* tile = table.add_tlist();
+	//	tile->set_id(i);
+	//	tile->set_name("tile");
+	//}
+	//table.set_tname("avatarTable");
+	//std::fstream out("D:/person.pb", ios::out | ios::binary | ios::trunc);
+	//table.SerializeToOstream(&out);
+	//out.close();
+
+	std::fstream input("D:/person.pb", ios::in | ios::binary);
+	Table_Avatar table;
+	table.ParseFromIstream(&input);
+
+	for (int i = table.tlist_size() - 1; i >= 0; i--)
+	{
+		Tile_Avatar tile = table.tlist(i);
+		CCLog("%d", tile.id());
+	}
+
+	//person.p
+	//CCFileUtils::sharedFileUtils()->
 }
 
 void GameWorld::enterWarScene()

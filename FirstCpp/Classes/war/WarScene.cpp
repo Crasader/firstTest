@@ -128,7 +128,7 @@ bool WarScene::init()
 		movecontroll = SimpleControll::create();
 		movecontroll->setSpeed(0.5 + i * 0.5);
 		pObj->setController(movecontroll);
-		pObj->setTarget((PartenerView*)enemy->objectAtIndex(i));
+		if (enemy->count() > i) pObj->setTarget((PartenerView*)enemy->objectAtIndex(i));
 
 		addChild(pObj);
 	}
@@ -177,11 +177,6 @@ void WarScene::update(float delta)
 // 该函数每秒钟执行一次
 void WarScene::onTimerHandler(float dt)
 {
-	if (stone != NULL)
-	{ 
-		stone->getController()->checkTargetPos();
-	}
-
 	CCArray* partener = WarModel::shardWarModel()->getPartenerArray();
 	for (int i = partener->count() - 1; i >= 0; i--) 
 	{
@@ -194,6 +189,18 @@ void WarScene::onTimerHandler(float dt)
 	{
 		PartenerView* pObj = (PartenerView*)enemy->objectAtIndex(i);
 		pObj->getController()->checkTargetPos();
+	}
+
+	if (stone != NULL)
+	{ 
+		if (stone->getTarget() == NULL)
+		{
+			//for (int i = partener->count() - 1; i >= 0; i--) 
+			//{
+			if (partener->count() > 0) stone->setTarget((PartenerView*)partener->objectAtIndex(0));
+			//}
+		}
+		stone->getController()->checkTargetPos();
 	}
 }
 

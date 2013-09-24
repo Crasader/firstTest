@@ -16,6 +16,8 @@ public:
 	CCArray* getPartenerArray(); // 获取我方数据
 	CCArray* getEnemyArray(); // 获取地方数据
 
+	void removeEntity(CCObject* entity); // 移除一个实例
+
 protected:
 	CCArray* mPartenerArray; // 我方阵营
 	CCArray* mEnemyArray; // 地方阵营

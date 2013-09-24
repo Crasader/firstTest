@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cocos2d.h"
+#include "PersonVo.h"
 
 USING_NS_CC;
 
@@ -17,7 +18,10 @@ public:
 	virtual CCPoint getCurPostion() = 0;
 	virtual void changeDirection(PERSON_DIRECTION dir) = 0;
 	virtual CCNode* getTarget() = 0;
+	virtual CCNode* getSelfEntity() = 0;
 	virtual void changeState(PERSON_STATE state) = 0;
 	virtual PERSON_STATE getState() = 0;
+	virtual PersonVo* getSelfInfo() = 0;
+	virtual void dieOut() = 0;
 };
 

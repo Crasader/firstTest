@@ -126,14 +126,29 @@ void SimpleControll::checkTargetPos()
 void SimpleControll::useSkill(int skillId)
 {
 	Bullet* bul = Bullet::create();
-	bul->initBullet(skillId, CCDirector::sharedDirector()->getRunningScene(), mControllerLintoner->getCurPostion(), mControllerLintoner->getTarget());
+	bul->initBullet(skillId, CCDirector::sharedDirector()->getRunningScene(), mControllerLintoner->getSelfEntity(), mControllerLintoner->getTarget());
 }
 
 void SimpleControll::simpleAttack(float dt)
 {
+	if (mControllerLintoner->getTarget() == NULL)
+	{
+		return; // 如果没有目标则不攻击；
+	}
 	//if (mControllerLintoner->getState() != RUN)
 	//{
 		mControllerLintoner->changeState(STAND);
 		useSkill(1);
 	//}
+}
+
+int SimpleControll::beAttack(float aValue)
+{
+	int result = aValue - mControllerLintoner->getSelfInfo()->defense;
+	mControllerLintoner->getSelfInfo()->hp -= result;
+	if (mControllerLintoner->getSelfInfo()->hp <= 0)
+	{
+		mControllerLintoner->dieOut();
+	}
+	return result;
 }

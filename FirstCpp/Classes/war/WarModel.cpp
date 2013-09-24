@@ -45,3 +45,10 @@ CCArray* WarModel::getEnemyArray()
 {
 	return mEnemyArray;
 }
+
+// 移除一个对象
+void WarModel::removeEntity(CCObject* entity)
+{
+	WarModel::shardWarModel()->getPartenerArray()->removeObject(entity, true);
+	WarModel::shardWarModel()->getEnemyArray()->removeObject(entity, true);
+}
