@@ -76,8 +76,8 @@ bool WarScene::init()
 	//CCArmatureDataManager::sharedArmatureDataManager()->addArmatureFileInfo("ActionEditor/Cowboy0.png", "ActionEditor/Cowboy0.plist", "ActionEditor/Cowboy.ExportJson");
 	//CCArmatureDataManager::sharedArmatureDataManager()->addArmatureFileInfo("fuwang/FuWang0.png", "fuwang/FuWang0.plist", "fuwang/FuWang.ExportJson");
 	//CCArmatureDataManager::sharedArmatureDataManager()->addArmatureFileInfo("fuwang/FuWang.ExportJson");
-	CCArmature* armature = CCArmature::create("FuWang");
-	armature->getAnimation()->playByIndex(1);
+	CCArmature* armature = CCArmature::create("Master");
+	//armature->getAnimation()->playByIndex(1);
 	//armature->setScale(0.2f);
 	//armature->setPosition(ccp(visibleSize.width * rand() / RAND_MAX, visibleSize.height * rand() / RAND_MAX));
 	//armature->setScaleX(-0.2f);
@@ -101,8 +101,8 @@ bool WarScene::init()
 	pLabel->setString(str);
 	movecontroll = SimpleControll::create();
 	movecontroll->setSpeed(2);
-	armature = CCArmature::create("FuWang");
-	armature->getAnimation()->playByIndex(1);
+	armature = CCArmature::create("Master");
+	//armature->getAnimation()->playByIndex(1);
 	stone = PartenerView::create();
 	stone->setAvatar(armature);
 	stone->setPosition(ccp(visibleSize.width / 2 + 200, visibleSize.height / 2));
@@ -116,8 +116,8 @@ bool WarScene::init()
 	for (int i = partener->count() - 1; i >= 0; i--) 
 	{
 		PartenerView* pObj = (PartenerView*)partener->objectAtIndex(i);
-		armature = CCArmature::create("FuWang");
-		armature->getAnimation()->playByIndex(1);
+		armature = CCArmature::create("Master");
+		//armature->getAnimation()->playByIndex(1);
 		pObj->setAvatar(armature);
 		char* posid = new char[12];
 		sprintf(posid, "left%d", i);
@@ -136,8 +136,8 @@ bool WarScene::init()
 	for (int i = enemy->count() - 1; i >= 0; i--) 
 	{
 		PartenerView* pObj = (PartenerView*)enemy->objectAtIndex(i);
-		armature = CCArmature::create("FuWang");
-		armature->getAnimation()->playByIndex(1);
+		armature = CCArmature::create("Master");
+		//armature->getAnimation()->playByIndex(1);
 		pObj->setAvatar(armature);
 		char* posid = new char[12];
 		sprintf(posid, "right%d", i);
@@ -153,10 +153,65 @@ bool WarScene::init()
 		addChild(pObj);
 	}
 
+	//CCEGLView* eglView = CCEGLView::sharedOpenGLView();
+	//eglView->setFrameSize(960, 640);
+	//eglView->setWndProc(myWndProcHook);
+	
 	scheduleUpdate();
 	CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, 0, false);
 	return true;
+
 }
+
+//LRESULT myWndProcHook(UINT message, WPARAM wParam, LPARAM lParam, BOOL* pProcessed)
+//{
+//	switch (message)
+//	{
+//	case WM_KEYDOWN:
+//	case WM_KEYUP:
+//		{
+//			//以FrameSize == DesignResolutionSize时的坐标设定
+//			CCPoint pt = CCPointZero;
+//			switch (wParam)
+//			{
+//			case 'A':   //向左
+//				{
+//					pt = ccp(25, 255);
+//				}
+//				break;
+//			case 'D':   //向右
+//				{
+//					pt = ccp(95, 256);
+//				}
+//				break;
+//			case 'W':   //向上
+//				{
+//					pt = ccp(63, 214);
+//				}
+//				break;
+//			case 'S':   //向下
+//				{
+//					pt = ccp(62, 290);
+//				}
+//				break;
+//			case 'J':   //攻击
+//				{
+//					pt = ccp(367, 277);
+//				}
+//				break;
+//			case 'K':   //跳跃
+//				{
+//					pt = ccp(445, 247);
+//				}
+//				break;
+//			default:
+//				return 0;
+//			}
+//		}
+//	}
+//
+//	return 0;
+//}
 
 // 每帧执行
 void WarScene::update(float delta)
@@ -202,6 +257,30 @@ void WarScene::onTimerHandler(float dt)
 		}
 		stone->getController()->checkTargetPos();
 	}
+
+	checkDeep();
+}
+
+// 检查深度排序
+void WarScene::checkDeep()
+{
+	CCArray* partener = WarModel::shardWarModel()->getPartenerArray();
+	CCArray* enemy = WarModel::shardWarModel()->getEnemyArray();
+
+	for (int i = partener->count() - 1; i >= 0; i--) 
+	{
+		PartenerView* pObj = (PartenerView*)partener->objectAtIndex(i);
+		this->reorderChild(pObj, 1000 - pObj->getPositionY());
+	}
+
+	for (int i = enemy->count() - 1; i >= 0; i--) 
+	{
+		PartenerView* pObj = (PartenerView*)enemy->objectAtIndex(i);
+		this->reorderChild(pObj, 1000 - pObj->getPositionY());
+	}
+
+	this->reorderChild(hero, 1000 - hero->getPositionY());
+	stone->reorderChild(stone, 1000 - stone->getPositionY());
 }
 
 // 触摸开始

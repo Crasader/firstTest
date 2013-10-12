@@ -1,7 +1,7 @@
 #include "PersonView.h"
 
 
-PersonView::PersonView(void):mTarget(NULL), mAvatar(NULL), mController(NULL), mCurState(STAND)
+PersonView::PersonView(void):mTarget(NULL), mAvatar(NULL), mController(NULL), mCurState(STAND), mDirection(DIR_RIGHT)
 {
 	mInfo = PersonVo::create();
 	CC_SAFE_RETAIN(mInfo);
@@ -24,6 +24,7 @@ void PersonView::setAvatar(CCArmature* avatar)
 	mAvatar = avatar;
 	mAvatar->getAnimation()->setMovementEventCallFunc(this, movementEvent_selector(PersonView::onAnimationComplete));
 	addChild(mAvatar, 0);
+	mAvatar->getAnimation()->play("stand");
 }
 
 // 设置控制器
@@ -83,8 +84,10 @@ CCNode* PersonView::removeTarget()
 	return temp;
 }
 
+// 改变方向
 void PersonView::changeDirection(PERSON_DIRECTION dir)
 {
+	mDirection = dir;
 	switch (dir)
 	{
 	case DIR_LEFT:
@@ -94,6 +97,12 @@ void PersonView::changeDirection(PERSON_DIRECTION dir)
 		mAvatar->setScaleX(1);
 		break;
 	}
+}
+
+// 获取方向
+PERSON_DIRECTION PersonView::getDirection()
+{
+	return mDirection;
 }
 
 // 获取进攻目标
@@ -108,15 +117,26 @@ void PersonView::changeState(PERSON_STATE state)
 	if (mAvatar == NULL) return;
 	if (mCurState == state) return;
 
+	if (mCurState == ATTACK && state == EMBATTLED) return; // 在攻击动作时，不播放被攻击动画 
+
 	mCurState = state;
 
 	switch (state)
 	{
 	case STAND:
-		mAvatar->getAnimation()->playByIndex(0);
+		mAvatar->getAnimation()->play("stand");
+		break;
+	case SKILL:
+		mAvatar->getAnimation()->play("skill");
 		break;
 	case RUN:
-		mAvatar->getAnimation()->playByIndex(1);
+		mAvatar->getAnimation()->play("run");
+		break;
+	case EMBATTLED:
+		mAvatar->getAnimation()->play("Embattled");
+		break;
+	case ATTACK:
+		mAvatar->getAnimation()->play("Attack");
 		break;
 	}
 }
@@ -150,7 +170,7 @@ void PersonView::onAnimationComplete(CCArmature * arm, MovementEventType etype, 
 		else
 		{
 			//mAvatar->getAnimation()->playByIndex(1);
-			changeState(RUN);
+			changeState(STAND);
 		}
 	}
 }

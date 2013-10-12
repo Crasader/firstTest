@@ -74,12 +74,24 @@ void Bullet::initBullet(int id, CCNode* parent, CCNode* fromNode, CCNode* toNode
 	setPosition(mFromNode->getPosition());
 	parent->addChild(this);
 
+	this->setScale(0.2);
+
 	// 子弹移动动画
 	CCFiniteTimeAction* mv = CCSequence::create(
-		CCMoveTo::create(0.2, toNode->getPosition()),
-		CCCallFunc::create(this, callfunc_selector(Bullet::moveComplete)),
+		CCScaleTo::create(0.6, 1, 1),
+		CCCallFunc::create(this, callfunc_selector(Bullet::scaleComplete)),
 		NULL);
 
+	runAction(mv);
+}
+
+void Bullet::scaleComplete()
+{
+	// 子弹移动动画
+	CCFiniteTimeAction* mv = CCSequence::create(
+		CCMoveTo::create(0.2, mToNode->getPosition()),
+		CCCallFunc::create(this, callfunc_selector(Bullet::moveComplete)),
+		NULL);
 	runAction(mv);
 }
 

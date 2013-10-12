@@ -30,6 +30,7 @@ public:
 	void setSimplePostion(float x, float y); // 设置位置
 	virtual CCPoint getCurPostion(); // 获取位置
 	virtual void changeDirection(PERSON_DIRECTION dir); // 改变方向
+	virtual PERSON_DIRECTION getDirection(); // 获取方向
 	virtual CCNode* getTarget(); // 获取进攻目标
 	virtual void changeState(PERSON_STATE state); // 改变状态
 	virtual PERSON_STATE getState(); // 获取当前状态
@@ -43,6 +44,7 @@ protected:
 	CCNode* mTarget; // 进攻的目标
 	PERSON_STATE mCurState; // 当前状态
 	PersonVo* mInfo; // 基本信息
+	PERSON_DIRECTION mDirection; // 方向
 	
 	void onAnimationComplete(CCArmature * arm, MovementEventType etype, const char * ename);
 	

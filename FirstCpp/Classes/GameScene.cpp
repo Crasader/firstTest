@@ -4,12 +4,14 @@
 #include "war/WarModel.h"
 #include "EnumCommon.h"
 #include "SceneManager.h"
-#include "proto/Person.pb.h"
 #include <fstream>
+#include "ConfigManager.h"
 
 //引入扩展类
 #include "cocos-ext.h"
 #include "loader/LoadManager.h"
+#include "proto/Wer.pb.h"
+#include "proto/AvatarAsset.pb.h"
 //添加命名空间
 using namespace cocos2d::extension;
 
@@ -62,7 +64,7 @@ bool GameWorld::init()
                                         menu_selector(GameWorld::menuCloseCallback));
     
 	pCloseItem->setPosition(ccp(origin.x + visibleSize.width - pCloseItem->getContentSize().width/2 ,
-                                origin.y + pCloseItem->getContentSize().height/2));
+                                origin.y + visibleSize.height - pCloseItem->getContentSize().height/2));
 
     // create menu, it's an autorelease object
     CCMenu* pMenu = CCMenu::create(pCloseItem, NULL);
@@ -74,8 +76,14 @@ bool GameWorld::init()
 
     // add a label shows "Hello World"
     // create and initialize a label
-    
-    CCLabelTTF* pLabel = CCLabelTTF::create("Hello World", "Arial", 24);
+
+	//std::fstream input("E:/cocoswork/cocos2d-x-2-1-5/projects/FirstCpp/Resources/config/AvatarAsset.dbp", ios::in | ios::binary);
+	//AvatarAssetTable table;
+	//table.ParseFromIstream(&input);
+	//std::string sssss = table.tname();
+	//CCLog("ok");
+	//std::string str = ((AvatarAsset)table.tlist(0)).aname();
+    CCLabelTTF* pLabel = CCLabelTTF::create("ssss", "Arial", 24);
     
     // position the label on the center of the screen
     pLabel->setPosition(ccp(origin.x + visibleSize.width/2,
@@ -147,8 +155,13 @@ void GameWorld::menuCloseCallback(CCObject* pSender)
 	////切换到新的场景
 	//CCDirector::sharedDirector()->replaceScene(newscene);
 
+	AvatarAssetTable* ttt = (AvatarAssetTable*)ConfigManager::sharedConfigManager()->getConfigByName(CONFIG_AvatarAsset);
+	AvatarAsset av = ttt->tlist(1);
+	string png = av.pngpath();
+	string xml = av.xmlpath();
+	string json = av.jsonpath();
 	
-	LoadManager::shardLoadManager()->addLoadItem("fuwang/FuWang0.png", "fuwang/FuWang0.plist", "fuwang/FuWang.ExportJson");
+	LoadManager::shardLoadManager()->addLoadItem(png.c_str(), xml.c_str(), json.c_str());
 	LoadManager::shardLoadManager()->addLoadItem("weapon/Weapon0.png", "weapon/Weapon0.plist", "weapon/Weapon.ExportJson");
 	LoadManager::shardLoadManager()->load(SCENE_WAR);
 }
@@ -158,6 +171,8 @@ void GameWorld::initGame(void)
 {
 	// 初始化游戏
 	SceneManager::shardSceneManager(); // 初始化场景管理器
+	ConfigManager::sharedConfigManager()->initConfig(); // 初始化配置
+	
 
 	// for test 初始化双方阵营数据
 	//int temp[9];
@@ -208,30 +223,44 @@ void GameWorld::initGame(void)
 
 	//CCDataReaderHelper::sharedDataReaderHelper()->addDataFromFileAsync();
 	//CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(string("fuwang/FuWang0.plist").c_str(), string("fuwang/FuWang0.png").c_str());
-	//
 
-	//Table_Avatar table = Table_Avatar::default_instance();
-	//::google::protobuf::RepeatedPtrField<::Tile_Avatar> ve = table.tlist();
-	//for (int i = 0; i < 5; i++)
-	//{
-	//	Tile_Avatar* tile = table.add_tlist();
-	//	tile->set_id(i);
-	//	tile->set_name("tile");
-	//}
-	//table.set_tname("avatarTable");
-	//std::fstream out("D:/person.pb", ios::out | ios::binary | ios::trunc);
+
+	//WerTable table = WerTable::default_instance();
+	//::google::protobuf::RepeatedPtrField<::Wer> ve = table.tlist();
+	//Wer* tile = table.add_tlist();
+	//tile->set_id(1);
+	//tile->set_name("song");
+	//tile->set_teampoint("6_3");
+	//tile->set_point(6);
+	//tile->set_effect1("effect1");
+	//tile->set_effect2("effect2");
+	//tile->set_effect3("effect3");
+
+	//tile = table.add_tlist();
+	//tile->set_id(2);
+	//tile->set_name("lxss");
+	//tile->set_teampoint("6_3");
+	//tile->set_point(6);
+	//tile->set_effect1("effect4");
+	//tile->set_effect2("effect5");
+	//tile->set_effect3("effect6");
+
+	////table.set_tname("avatarTable");
+	//std::fstream out("E:/cocoswork/protoc-2.5.0-win32/dbp/Wer.dbp", ios::out | ios::binary | ios::trunc);
 	//table.SerializeToOstream(&out);
 	//out.close();
 
-	std::fstream input("D:/person.pb", ios::in | ios::binary);
-	Table_Avatar table;
+	/*std::fstream input("E:/cocoswork/cocos2d-x-2-1-5/projects/FirstCpp/Resources/config/AvatarAsset.dbp", ios::in | ios::binary);
+	AvatarAssetTable table;
 	table.ParseFromIstream(&input);
-
-	for (int i = table.tlist_size() - 1; i >= 0; i--)
-	{
-		Tile_Avatar tile = table.tlist(i);
-		CCLog("%d", tile.id());
-	}
+	std::string sssss = table.tname();
+	AvatarAsset av = table.tlist(0);
+	CCLog("ok");*/
+	//for (int i = table.tlist_size() - 1; i >= 0; i--)
+	//{
+	//	Wer tile = table.tlist(i);
+	//	CCLog("%d,%s", tile.id(), tile.name());
+	//}
 
 	//person.p
 	//CCFileUtils::sharedFileUtils()->

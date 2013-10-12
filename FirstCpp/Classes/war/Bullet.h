@@ -31,6 +31,7 @@ protected:
 
 	void setAvatar(CCArmature* avatar); // ÉèÖÃĞÎÏó
 	void moveComplete();
+	void scaleComplete();
 
 
 };

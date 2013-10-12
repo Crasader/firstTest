@@ -80,7 +80,7 @@ void SimpleControll::moveTo(CCPoint targetPos)
 		//
 		actionSpeedX = (targetPos.x - pos.x) / distance * mSpeed;
 		actionSpeedY = (targetPos.y - pos.y) / distance * mSpeed;
-		mControllerLintoner->changeDirection(actionSpeedX > 0 ? DIR_RIGHT : DIR_LEFT);
+		if (actionSpeedX != 0) mControllerLintoner->changeDirection(actionSpeedX > 0 ? DIR_RIGHT : DIR_LEFT);
 		mControllerLintoner->changeState(RUN);
 	}
 	else
@@ -118,7 +118,20 @@ void SimpleControll::checkTargetPos()
 		}
 		if (tempX != pos.x || tempY != pos.y)
 		{
-			moveTo(CCPoint::CCPoint(tempX, tempY));
+			moveTo(CCPoint(tempX, tempY)); // 跑到能打到目标的地方
+		}
+
+		// 根据目标位置设置自己的朝向
+		if (tempY != pos.x)
+		{
+			if (mControllerLintoner->getDirection() == DIR_LEFT && pos.x < mControllerLintoner->getTarget()->getPositionX())
+			{
+				mControllerLintoner->changeDirection(DIR_RIGHT);
+			}
+			else if (mControllerLintoner->getDirection() == DIR_RIGHT && pos.x > mControllerLintoner->getTarget()->getPositionX())
+			{
+				mControllerLintoner->changeDirection(DIR_LEFT);
+			}
 		}
 	}
 }
@@ -135,15 +148,16 @@ void SimpleControll::simpleAttack(float dt)
 	{
 		return; // 如果没有目标则不攻击；
 	}
-	//if (mControllerLintoner->getState() != RUN)
-	//{
-		mControllerLintoner->changeState(STAND);
+	if (mControllerLintoner->getState() != RUN)
+	{
+		mControllerLintoner->changeState(ATTACK);
 		useSkill(1);
-	//}
+	}
 }
 
 int SimpleControll::beAttack(float aValue)
 {
+	mControllerLintoner->changeState(EMBATTLED);
 	int result = aValue - mControllerLintoner->getSelfInfo()->defense;
 	mControllerLintoner->getSelfInfo()->hp -= result;
 	if (mControllerLintoner->getSelfInfo()->hp <= 0)

@@ -5,6 +5,8 @@
 
 USING_NS_CC;
 
+//LRESULT myWndProcHook(UINT message, WPARAM wParam, LPARAM lParam, BOOL* pProcessed);
+
 class WarScene : public cocos2d::CCLayer
 {
 private:
@@ -24,12 +26,15 @@ public:
 
 	// function
 	void onTimerHandler(float dt); // 秒计时器处理函数
+	void checkDeep(); // 检查深度排序
 	virtual bool ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent); // 触摸开始
 	virtual void ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent); // 触摸移动
 	virtual void ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent); // 触摸结束
 
 	// varriable
 	PartenerView* hero;
+
+	
 
 	CREATE_FUNC(WarScene);
 };
