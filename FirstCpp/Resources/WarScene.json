@@ -1,7 +1,7 @@
 {
   "classname": "CCNode",
   "name": "Node",
-  "canedit": true,
+  "canedit": false,
   "objecttag": 10000,
   "rotation": 0,
   "scalex": 1,
@@ -9,7 +9,7 @@
   "visible": 1,
   "x": 0,
   "y": 0,
-  "zorder": 0,
+  "zorder": 1,
   "gameobjects": [
     {
       "__type": "ComGameObjectSurrogate:#EditorCommon.JsonModel",
@@ -32,7 +32,7 @@
           "name": "bg",
           "file": null,
           "fileData": {
-            "path": null,
+            "path": "bg.PNG",
             "plistFile": null,
             "resourceType": 0
           }
@@ -43,7 +43,7 @@
       "__type": "ComGameObjectSurrogate:#EditorCommon.JsonModel",
       "classname": "CCNode",
       "name": null,
-      "canedit": true,
+      "canedit": false,
       "objecttag": 10011,
       "rotation": 0,
       "scalex": 1,
@@ -64,7 +64,7 @@
           "scaley": 1,
           "visible": 1,
           "x": -50.000003814697266,
-          "y": -70.000007629394531,
+          "y": -68.5714340209961,
           "zorder": 1,
           "gameobjects": [],
           "components": [
@@ -159,7 +159,7 @@
       "name": "CCBackgroundAudio",
       "file": null,
       "fileData": {
-        "path": "",
+        "path": null,
         "plistFile": null,
         "resourceType": 0
       },
