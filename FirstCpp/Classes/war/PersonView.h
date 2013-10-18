@@ -4,6 +4,7 @@
 #include "ControllerListener.h"
 #include "ControllerBase.h"
 #include "PersonVo.h"
+#include "proto\AvatarAsset.pb.h"
 
 using namespace cocos2d::extension;
 
@@ -25,6 +26,8 @@ public:
 	CCNode* removeTarget(); // 移除进攻目标
 	virtual void setInfo(PersonVo* info); // 设置基本信息
 	virtual PersonVo* getInfo() const; // 获取基本信息
+	void setBaseId(int id); //
+	int getBaseId() const;
 
 	//实现ControllerListener接口
 	void setSimplePostion(float x, float y); // 设置位置
@@ -39,12 +42,14 @@ public:
 	virtual CCNode* getSelfEntity(); // 获取自己
 
 protected:
+	AvatarAsset* mConfig; // 配置数据
 	CCArmature* mAvatar; // 形象
 	ControllerBase* mController; // 控制器
 	CCNode* mTarget; // 进攻的目标
 	PERSON_STATE mCurState; // 当前状态
 	PersonVo* mInfo; // 基本信息
 	PERSON_DIRECTION mDirection; // 方向
+	int mId;
 	
 	void onAnimationComplete(CCArmature * arm, MovementEventType etype, const char * ename);
 	

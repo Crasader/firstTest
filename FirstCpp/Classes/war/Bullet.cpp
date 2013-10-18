@@ -54,7 +54,7 @@ void Bullet::setAvatar(CCArmature* avatar)
 		mAvatar = 0;
 	}
 	mAvatar = avatar;
-	//mAvatar->getAnimation()->setMovementEventCallFunc(this, movementEvent_selector(PersonView::onAnimationComplete));
+	mAvatar->getAnimation()->setMovementEventCallFunc(this, movementEvent_selector(Bullet::onAnimationComplete));
 	addChild(mAvatar, 0);
 }
 
@@ -63,16 +63,20 @@ void Bullet::initBullet(int id, CCNode* parent, CCNode* fromNode, CCNode* toNode
 {
 	mId = id;
 	mParent = parent;
-	mFromNode = fromNode;
-	mToNode = toNode;
+	mFromNode = (PersonView*)fromNode;
+	mToNode = (PersonView*)toNode;
 
 	// 通过id到表中查询子弹的具体数据信息
 	CCArmature* av = CCArmature::create("Weapon");
 	av->getAnimation()->playByIndex(0);
 	setAvatar(av);
 
-	setPosition(mFromNode->getPosition());
+	int prx = fromNode->getPositionX() < toNode->getPositionX() ? 35 : -35;
+	setPosition(CCPoint(mFromNode->getPositionX() + prx, mFromNode->getPositionY() + 60));
 	parent->addChild(this);
+
+	//mAvatar->getAnimation()->play("atteck");
+	//return;
 
 	this->setScale(0.2);
 
@@ -89,7 +93,7 @@ void Bullet::scaleComplete()
 {
 	// 子弹移动动画
 	CCFiniteTimeAction* mv = CCSequence::create(
-		CCMoveTo::create(0.2, mToNode->getPosition()),
+		CCMoveTo::create(0.2, CCPoint(mToNode->getPositionX(), mToNode->getPositionY() + 50)),
 		CCCallFunc::create(this, callfunc_selector(Bullet::moveComplete)),
 		NULL);
 	runAction(mv);
@@ -97,14 +101,42 @@ void Bullet::scaleComplete()
 
 void Bullet::moveComplete()
 {
-	if (mToNode != NULL)
+	((PartenerView*)mToNode)->getController()->beAttack(260.0f);
+	
+	mAvatar->getAnimation()->play("atteck");
+	
+}
+
+// 一个动作播放完毕
+void Bullet::onAnimationComplete(CCArmature * arm, MovementEventType etype, const char * ename)
+{
+	if (etype == COMPLETE || etype == LOOP_COMPLETE)
 	{
-		((PartenerView*)mToNode)->getController()->beAttack(260.0f);
-		if (((PartenerView*)mToNode)->getSelfInfo()->hp <= 0)
+		if (strcmp(ename, "atteck") == 0)
 		{
-			((PersonView*)mFromNode)->setTarget(NULL);
-			WarModel::shardWarModel()->removeEntity(mToNode);
+			if (mToNode != NULL)
+			{
+				if (((PartenerView*)mToNode)->getSelfInfo()->hp <= 0)
+				{
+					((PersonView*)mFromNode)->setTarget(NULL);
+					WarModel::shardWarModel()->removeEntity(mToNode);
+				}
+			}
+			mAvatar->removeFromParentAndCleanup(true);
+			mAvatar = NULL;
+			//removeFromParent(); // 从父对象移除
+			removeFromParentAndCleanup(true);
+		}
+		else
+		{
+			
 		}
 	}
-	removeFromParent(); // 从父对象移除
+	else
+	{
+		if (strcmp(ename, "atteck") == 0)
+		{
+			CCLog("attack start");
+		}
+	}
 }

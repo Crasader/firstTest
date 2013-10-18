@@ -1,4 +1,5 @@
 #include "PersonView.h"
+#include "ConfigManager.h"
 
 
 PersonView::PersonView(void):mTarget(NULL), mAvatar(NULL), mController(NULL), mCurState(STAND), mDirection(DIR_RIGHT)
@@ -11,6 +12,20 @@ PersonView::PersonView(void):mTarget(NULL), mAvatar(NULL), mController(NULL), mC
 PersonView::~PersonView(void)
 {
 	CC_SAFE_RELEASE_NULL(mInfo);
+}
+
+void PersonView::setBaseId(int id)
+{
+	mId = id;
+	AvatarAsset* con = NULL;
+	config_manager_gettile(AvatarAssetTable, AvatarAsset, CONFIG_AvatarAsset, mId, con);
+	CCArmature* armature = CCArmature::create(con->name().c_str());
+	setAvatar(armature);
+}
+
+int PersonView::getBaseId() const
+{
+	return mId;
 }
 
 // 设置形象
@@ -138,6 +153,9 @@ void PersonView::changeState(PERSON_STATE state)
 	case ATTACK:
 		mAvatar->getAnimation()->play("Attack");
 		break;
+	case DIE:
+		mAvatar->getAnimation()->play("die");
+		break;
 	}
 }
 
@@ -161,11 +179,15 @@ PersonVo* PersonView::getInfo() const
 // 一个动作播放完毕
 void PersonView::onAnimationComplete(CCArmature * arm, MovementEventType etype, const char * ename)
 {
-	if (etype == COMPLETE)
+	if (etype == COMPLETE || etype == LOOP_COMPLETE)
 	{
-		if (strcmp(ename, "fwrun") == 0)
+		if (strcmp(ename, "run") == 0)
 		{
 
+		}
+		else if (strcmp(ename, "die") == 0)
+		{
+			removeFromParent();
 		}
 		else
 		{
@@ -189,7 +211,7 @@ PersonVo* PersonView::getSelfInfo()
 // 死出去
 void PersonView::dieOut()
 {
-	removeFromParent();
+	changeState(DIE);
 }
 
 // 获取自身

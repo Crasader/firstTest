@@ -51,9 +51,10 @@ void protobuf_AssignDesc_AvatarAsset_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(AvatarAssetTable));
   AvatarAsset_descriptor_ = file->message_type(1);
-  static const int AvatarAsset_offsets_[6] = {
+  static const int AvatarAsset_offsets_[7] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, aname_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, name_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, pngpath_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, xmlpath_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, jsonpath_),
@@ -106,9 +107,10 @@ void protobuf_AddDesc_AvatarAsset_2eproto() {
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\021AvatarAsset.proto\">\n\020AvatarAssetTable\022"
     "\r\n\005tname\030\001 \001(\t\022\033\n\005tlist\030\002 \003(\0132\014.AvatarAs"
-    "set\"n\n\013AvatarAsset\022\n\n\002id\030\001 \001(\005\022\r\n\005aname\030"
-    "\002 \001(\t\022\017\n\007pngpath\030\003 \001(\t\022\017\n\007xmlpath\030\004 \001(\t\022"
-    "\020\n\010jsonpath\030\005 \001(\t\022\020\n\010distance\030\006 \001(\005", 195);
+    "set\"|\n\013AvatarAsset\022\n\n\002id\030\001 \001(\005\022\r\n\005aname\030"
+    "\002 \001(\t\022\014\n\004name\030\003 \001(\t\022\017\n\007pngpath\030\004 \001(\t\022\017\n\007"
+    "xmlpath\030\005 \001(\t\022\020\n\010jsonpath\030\006 \001(\t\022\020\n\010dista"
+    "nce\030\007 \001(\005", 209);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "AvatarAsset.proto", &protobuf_RegisterTypes);
   AvatarAssetTable::default_instance_ = new AvatarAssetTable();
@@ -395,6 +397,7 @@ void AvatarAssetTable::Swap(AvatarAssetTable* other) {
 #ifndef _MSC_VER
 const int AvatarAsset::kIdFieldNumber;
 const int AvatarAsset::kAnameFieldNumber;
+const int AvatarAsset::kNameFieldNumber;
 const int AvatarAsset::kPngpathFieldNumber;
 const int AvatarAsset::kXmlpathFieldNumber;
 const int AvatarAsset::kJsonpathFieldNumber;
@@ -419,6 +422,7 @@ void AvatarAsset::SharedCtor() {
   _cached_size_ = 0;
   id_ = 0;
   aname_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   pngpath_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   xmlpath_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   jsonpath_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
@@ -433,6 +437,9 @@ AvatarAsset::~AvatarAsset() {
 void AvatarAsset::SharedDtor() {
   if (aname_ != &::google::protobuf::internal::kEmptyString) {
     delete aname_;
+  }
+  if (name_ != &::google::protobuf::internal::kEmptyString) {
+    delete name_;
   }
   if (pngpath_ != &::google::protobuf::internal::kEmptyString) {
     delete pngpath_;
@@ -474,6 +481,11 @@ void AvatarAsset::Clear() {
     if (has_aname()) {
       if (aname_ != &::google::protobuf::internal::kEmptyString) {
         aname_->clear();
+      }
+    }
+    if (has_name()) {
+      if (name_ != &::google::protobuf::internal::kEmptyString) {
+        name_->clear();
       }
     }
     if (has_pngpath()) {
@@ -531,12 +543,29 @@ bool AvatarAsset::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(26)) goto parse_pngpath;
+        if (input->ExpectTag(26)) goto parse_name;
         break;
       }
 
-      // optional string pngpath = 3;
+      // optional string name = 3;
       case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_name:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_name()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->name().data(), this->name().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(34)) goto parse_pngpath;
+        break;
+      }
+
+      // optional string pngpath = 4;
+      case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_pngpath:
@@ -548,12 +577,12 @@ bool AvatarAsset::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(34)) goto parse_xmlpath;
+        if (input->ExpectTag(42)) goto parse_xmlpath;
         break;
       }
 
-      // optional string xmlpath = 4;
-      case 4: {
+      // optional string xmlpath = 5;
+      case 5: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_xmlpath:
@@ -565,12 +594,12 @@ bool AvatarAsset::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(42)) goto parse_jsonpath;
+        if (input->ExpectTag(50)) goto parse_jsonpath;
         break;
       }
 
-      // optional string jsonpath = 5;
-      case 5: {
+      // optional string jsonpath = 6;
+      case 6: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_jsonpath:
@@ -582,12 +611,12 @@ bool AvatarAsset::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(48)) goto parse_distance;
+        if (input->ExpectTag(56)) goto parse_distance;
         break;
       }
 
-      // optional int32 distance = 6;
-      case 6: {
+      // optional int32 distance = 7;
+      case 7: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_distance:
@@ -634,36 +663,45 @@ void AvatarAsset::SerializeWithCachedSizes(
       2, this->aname(), output);
   }
 
-  // optional string pngpath = 3;
+  // optional string name = 3;
+  if (has_name()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->name().data(), this->name().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      3, this->name(), output);
+  }
+
+  // optional string pngpath = 4;
   if (has_pngpath()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->pngpath().data(), this->pngpath().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      3, this->pngpath(), output);
+      4, this->pngpath(), output);
   }
 
-  // optional string xmlpath = 4;
+  // optional string xmlpath = 5;
   if (has_xmlpath()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->xmlpath().data(), this->xmlpath().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      4, this->xmlpath(), output);
+      5, this->xmlpath(), output);
   }
 
-  // optional string jsonpath = 5;
+  // optional string jsonpath = 6;
   if (has_jsonpath()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->jsonpath().data(), this->jsonpath().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      5, this->jsonpath(), output);
+      6, this->jsonpath(), output);
   }
 
-  // optional int32 distance = 6;
+  // optional int32 distance = 7;
   if (has_distance()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(6, this->distance(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(7, this->distance(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -689,39 +727,49 @@ void AvatarAsset::SerializeWithCachedSizes(
         2, this->aname(), target);
   }
 
-  // optional string pngpath = 3;
+  // optional string name = 3;
+  if (has_name()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->name().data(), this->name().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->name(), target);
+  }
+
+  // optional string pngpath = 4;
   if (has_pngpath()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->pngpath().data(), this->pngpath().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        3, this->pngpath(), target);
+        4, this->pngpath(), target);
   }
 
-  // optional string xmlpath = 4;
+  // optional string xmlpath = 5;
   if (has_xmlpath()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->xmlpath().data(), this->xmlpath().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        4, this->xmlpath(), target);
+        5, this->xmlpath(), target);
   }
 
-  // optional string jsonpath = 5;
+  // optional string jsonpath = 6;
   if (has_jsonpath()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->jsonpath().data(), this->jsonpath().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        5, this->jsonpath(), target);
+        6, this->jsonpath(), target);
   }
 
-  // optional int32 distance = 6;
+  // optional int32 distance = 7;
   if (has_distance()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(6, this->distance(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(7, this->distance(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -749,28 +797,35 @@ int AvatarAsset::ByteSize() const {
           this->aname());
     }
 
-    // optional string pngpath = 3;
+    // optional string name = 3;
+    if (has_name()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->name());
+    }
+
+    // optional string pngpath = 4;
     if (has_pngpath()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->pngpath());
     }
 
-    // optional string xmlpath = 4;
+    // optional string xmlpath = 5;
     if (has_xmlpath()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->xmlpath());
     }
 
-    // optional string jsonpath = 5;
+    // optional string jsonpath = 6;
     if (has_jsonpath()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->jsonpath());
     }
 
-    // optional int32 distance = 6;
+    // optional int32 distance = 7;
     if (has_distance()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
@@ -810,6 +865,9 @@ void AvatarAsset::MergeFrom(const AvatarAsset& from) {
     if (from.has_aname()) {
       set_aname(from.aname());
     }
+    if (from.has_name()) {
+      set_name(from.name());
+    }
     if (from.has_pngpath()) {
       set_pngpath(from.pngpath());
     }
@@ -847,6 +905,7 @@ void AvatarAsset::Swap(AvatarAsset* other) {
   if (other != this) {
     std::swap(id_, other->id_);
     std::swap(aname_, other->aname_);
+    std::swap(name_, other->name_);
     std::swap(pngpath_, other->pngpath_);
     std::swap(xmlpath_, other->xmlpath_);
     std::swap(jsonpath_, other->jsonpath_);

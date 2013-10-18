@@ -2,6 +2,7 @@
 #include "controllerbase.h"
 #include "cocos2d.h"
 #include "Bullet.h"
+#include "ConfigManager.h"
 
 USING_NS_CC;
 

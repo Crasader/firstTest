@@ -26,10 +26,11 @@ protected:
 	int mId;
 
 	CCNode* mParent;
-	CCNode* mFromNode;
-	CCNode* mToNode;
+	PersonView* mFromNode;
+	PersonView* mToNode;
 
 	void setAvatar(CCArmature* avatar); // …Ë÷√–ŒœÛ
+	void onAnimationComplete(CCArmature * arm, MovementEventType etype, const char * ename);
 	void moveComplete();
 	void scaleComplete();
 

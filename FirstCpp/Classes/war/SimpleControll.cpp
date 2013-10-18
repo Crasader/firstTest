@@ -99,22 +99,27 @@ void SimpleControll::moveTo(CCPoint targetPos)
 
 void SimpleControll::checkTargetPos()
 {
-	if (mControllerLintoner->getTarget() != NULL)
+	PersonView* temptarget = (PersonView*)mControllerLintoner->getTarget();
+	PersonView* self = (PersonView*)mControllerLintoner->getSelfEntity();
+	AvatarAsset* con;
+	config_manager_gettile(AvatarAssetTable, AvatarAsset, CONFIG_AvatarAsset, self->getBaseId(), con);
+	int dist = con->distance();
+	if (temptarget != NULL)
 	{
 		CCPoint pos = mControllerLintoner->getCurPostion();
 		float tempX = pos.x;
 		float tempY = pos.y;
-		if (fabs(pos.y - mControllerLintoner->getTarget()->getPositionY()) > 5)
+		if (fabs(pos.y - temptarget->getPositionY()) > 10)
 		{
-			tempY = mControllerLintoner->getTarget()->getPositionY();
+			tempY = temptarget->getPositionY();
 		}
-		if (pos.x - mControllerLintoner->getTarget()->getPositionX() > 300)
+		if (pos.x - temptarget->getPositionX() > dist)
 		{
-			tempX = mControllerLintoner->getTarget()->getPositionX() + 300;
+			tempX = temptarget->getPositionX() + dist;
 		}
-		else if (pos.x - mControllerLintoner->getTarget()->getPositionX() < -300)
+		else if (pos.x - temptarget->getPositionX() < -dist)
 		{
-			tempX = mControllerLintoner->getTarget()->getPositionX() - 300;
+			tempX = temptarget->getPositionX() - dist;
 		}
 		if (tempX != pos.x || tempY != pos.y)
 		{
@@ -124,11 +129,11 @@ void SimpleControll::checkTargetPos()
 		// 根据目标位置设置自己的朝向
 		if (tempY != pos.x)
 		{
-			if (mControllerLintoner->getDirection() == DIR_LEFT && pos.x < mControllerLintoner->getTarget()->getPositionX())
+			if (mControllerLintoner->getDirection() == DIR_LEFT && pos.x < temptarget->getPositionX())
 			{
 				mControllerLintoner->changeDirection(DIR_RIGHT);
 			}
-			else if (mControllerLintoner->getDirection() == DIR_RIGHT && pos.x > mControllerLintoner->getTarget()->getPositionX())
+			else if (mControllerLintoner->getDirection() == DIR_RIGHT && pos.x > temptarget->getPositionX())
 			{
 				mControllerLintoner->changeDirection(DIR_LEFT);
 			}

@@ -15,6 +15,18 @@
 
 USING_NS_CC;
 
+#define config_manager_gettile(__TABLE__, __TILE__, __NAME__, __ID__, __RESULT__) \
+__TABLE__* ttt = (__TABLE__*)ConfigManager::sharedConfigManager()->getConfigByName(__NAME__); \
+::google::protobuf::RepeatedPtrField< ::__TILE__ > tlist = ttt->tlist(); \
+for (int index = tlist.size() - 1; index >= 0; index--) \
+{ \
+	if (tlist.Get(index).id() == 2) \
+	{ \
+		__RESULT__ = tlist.Mutable(index); \
+		break; \
+	} \
+} \
+
 static const char* CONFIG_AvatarAsset     =    "AvatarAsset.dbp";
 static const char* CONFIG_Wer            =    "Wer.dbp";
 

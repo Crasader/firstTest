@@ -138,28 +138,15 @@ bool GameWorld::init()
 
 void GameWorld::menuCloseCallback(CCObject* pSender)
 {
-	////创建一个新的场景
-	//CCScene * newscene  = CCScene::create();
-	////从CocoStudio场景编辑器生成的数据生成根节点
-	//CCNode *pNode = CCSSceneReader::sharedSceneReader()->createNodeWithSceneFile("SceneEditorTest/SceneEditorTest.json");
+	AvatarAsset* av = NULL;
+	config_manager_gettile(AvatarAssetTable, AvatarAsset, CONFIG_AvatarAsset, 2, av);
 
-	////播放背景音乐
-	//CCComAudio *pAudio = (CCComAudio*)(pNode->getComponent("Audio"));
-	////pAudio->playBackgroundMusic(pAudio->getFile(), pAudio->isLoop());
-	//pAudio->playBackgroundMusic(pAudio->getFile(), true);
-	////给蝴蝶鱼配置动画
-	//CCComRender *pFishRender = (CCComRender*)(pNode->getChildByTag(10010)->getComponent( "butterFlyFish"));
-	//CCArmature *pButterFlyFish= (CCArmature *)(pFishRender->getRender());
-	//pButterFlyFish->getAnimation()->playByIndex(0);
-	//newscene->addChild(pNode, 0, 1);
-	////切换到新的场景
-	//CCDirector::sharedDirector()->replaceScene(newscene);
-
-	AvatarAssetTable* ttt = (AvatarAssetTable*)ConfigManager::sharedConfigManager()->getConfigByName(CONFIG_AvatarAsset);
-	AvatarAsset av = ttt->tlist(1);
-	string png = av.pngpath();
-	string xml = av.xmlpath();
-	string json = av.jsonpath();
+	//string png = av.pngpath();
+	//string xml = av.xmlpath();
+	//string json = av.jsonpath();
+	string png = av->pngpath();
+	string xml = av->xmlpath();
+	string json = av->jsonpath();
 	
 	LoadManager::shardLoadManager()->addLoadItem(png.c_str(), xml.c_str(), json.c_str());
 	LoadManager::shardLoadManager()->addLoadItem("weapon/Weapon0.png", "weapon/Weapon0.plist", "weapon/Weapon.ExportJson");

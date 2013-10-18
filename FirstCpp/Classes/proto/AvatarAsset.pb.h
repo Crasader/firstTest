@@ -209,10 +209,22 @@ class AvatarAsset : public ::google::protobuf::Message {
   inline ::std::string* release_aname();
   inline void set_allocated_aname(::std::string* aname);
 
-  // optional string pngpath = 3;
+  // optional string name = 3;
+  inline bool has_name() const;
+  inline void clear_name();
+  static const int kNameFieldNumber = 3;
+  inline const ::std::string& name() const;
+  inline void set_name(const ::std::string& value);
+  inline void set_name(const char* value);
+  inline void set_name(const char* value, size_t size);
+  inline ::std::string* mutable_name();
+  inline ::std::string* release_name();
+  inline void set_allocated_name(::std::string* name);
+
+  // optional string pngpath = 4;
   inline bool has_pngpath() const;
   inline void clear_pngpath();
-  static const int kPngpathFieldNumber = 3;
+  static const int kPngpathFieldNumber = 4;
   inline const ::std::string& pngpath() const;
   inline void set_pngpath(const ::std::string& value);
   inline void set_pngpath(const char* value);
@@ -221,10 +233,10 @@ class AvatarAsset : public ::google::protobuf::Message {
   inline ::std::string* release_pngpath();
   inline void set_allocated_pngpath(::std::string* pngpath);
 
-  // optional string xmlpath = 4;
+  // optional string xmlpath = 5;
   inline bool has_xmlpath() const;
   inline void clear_xmlpath();
-  static const int kXmlpathFieldNumber = 4;
+  static const int kXmlpathFieldNumber = 5;
   inline const ::std::string& xmlpath() const;
   inline void set_xmlpath(const ::std::string& value);
   inline void set_xmlpath(const char* value);
@@ -233,10 +245,10 @@ class AvatarAsset : public ::google::protobuf::Message {
   inline ::std::string* release_xmlpath();
   inline void set_allocated_xmlpath(::std::string* xmlpath);
 
-  // optional string jsonpath = 5;
+  // optional string jsonpath = 6;
   inline bool has_jsonpath() const;
   inline void clear_jsonpath();
-  static const int kJsonpathFieldNumber = 5;
+  static const int kJsonpathFieldNumber = 6;
   inline const ::std::string& jsonpath() const;
   inline void set_jsonpath(const ::std::string& value);
   inline void set_jsonpath(const char* value);
@@ -245,10 +257,10 @@ class AvatarAsset : public ::google::protobuf::Message {
   inline ::std::string* release_jsonpath();
   inline void set_allocated_jsonpath(::std::string* jsonpath);
 
-  // optional int32 distance = 6;
+  // optional int32 distance = 7;
   inline bool has_distance() const;
   inline void clear_distance();
-  static const int kDistanceFieldNumber = 6;
+  static const int kDistanceFieldNumber = 7;
   inline ::google::protobuf::int32 distance() const;
   inline void set_distance(::google::protobuf::int32 value);
 
@@ -258,6 +270,8 @@ class AvatarAsset : public ::google::protobuf::Message {
   inline void clear_has_id();
   inline void set_has_aname();
   inline void clear_has_aname();
+  inline void set_has_name();
+  inline void clear_has_name();
   inline void set_has_pngpath();
   inline void clear_has_pngpath();
   inline void set_has_xmlpath();
@@ -270,6 +284,7 @@ class AvatarAsset : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::std::string* aname_;
+  ::std::string* name_;
   ::std::string* pngpath_;
   ::google::protobuf::int32 id_;
   ::google::protobuf::int32 distance_;
@@ -277,7 +292,7 @@ class AvatarAsset : public ::google::protobuf::Message {
   ::std::string* jsonpath_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(7 + 31) / 32];
 
   friend void  protobuf_AddDesc_AvatarAsset_2eproto();
   friend void protobuf_AssignDesc_AvatarAsset_2eproto();
@@ -484,15 +499,85 @@ inline void AvatarAsset::set_allocated_aname(::std::string* aname) {
   }
 }
 
-// optional string pngpath = 3;
-inline bool AvatarAsset::has_pngpath() const {
+// optional string name = 3;
+inline bool AvatarAsset::has_name() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void AvatarAsset::set_has_pngpath() {
+inline void AvatarAsset::set_has_name() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void AvatarAsset::clear_has_pngpath() {
+inline void AvatarAsset::clear_has_name() {
   _has_bits_[0] &= ~0x00000004u;
+}
+inline void AvatarAsset::clear_name() {
+  if (name_ != &::google::protobuf::internal::kEmptyString) {
+    name_->clear();
+  }
+  clear_has_name();
+}
+inline const ::std::string& AvatarAsset::name() const {
+  return *name_;
+}
+inline void AvatarAsset::set_name(const ::std::string& value) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(value);
+}
+inline void AvatarAsset::set_name(const char* value) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(value);
+}
+inline void AvatarAsset::set_name(const char* value, size_t size) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* AvatarAsset::mutable_name() {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  return name_;
+}
+inline ::std::string* AvatarAsset::release_name() {
+  clear_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = name_;
+    name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void AvatarAsset::set_allocated_name(::std::string* name) {
+  if (name_ != &::google::protobuf::internal::kEmptyString) {
+    delete name_;
+  }
+  if (name) {
+    set_has_name();
+    name_ = name;
+  } else {
+    clear_has_name();
+    name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional string pngpath = 4;
+inline bool AvatarAsset::has_pngpath() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void AvatarAsset::set_has_pngpath() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void AvatarAsset::clear_has_pngpath() {
+  _has_bits_[0] &= ~0x00000008u;
 }
 inline void AvatarAsset::clear_pngpath() {
   if (pngpath_ != &::google::protobuf::internal::kEmptyString) {
@@ -554,15 +639,15 @@ inline void AvatarAsset::set_allocated_pngpath(::std::string* pngpath) {
   }
 }
 
-// optional string xmlpath = 4;
+// optional string xmlpath = 5;
 inline bool AvatarAsset::has_xmlpath() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
+  return (_has_bits_[0] & 0x00000010u) != 0;
 }
 inline void AvatarAsset::set_has_xmlpath() {
-  _has_bits_[0] |= 0x00000008u;
+  _has_bits_[0] |= 0x00000010u;
 }
 inline void AvatarAsset::clear_has_xmlpath() {
-  _has_bits_[0] &= ~0x00000008u;
+  _has_bits_[0] &= ~0x00000010u;
 }
 inline void AvatarAsset::clear_xmlpath() {
   if (xmlpath_ != &::google::protobuf::internal::kEmptyString) {
@@ -624,15 +709,15 @@ inline void AvatarAsset::set_allocated_xmlpath(::std::string* xmlpath) {
   }
 }
 
-// optional string jsonpath = 5;
+// optional string jsonpath = 6;
 inline bool AvatarAsset::has_jsonpath() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
+  return (_has_bits_[0] & 0x00000020u) != 0;
 }
 inline void AvatarAsset::set_has_jsonpath() {
-  _has_bits_[0] |= 0x00000010u;
+  _has_bits_[0] |= 0x00000020u;
 }
 inline void AvatarAsset::clear_has_jsonpath() {
-  _has_bits_[0] &= ~0x00000010u;
+  _has_bits_[0] &= ~0x00000020u;
 }
 inline void AvatarAsset::clear_jsonpath() {
   if (jsonpath_ != &::google::protobuf::internal::kEmptyString) {
@@ -694,15 +779,15 @@ inline void AvatarAsset::set_allocated_jsonpath(::std::string* jsonpath) {
   }
 }
 
-// optional int32 distance = 6;
+// optional int32 distance = 7;
 inline bool AvatarAsset::has_distance() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
+  return (_has_bits_[0] & 0x00000040u) != 0;
 }
 inline void AvatarAsset::set_has_distance() {
-  _has_bits_[0] |= 0x00000020u;
+  _has_bits_[0] |= 0x00000040u;
 }
 inline void AvatarAsset::clear_has_distance() {
-  _has_bits_[0] &= ~0x00000020u;
+  _has_bits_[0] &= ~0x00000040u;
 }
 inline void AvatarAsset::clear_distance() {
   distance_ = 0;

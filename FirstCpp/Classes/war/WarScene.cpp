@@ -4,6 +4,7 @@
 #include "SimpleControll.h"
 #include "WarModel.h"
 #include "EnumCommon.h"
+#include "ConfigManager.h"
 
 using namespace cocos2d::extension;
 USING_NS_CC;
@@ -72,25 +73,17 @@ bool WarScene::init()
 	// add the label as a child to this layer
 	addChild(pLabel, 1);
 
-
-	//CCArmatureDataManager::sharedArmatureDataManager()->addArmatureFileInfo("ActionEditor/Cowboy0.png", "ActionEditor/Cowboy0.plist", "ActionEditor/Cowboy.ExportJson");
-	//CCArmatureDataManager::sharedArmatureDataManager()->addArmatureFileInfo("fuwang/FuWang0.png", "fuwang/FuWang0.plist", "fuwang/FuWang.ExportJson");
-	//CCArmatureDataManager::sharedArmatureDataManager()->addArmatureFileInfo("fuwang/FuWang.ExportJson");
-	CCArmature* armature = CCArmature::create("Master");
-	//armature->getAnimation()->playByIndex(1);
-	//armature->setScale(0.2f);
-	//armature->setPosition(ccp(visibleSize.width * rand() / RAND_MAX, visibleSize.height * rand() / RAND_MAX));
-	//armature->setScaleX(-0.2f);
-	//addChild(armature, 2);
-
 	SimpleControll* movecontroll = SimpleControll::create();
 	//SimpleControll* movecontroll = new SimpleControll;
 	movecontroll->setSpeed(3);
 	//addChild(movecontroll);
 
 	hero = PartenerView::create();
+	//AvatarAsset* con = NULL;
+	//config_manager_gettile(AvatarAssetTable, AvatarAsset, CONFIG_AvatarAsset, 2, con);
+	hero->setBaseId(2);
 	//PartenerView* hero = new PartenerView;
-	hero->setAvatar(armature);
+	//hero->setAvatar(armature);
 	hero->setPosition(ccp(visibleSize.width / 4, visibleSize.height / 4));
 	addChild(hero, 2);
 
@@ -101,10 +94,11 @@ bool WarScene::init()
 	pLabel->setString(str);
 	movecontroll = SimpleControll::create();
 	movecontroll->setSpeed(2);
-	armature = CCArmature::create("Master");
+	//armature = CCArmature::create("Master");
 	//armature->getAnimation()->playByIndex(1);
 	stone = PartenerView::create();
-	stone->setAvatar(armature);
+	stone->setBaseId(2);
+	//stone->setAvatar(armature);
 	stone->setPosition(ccp(visibleSize.width / 2 + 200, visibleSize.height / 2));
 	stone->setTarget(hero);
 	stone->setController(movecontroll);
@@ -116,9 +110,10 @@ bool WarScene::init()
 	for (int i = partener->count() - 1; i >= 0; i--) 
 	{
 		PartenerView* pObj = (PartenerView*)partener->objectAtIndex(i);
-		armature = CCArmature::create("Master");
+		pObj->setBaseId(2);
+		//armature = CCArmature::create("Master");
 		//armature->getAnimation()->playByIndex(1);
-		pObj->setAvatar(armature);
+		//pObj->setAvatar(armature);
 		char* posid = new char[12];
 		sprintf(posid, "left%d", i);
 		CCPoint tp = root->getChildByName("ImageView")->getChildByName(posid)->getPosition();
@@ -136,9 +131,10 @@ bool WarScene::init()
 	for (int i = enemy->count() - 1; i >= 0; i--) 
 	{
 		PartenerView* pObj = (PartenerView*)enemy->objectAtIndex(i);
-		armature = CCArmature::create("Master");
+		pObj->setBaseId(2);
+		//armature = CCArmature::create("Master");
 		//armature->getAnimation()->playByIndex(1);
-		pObj->setAvatar(armature);
+		//pObj->setAvatar(armature);
 		char* posid = new char[12];
 		sprintf(posid, "right%d", i);
 		CCPoint tp = root->getChildByName("ImageView")->getChildByName(posid)->getPosition();
