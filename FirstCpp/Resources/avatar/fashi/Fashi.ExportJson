@@ -3,7 +3,7 @@
     {
       "strVersion": "0.4.0.0",
       "version": 0.4,
-      "name": "Master",
+      "name": "Fashi",
       "bone_data": [
         {
           "name": "Shadow",
@@ -518,7 +518,7 @@
   ],
   "animation_data": [
     {
-      "name": "Master",
+      "name": "Fashi",
       "mov_data": [
         {
           "name": "stand",
@@ -3416,7 +3416,7 @@
           ]
         },
         {
-          "name": "Embattled",
+          "name": "embattled",
           "dr": 15,
           "lp": false,
           "to": 6,
@@ -4351,7 +4351,7 @@
           ]
         },
         {
-          "name": "Attack",
+          "name": "attack",
           "dr": 18,
           "lp": false,
           "to": 6,
@@ -7890,15 +7890,15 @@
     },
     {
       "name": "master_shoulder",
-      "width": 44.0,
-      "height": 20.0,
+      "width": 0.0,
+      "height": 0.0,
       "pX": 0.5090909,
       "pY": 0.669999957
     },
     {
       "name": "master_right hand_fist",
-      "width": 20.0,
-      "height": 29.0,
+      "width": 0.0,
+      "height": 0.0,
       "pX": 0.55,
       "pY": 0.827586234
     },
@@ -7974,6 +7974,6 @@
     }
   ],
   "config_file_path": [
-    "Master0.plist"
+    "Fashi0.plist"
   ]
 }
