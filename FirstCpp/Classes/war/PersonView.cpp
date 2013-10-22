@@ -133,6 +133,7 @@ void PersonView::changeState(PERSON_STATE state)
 	if (mCurState == state) return;
 
 	if (mCurState == ATTACK && state == EMBATTLED) return; // 在攻击动作时，不播放被攻击动画 
+	if (mCurState == DIE && state != DIE) return; // 播放死亡动画时，不播放别的动画
 
 	mCurState = state;
 
@@ -148,12 +149,14 @@ void PersonView::changeState(PERSON_STATE state)
 		mAvatar->getAnimation()->play("run");
 		break;
 	case EMBATTLED:
-		mAvatar->getAnimation()->play("Embattled");
+		mController->stopMove();
+		mAvatar->getAnimation()->play("embattled");
 		break;
 	case ATTACK:
-		mAvatar->getAnimation()->play("Attack");
+		mAvatar->getAnimation()->play("attack");
 		break;
 	case DIE:
+		mController->stopMove();
 		mAvatar->getAnimation()->play("die");
 		break;
 	}

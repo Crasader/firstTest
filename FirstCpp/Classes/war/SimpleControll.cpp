@@ -78,23 +78,34 @@ void SimpleControll::moveTo(CCPoint targetPos)
 	if (distance > 0)
 	{
 		//
-		actionSpeedX = (targetPos.x - pos.x) / distance * mSpeed;
-		actionSpeedY = (targetPos.y - pos.y) / distance * mSpeed;
-		if (actionSpeedX != 0) mControllerLintoner->changeDirection(actionSpeedX > 0 ? DIR_RIGHT : DIR_LEFT);
-		mControllerLintoner->changeState(RUN);
+		if (mControllerLintoner->getState() == EMBATTLED || mControllerLintoner->getState() == DIE)
+		{
+
+		}
+		else
+		{
+			actionSpeedX = (targetPos.x - pos.x) / distance * mSpeed;
+			actionSpeedY = (targetPos.y - pos.y) / distance * mSpeed;
+			if (actionSpeedX != 0) mControllerLintoner->changeDirection(actionSpeedX > 0 ? DIR_RIGHT : DIR_LEFT);
+			mControllerLintoner->changeState(RUN);
+		}
 	}
 	else
 	{
 		// 走路停下来
-		actionSpeedX = 0;
-		actionSpeedY = 0;
-		//mControllerLintoner->changeState(STAND);
+		stopMove();
 	}
 
 	if (actionSpeedX == 0 && actionSpeedY == 0)
 	{
 		
 	}
+}
+
+void SimpleControll::stopMove()
+{
+	actionSpeedX = 0;
+	actionSpeedY = 0;
 }
 
 void SimpleControll::checkTargetPos()
@@ -153,10 +164,19 @@ void SimpleControll::simpleAttack(float dt)
 	{
 		return; // 如果没有目标则不攻击；
 	}
+	else
+	{
+		PersonView* tempTarget = (PersonView*)(mControllerLintoner->getTarget());
+		if (tempTarget->getState() == DIE)
+		{
+			((PersonView*)mControllerLintoner->getSelfEntity())->setTarget(NULL);
+			return;
+		}
+	}
 	if (mControllerLintoner->getState() != RUN)
 	{
 		mControllerLintoner->changeState(ATTACK);
-		useSkill(1);
+		useSkill(0);
 	}
 }
 

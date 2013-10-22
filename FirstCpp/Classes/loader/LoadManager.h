@@ -19,7 +19,6 @@ public:
 
 	static LoadManager* shardLoadManager();
 	bool init();
-	void timeCheck(float dt);
 
 	void load(SCENE target);
 	void addLoadItem(const char *plist, const char *png, const char *json);

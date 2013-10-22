@@ -80,9 +80,6 @@ void LoadManager::load(SCENE target)
 	CCDirector::sharedDirector()->replaceScene(mLoadScene);
 	mLoadScene->addChild(this);
 
-	schedule(schedule_selector(LoadManager::timeCheck), 0.5f);
-	//scheduleUpdate();
-	
 	for (int i = mLoadArray->count() - 1; i >= 0; i--) 
 	{
 		LoadInfoVo* pObj = (LoadInfoVo*)mLoadArray->objectAtIndex(i);
@@ -99,31 +96,18 @@ void LoadManager::load(SCENE target)
 		}
 		mLoadArray->removeObject(pObj);
 		mLoaded++;
+		doProgressCall(mLoaded / mAll);
 	}
-}
 
-void LoadManager::timeCheck(float dt)
-{
-	if (mAll <= mLoaded)
-	{
-		unschedule(schedule_selector(LoadManager::timeCheck));
-		mAll = 0;
-		mLoaded = 0;
-		//doCompleteCall();
-		changeScene();
-	}
-	else
-	{
-		if (mAll > 0)
-		{
-			doProgressCall(mLoaded / mAll);
-		}
-	}
+	// 全部加载完毕
+	mAll = 0;
+	mLoaded = 0;
+	changeScene();
 }
 
 void LoadManager::doProgressCall(float pro)
 {
-	CCLog("grogress");
+	CCLog("load progress：%d", (int)(pro * 100));
 }
 
 void LoadManager::changeScene()

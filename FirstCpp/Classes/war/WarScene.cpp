@@ -74,16 +74,10 @@ bool WarScene::init()
 	addChild(pLabel, 1);
 
 	SimpleControll* movecontroll = SimpleControll::create();
-	//SimpleControll* movecontroll = new SimpleControll;
 	movecontroll->setSpeed(3);
-	//addChild(movecontroll);
 
 	hero = PartenerView::create();
-	//AvatarAsset* con = NULL;
-	//config_manager_gettile(AvatarAssetTable, AvatarAsset, CONFIG_AvatarAsset, 2, con);
-	hero->setBaseId(2);
-	//PartenerView* hero = new PartenerView;
-	//hero->setAvatar(armature);
+	hero->setBaseId(3);
 	hero->setPosition(ccp(visibleSize.width / 4, visibleSize.height / 4));
 	addChild(hero, 2);
 
@@ -94,11 +88,8 @@ bool WarScene::init()
 	pLabel->setString(str);
 	movecontroll = SimpleControll::create();
 	movecontroll->setSpeed(2);
-	//armature = CCArmature::create("Master");
-	//armature->getAnimation()->playByIndex(1);
 	stone = PartenerView::create();
-	stone->setBaseId(2);
-	//stone->setAvatar(armature);
+	stone->setBaseId(1);
 	stone->setPosition(ccp(visibleSize.width / 2 + 200, visibleSize.height / 2));
 	stone->setTarget(hero);
 	stone->setController(movecontroll);
@@ -110,10 +101,7 @@ bool WarScene::init()
 	for (int i = partener->count() - 1; i >= 0; i--) 
 	{
 		PartenerView* pObj = (PartenerView*)partener->objectAtIndex(i);
-		pObj->setBaseId(2);
-		//armature = CCArmature::create("Master");
-		//armature->getAnimation()->playByIndex(1);
-		//pObj->setAvatar(armature);
+		pObj->setBaseId(1);
 		char* posid = new char[12];
 		sprintf(posid, "left%d", i);
 		CCPoint tp = root->getChildByName("ImageView")->getChildByName(posid)->getPosition();
@@ -131,10 +119,7 @@ bool WarScene::init()
 	for (int i = enemy->count() - 1; i >= 0; i--) 
 	{
 		PartenerView* pObj = (PartenerView*)enemy->objectAtIndex(i);
-		pObj->setBaseId(2);
-		//armature = CCArmature::create("Master");
-		//armature->getAnimation()->playByIndex(1);
-		//pObj->setAvatar(armature);
+		pObj->setBaseId(1);
 		char* posid = new char[12];
 		sprintf(posid, "right%d", i);
 		CCPoint tp = root->getChildByName("ImageView")->getChildByName(posid)->getPosition();
@@ -254,7 +239,7 @@ void WarScene::onTimerHandler(float dt)
 		stone->getController()->checkTargetPos();
 	}
 
-	checkDeep();
+	checkDeep(); // 深度排序
 }
 
 // 检查深度排序

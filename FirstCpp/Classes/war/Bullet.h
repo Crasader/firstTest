@@ -26,13 +26,13 @@ protected:
 	int mId;
 
 	CCNode* mParent;
-	PersonView* mFromNode;
-	PersonView* mToNode;
+	PersonView* mFromNode; // 攻击方
+	PersonView* mToNode; // 被攻击方
 
 	void setAvatar(CCArmature* avatar); // 设置形象
-	void onAnimationComplete(CCArmature * arm, MovementEventType etype, const char * ename);
-	void moveComplete();
-	void scaleComplete();
-
+	void onAnimationComplete(CCArmature * arm, MovementEventType etype, const char * ename); // 单个动画播放完毕
+	void moveComplete(); // 子弹移动结束
+	void scaleComplete(); // 初始形变结束
+	void delayComplete(); // 延时动作结束
 
 };

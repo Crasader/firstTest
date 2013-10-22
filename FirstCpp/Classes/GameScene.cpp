@@ -138,17 +138,26 @@ bool GameWorld::init()
 
 void GameWorld::menuCloseCallback(CCObject* pSender)
 {
-	AvatarAsset* av = NULL;
-	config_manager_gettile(AvatarAssetTable, AvatarAsset, CONFIG_AvatarAsset, 2, av);
+	int arr[] = {1, 2, 3};
+	for (int i = 0; i < 3; i++)
+	{
+		AvatarAsset* av = NULL;
+		config_manager_gettile(AvatarAssetTable, AvatarAsset, CONFIG_AvatarAsset, arr[i], av);
 
-	//string png = av.pngpath();
-	//string xml = av.xmlpath();
-	//string json = av.jsonpath();
-	string png = av->pngpath();
-	string xml = av->xmlpath();
-	string json = av->jsonpath();
+		string aname = av->name();
+		int nameLen = aname.length();
+		char* cPng = new char[nameLen + 13];
+		sprintf(cPng, "avatar/%s0.png", aname.c_str());
+		char* cXml = new char[nameLen + 15];
+		sprintf(cXml, "avatar/%s0.plist", aname.c_str());
+		char* cJson = new char[nameLen + 20];
+		sprintf(cJson, "avatar/%s.ExportJson", aname.c_str());
+		LoadManager::shardLoadManager()->addLoadItem(cPng, cXml, cJson);
+		delete cPng;
+		delete cXml;
+		delete cJson;
+	}
 	
-	LoadManager::shardLoadManager()->addLoadItem(png.c_str(), xml.c_str(), json.c_str());
 	LoadManager::shardLoadManager()->addLoadItem("weapon/Weapon0.png", "weapon/Weapon0.plist", "weapon/Weapon.ExportJson");
 	LoadManager::shardLoadManager()->load(SCENE_WAR);
 }

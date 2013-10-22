@@ -20,7 +20,7 @@ __TABLE__* ttt = (__TABLE__*)ConfigManager::sharedConfigManager()->getConfigByNa
 ::google::protobuf::RepeatedPtrField< ::__TILE__ > tlist = ttt->tlist(); \
 for (int index = tlist.size() - 1; index >= 0; index--) \
 { \
-	if (tlist.Get(index).id() == 2) \
+	if (tlist.Get(index).id() == __ID__) \
 	{ \
 		__RESULT__ = tlist.Mutable(index); \
 		break; \

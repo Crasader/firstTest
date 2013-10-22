@@ -66,6 +66,20 @@ void Bullet::initBullet(int id, CCNode* parent, CCNode* fromNode, CCNode* toNode
 	mFromNode = (PersonView*)fromNode;
 	mToNode = (PersonView*)toNode;
 
+	// 如果id为0，则表示没有子弹动画, 不进行动画处理
+	if (id == 0)
+	{
+		mAvatar = NULL;
+		parent->addChild(this);
+		CCFiniteTimeAction* mv = CCSequence::create(
+			CCDelayTime::create(0.5f),
+			CCCallFunc::create(this, callfunc_selector(Bullet::delayComplete)),
+			NULL);
+
+		runAction(mv);
+		return;
+	}
+	
 	// 通过id到表中查询子弹的具体数据信息
 	CCArmature* av = CCArmature::create("Weapon");
 	av->getAnimation()->playByIndex(0);
@@ -105,6 +119,20 @@ void Bullet::moveComplete()
 	
 	mAvatar->getAnimation()->play("atteck");
 	
+}
+
+void Bullet::delayComplete()
+{
+	if (mToNode != NULL && mFromNode != NULL)
+	{
+		((PartenerView*)mToNode)->getController()->beAttack(260.0f);
+		if (((PartenerView*)mToNode)->getSelfInfo()->hp <= 0)
+		{
+			((PersonView*)mFromNode)->setTarget(NULL);
+			WarModel::shardWarModel()->removeEntity(mToNode);
+		}
+	}
+	removeFromParentAndCleanup(true);
 }
 
 // 一个动作播放完毕

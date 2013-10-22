@@ -20,6 +20,7 @@ public:
 	void setSpeed(float speed);
 	virtual void moveTo(CCPoint targetPos);
 	virtual void checkTargetPos();
+	virtual void stopMove();
 
 	void useSkill(int skillId); // 使用技能
 	void simpleAttack(float dt); // 普通攻击
