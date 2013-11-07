@@ -50,7 +50,7 @@
           "effectbyskeleton": false,
           "display_data": [
             {
-              "name": "master_foot_left foot",
+              "name": "Pastor_foot_left foot",
               "displayType": 0,
               "skin_data": [
                 {
@@ -80,7 +80,7 @@
           "effectbyskeleton": false,
           "display_data": [
             {
-              "name": "master_foot_right foot",
+              "name": "Pastor_foot_right foot",
               "displayType": 0,
               "skin_data": [
                 {
@@ -110,7 +110,7 @@
           "effectbyskeleton": false,
           "display_data": [
             {
-              "name": "master_torso",
+              "name": "Pastor_torso",
               "displayType": 0,
               "skin_data": [
                 {
@@ -140,7 +140,7 @@
           "effectbyskeleton": false,
           "display_data": [
             {
-              "name": "master_left hand arm",
+              "name": "Pastor_left hand arm",
               "displayType": 0,
               "skin_data": [
                 {
@@ -170,7 +170,7 @@
           "effectbyskeleton": false,
           "display_data": [
             {
-              "name": "master_left hand_fist",
+              "name": "Pastor_left hand_fist",
               "displayType": 0,
               "skin_data": [
                 {
@@ -200,7 +200,7 @@
           "effectbyskeleton": false,
           "display_data": [
             {
-              "name": "master_right hand_arm",
+              "name": "Pastor_right hand_arm",
               "displayType": 0,
               "skin_data": [
                 {
@@ -230,7 +230,7 @@
           "effectbyskeleton": false,
           "display_data": [
             {
-              "name": "master_right hand_fist",
+              "name": "Pastor_right hand_fist",
               "displayType": 0,
               "skin_data": [
                 {
@@ -260,7 +260,7 @@
           "effectbyskeleton": false,
           "display_data": [
             {
-              "name": "master_head",
+              "name": "Pastor_head",
               "displayType": 0,
               "skin_data": [
                 {
@@ -274,7 +274,7 @@
               ]
             },
             {
-              "name": "master_head_embattled",
+              "name": "Pastor_head_embattled",
               "displayType": 0,
               "skin_data": [
                 {
@@ -304,7 +304,7 @@
           "effectbyskeleton": false,
           "display_data": [
             {
-              "name": "master_staff",
+              "name": "Pastor_staff",
               "displayType": 0,
               "skin_data": [
                 {
@@ -3808,7 +3808,7 @@
           "to": 6,
           "drTW": 36,
           "twE": 10000,
-          "sc": 1.0,
+          "sc": 0.5,
           "mov_bone_data": [
             {
               "name": "staff",
@@ -5401,70 +5401,70 @@
   ],
   "texture_data": [
     {
-      "name": "master_staff",
+      "name": "Pastor_staff",
       "width": 0.0,
       "height": 0.0,
       "pX": 0.182558134,
       "pY": 0.3079787
     },
     {
-      "name": "master_head_embattled",
+      "name": "Pastor_head_embattled",
       "width": 0.0,
       "height": 0.0,
       "pX": 0.5773684,
       "pY": 0.09444442
     },
     {
-      "name": "master_head",
+      "name": "Pastor_head",
       "width": 0.0,
       "height": 0.0,
       "pX": 0.638505757,
       "pY": 0.0250000339
     },
     {
-      "name": "master_right hand_fist",
+      "name": "Pastor_right hand_fist",
       "width": 0.0,
       "height": 0.0,
       "pX": 0.55,
       "pY": 0.827586234
     },
     {
-      "name": "master_right hand_arm",
+      "name": "Pastor_right hand_arm",
       "width": 0.0,
       "height": 0.0,
       "pX": 0.6225,
       "pY": 0.684
     },
     {
-      "name": "master_left hand_fist",
+      "name": "Pastor_left hand_fist",
       "width": 0.0,
       "height": 0.0,
       "pX": 0.356896579,
       "pY": 0.636
     },
     {
-      "name": "master_left hand arm",
+      "name": "Pastor_left hand arm",
       "width": 0.0,
       "height": 0.0,
       "pX": 0.370370358,
       "pY": 0.66481483
     },
     {
-      "name": "master_torso",
+      "name": "Pastor_torso",
       "width": 0.0,
       "height": 0.0,
       "pX": 0.6184783,
       "pY": 0.4138298
     },
     {
-      "name": "master_foot_right foot",
+      "name": "Pastor_foot_right foot",
       "width": 0.0,
       "height": 0.0,
       "pX": 0.424999982,
       "pY": 0.857499957
     },
     {
-      "name": "master_foot_left foot",
+      "name": "Pastor_foot_left foot",
       "width": 0.0,
       "height": 0.0,
       "pX": 0.45,

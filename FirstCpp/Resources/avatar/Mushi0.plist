@@ -4,7 +4,7 @@
 	<dict>
 		<key>frames</key>
 		<dict>
-			<key>master_staff.png</key>
+			<key>Pastor_staff.png</key>
 			<dict>
 				<key>width</key>
 				<integer>43</integer>
@@ -23,7 +23,7 @@
 				<key>offsetY</key>
 				<real>0</real>
 			</dict>
-			<key>master_head_embattled.png</key>
+			<key>Pastor_head_embattled.png</key>
 			<dict>
 				<key>width</key>
 				<integer>95</integer>
@@ -42,7 +42,7 @@
 				<key>offsetY</key>
 				<real>0</real>
 			</dict>
-			<key>master_head.png</key>
+			<key>Pastor_head.png</key>
 			<dict>
 				<key>width</key>
 				<integer>87</integer>
@@ -61,7 +61,7 @@
 				<key>offsetY</key>
 				<real>0</real>
 			</dict>
-			<key>master_right hand_fist.png</key>
+			<key>Pastor_right hand_fist.png</key>
 			<dict>
 				<key>width</key>
 				<integer>20</integer>
@@ -80,7 +80,7 @@
 				<key>offsetY</key>
 				<real>0</real>
 			</dict>
-			<key>master_right hand_arm.png</key>
+			<key>Pastor_right hand_arm.png</key>
 			<dict>
 				<key>width</key>
 				<integer>20</integer>
@@ -99,7 +99,7 @@
 				<key>offsetY</key>
 				<real>0</real>
 			</dict>
-			<key>master_left hand_fist.png</key>
+			<key>Pastor_left hand_fist.png</key>
 			<dict>
 				<key>width</key>
 				<integer>29</integer>
@@ -118,7 +118,7 @@
 				<key>offsetY</key>
 				<real>0</real>
 			</dict>
-			<key>master_left hand arm.png</key>
+			<key>Pastor_left hand arm.png</key>
 			<dict>
 				<key>width</key>
 				<integer>27</integer>
@@ -137,7 +137,7 @@
 				<key>offsetY</key>
 				<real>0</real>
 			</dict>
-			<key>master_torso.png</key>
+			<key>Pastor_torso.png</key>
 			<dict>
 				<key>width</key>
 				<integer>46</integer>
@@ -156,7 +156,7 @@
 				<key>offsetY</key>
 				<real>0</real>
 			</dict>
-			<key>master_foot_right foot.png</key>
+			<key>Pastor_foot_right foot.png</key>
 			<dict>
 				<key>width</key>
 				<integer>14</integer>
@@ -175,7 +175,7 @@
 				<key>offsetY</key>
 				<real>0</real>
 			</dict>
-			<key>master_foot_left foot.png</key>
+			<key>Pastor_foot_left foot.png</key>
 			<dict>
 				<key>width</key>
 				<integer>13</integer>
