@@ -23,9 +23,10 @@ public:
 	string xmlName;
 	string jsonName;
 
-	float hp;
-	float attack;
-	float defense;
+	int hp;
+	int maxHp;
+	int attack;
+	int defense;
 	float attackDelay;
 
 	int simpleBullet; // ÆÕÍ¨¹¥»÷×Óµ¯id

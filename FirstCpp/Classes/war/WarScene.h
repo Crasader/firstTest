@@ -2,15 +2,30 @@
 
 #include "cocos2d.h"
 #include "PartenerView.h"
+#include "BaseLayer.h"
 
 USING_NS_CC;
 
-//LRESULT myWndProcHook(UINT message, WPARAM wParam, LPARAM lParam, BOOL* pProcessed);
+const int posArr1[9] = {0,1,2,3,4,5,6,7,8};
+const int posArr2[9] = {3,4,5,0,1,2,6,7,8};
+const int posArr3[9] = {6,7,8,3,4,5,0,1,2};
 
-class WarScene : public cocos2d::CCLayer
+class WarScene : public BaseLayer
 {
 private:
+
+	CCNode* mLayerBg; // 背景层
+	CCNode* mLayerEntity; // 实体层
+	CCNode* mLayerEffect; // 效果层
+	CCNode* mLayerUI; // UI层
+
+	float mTouchX; // 触摸时x
+	float mBeforX; // 移动前x
+
 	PartenerView* stone; // 测试用，固定目标，靶子
+
+	// function
+	PersonView* getTargetBySelfPos(int selfType, int selfPos);
 
 public:
 	WarScene(void);

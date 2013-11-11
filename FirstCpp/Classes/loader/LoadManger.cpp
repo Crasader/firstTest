@@ -17,7 +17,7 @@ bool LoadInfoVo::init()
 /////////////////
 // LoadManager
 /////////////////
-LoadManager::LoadManager(void)
+LoadManager::LoadManager(void):mAllNum(0), mLoaded(0)
 {
 
 }
@@ -42,8 +42,6 @@ bool LoadManager::init()
 {
 	mLoadScene = NULL;
 	mNextScene = SCENE_MAIN;
-	mLoaded = 0;
-	mAll = 0;
 	mLoadArray = CCArray::create();
 	mLoadArray->retain();
 	return true;
@@ -51,7 +49,7 @@ bool LoadManager::init()
 
 void LoadManager::addLoadItem(const char *imagePath, const char *plistPath, const char *jsonPath)
 {
-	mAll++;
+	mAllNum++;
 	LoadInfoVo* temp = LoadInfoVo::create();
 	temp->mType = LArmature;
 	temp->mImagePath = imagePath;
@@ -63,7 +61,7 @@ void LoadManager::addLoadItem(const char *imagePath, const char *plistPath, cons
 
 void LoadManager::addLoadItem(const char *imagePath, const char *plistPath)
 {
-	mAll++;
+	mAllNum++;
 	LoadInfoVo* temp = LoadInfoVo::create();
 	temp->mType = LSprite;
 	temp->mImagePath = imagePath;
@@ -72,13 +70,22 @@ void LoadManager::addLoadItem(const char *imagePath, const char *plistPath)
 	//CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(imagePath, plistPath);
 }
 
+void LoadManager::addLoadItem(const char *imagePath)
+{
+	mAllNum++;
+	LoadInfoVo* temp = LoadInfoVo::create();
+	temp->mType = LImage;
+	temp->mImagePath = imagePath;
+	mLoadArray->addObject(temp);
+}
+
 void LoadManager::load(SCENE target)
 {
 	mNextScene = target;
 
-	mLoadScene = LoadScene::scene();
-	CCDirector::sharedDirector()->replaceScene(mLoadScene);
-	mLoadScene->addChild(this);
+	CCScene* tempSc = LoadScene::scene();
+	mLoadScene = (LoadScene*)(tempSc->getChildren()->objectAtIndex(0));
+	CCDirector::sharedDirector()->replaceScene(tempSc);
 
 	for (int i = mLoadArray->count() - 1; i >= 0; i--) 
 	{
@@ -87,31 +94,54 @@ void LoadManager::load(SCENE target)
 		switch (pObj->mType)
 		{
 		case LArmature:
-			CCArmatureDataManager::sharedArmatureDataManager()->addArmatureFileInfo(pObj->mImagePath.c_str(), pObj->mPlistPath.c_str(), pObj->mJsonPath.c_str());
-			//CCArmatureDataManager::sharedArmatureDataManager()->addArmatureFileInfo("fuwang/FuWang0.png", "fuwang/FuWang0.plist", "fuwang/FuWang.ExportJson");
+			//CCArmatureDataManager::sharedArmatureDataManager()->addArmatureFileInfo(pObj->mImagePath.c_str(), pObj->mPlistPath.c_str(), pObj->mJsonPath.c_str());
+			CCArmatureDataManager::sharedArmatureDataManager()->addArmatureFileInfoAsync(pObj->mImagePath.c_str(), 
+				pObj->mPlistPath.c_str(), 
+				pObj->mJsonPath.c_str(),
+				this,
+				schedule_selector(LoadManager::loadedArmatureCall));
 			break;
 		case LSprite:
 			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(pObj->mImagePath.c_str(), pObj->mPlistPath.c_str());
 			break;
+		case LImage:
+			CCTextureCache::sharedTextureCache()->addImageAsync(pObj->mImagePath.c_str(),
+				this,
+				callfuncO_selector(LoadManager::loadedImageCall));
+			break;
 		}
 		mLoadArray->removeObject(pObj);
-		mLoaded++;
-		doProgressCall(mLoaded / mAll);
 	}
-
-	// 全部加载完毕
-	mAll = 0;
-	mLoaded = 0;
-	changeScene();
 }
 
-void LoadManager::doProgressCall(float pro)
+void LoadManager::loadedArmatureCall(float f)
 {
-	CCLog("load progress：%d", (int)(pro * 100));
+	doProgressCall();
+}
+
+void LoadManager::loadedImageCall(CCObject* obj)
+{
+	doProgressCall();
+}
+
+void LoadManager::doProgressCall()
+{
+	mLoaded++;
+	if (mAllNum > 0)
+	{
+		float pro = (float)mLoaded / mAllNum;
+		mLoadScene->setProgress(pro);
+		if (pro >= 1)
+		{
+			changeScene();
+		}
+	}
 }
 
 void LoadManager::changeScene()
 {
+	mAllNum = 0;
+	mLoaded = 0;
 	switch (mNextScene)
 	{
 	case SCENE_MAIN:
@@ -121,5 +151,4 @@ void LoadManager::changeScene()
 		CCNotificationCenter::sharedNotificationCenter()->postNotification(EVNET_SCENE_VIEW_WAR, NULL);
 		break;
 	}
-
 }

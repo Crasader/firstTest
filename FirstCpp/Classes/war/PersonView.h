@@ -5,6 +5,7 @@
 #include "ControllerBase.h"
 #include "PersonVo.h"
 #include "proto\AvatarAsset.pb.h"
+#include "Component.h"
 
 using namespace cocos2d::extension;
 
@@ -15,6 +16,8 @@ class PersonView : public CCNode, public ControllerListener
 public:
 	PersonView(void);
 	~PersonView(void);
+	virtual void onEnter();
+	virtual void onExit();
 
 	// function
 	void setAvatar(CCArmature* avatar); // 设置形象
@@ -29,6 +32,7 @@ public:
 	void setBaseId(int id); //
 	int getBaseId() const;
 
+
 	//实现ControllerListener接口
 	void setSimplePostion(float x, float y); // 设置位置
 	virtual CCPoint getCurPostion(); // 获取位置
@@ -40,6 +44,8 @@ public:
 	virtual PersonVo* getSelfInfo(); // 获取单位的数据信息
 	virtual void dieOut(); // 死出去
 	virtual CCNode* getSelfEntity(); // 获取自己
+	virtual AvatarAsset* getConfig(); // 获取配置
+	virtual bool checkHp(); // 监测hp
 
 protected:
 	AvatarAsset* mConfig; // 配置数据
@@ -50,6 +56,7 @@ protected:
 	PersonVo* mInfo; // 基本信息
 	PERSON_DIRECTION mDirection; // 方向
 	int mId;
+	BloodBar* mBloodBar; // 血条
 	
 	void onAnimationComplete(CCArmature * arm, MovementEventType etype, const char * ename);
 	

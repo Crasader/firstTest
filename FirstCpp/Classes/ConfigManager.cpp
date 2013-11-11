@@ -33,7 +33,7 @@ bool ConfigManager::initConfig()
 {
 	CCFileUtils::sharedFileUtils()->addSearchPath("config");
 	addConfig(CONFIG_AvatarAsset);
-	addConfig(CONFIG_Wer);
+	//addConfig(CONFIG_Wer);
 	return true;
 }
 

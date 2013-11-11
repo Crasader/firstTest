@@ -51,11 +51,18 @@ void protobuf_AssignDesc_AvatarAsset_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(AvatarAssetTable));
   AvatarAsset_descriptor_ = file->message_type(1);
-  static const int AvatarAsset_offsets_[4] = {
+  static const int AvatarAsset_offsets_[11] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, aname_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, name_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, distance_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, speed_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, bulletx_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, bullety_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, bodywidth_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, hp_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, att_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, defe_),
   };
   AvatarAsset_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -104,8 +111,11 @@ void protobuf_AddDesc_AvatarAsset_2eproto() {
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\021AvatarAsset.proto\">\n\020AvatarAssetTable\022"
     "\r\n\005tname\030\001 \001(\t\022\033\n\005tlist\030\002 \003(\0132\014.AvatarAs"
-    "set\"H\n\013AvatarAsset\022\n\n\002id\030\001 \001(\005\022\r\n\005aname\030"
-    "\002 \001(\t\022\014\n\004name\030\003 \001(\t\022\020\n\010distance\030\004 \001(\005", 157);
+    "set\"\263\001\n\013AvatarAsset\022\n\n\002id\030\001 \001(\005\022\r\n\005aname"
+    "\030\002 \001(\t\022\014\n\004name\030\003 \001(\t\022\020\n\010distance\030\004 \001(\005\022\r"
+    "\n\005speed\030\005 \001(\005\022\017\n\007bulletx\030\006 \001(\005\022\017\n\007bullet"
+    "y\030\007 \001(\005\022\021\n\tbodywidth\030\010 \001(\005\022\n\n\002hp\030\t \001(\005\022\013"
+    "\n\003att\030\n \001(\005\022\014\n\004defe\030\013 \001(\005", 265);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "AvatarAsset.proto", &protobuf_RegisterTypes);
   AvatarAssetTable::default_instance_ = new AvatarAssetTable();
@@ -394,6 +404,13 @@ const int AvatarAsset::kIdFieldNumber;
 const int AvatarAsset::kAnameFieldNumber;
 const int AvatarAsset::kNameFieldNumber;
 const int AvatarAsset::kDistanceFieldNumber;
+const int AvatarAsset::kSpeedFieldNumber;
+const int AvatarAsset::kBulletxFieldNumber;
+const int AvatarAsset::kBulletyFieldNumber;
+const int AvatarAsset::kBodywidthFieldNumber;
+const int AvatarAsset::kHpFieldNumber;
+const int AvatarAsset::kAttFieldNumber;
+const int AvatarAsset::kDefeFieldNumber;
 #endif  // !_MSC_VER
 
 AvatarAsset::AvatarAsset()
@@ -416,6 +433,13 @@ void AvatarAsset::SharedCtor() {
   aname_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   distance_ = 0;
+  speed_ = 0;
+  bulletx_ = 0;
+  bullety_ = 0;
+  bodywidth_ = 0;
+  hp_ = 0;
+  att_ = 0;
+  defe_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -469,6 +493,15 @@ void AvatarAsset::Clear() {
       }
     }
     distance_ = 0;
+    speed_ = 0;
+    bulletx_ = 0;
+    bullety_ = 0;
+    bodywidth_ = 0;
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    hp_ = 0;
+    att_ = 0;
+    defe_ = 0;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -541,6 +574,118 @@ bool AvatarAsset::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(40)) goto parse_speed;
+        break;
+      }
+
+      // optional int32 speed = 5;
+      case 5: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_speed:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &speed_)));
+          set_has_speed();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(48)) goto parse_bulletx;
+        break;
+      }
+
+      // optional int32 bulletx = 6;
+      case 6: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_bulletx:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &bulletx_)));
+          set_has_bulletx();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(56)) goto parse_bullety;
+        break;
+      }
+
+      // optional int32 bullety = 7;
+      case 7: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_bullety:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &bullety_)));
+          set_has_bullety();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(64)) goto parse_bodywidth;
+        break;
+      }
+
+      // optional int32 bodywidth = 8;
+      case 8: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_bodywidth:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &bodywidth_)));
+          set_has_bodywidth();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(72)) goto parse_hp;
+        break;
+      }
+
+      // optional int32 hp = 9;
+      case 9: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_hp:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &hp_)));
+          set_has_hp();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(80)) goto parse_att;
+        break;
+      }
+
+      // optional int32 att = 10;
+      case 10: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_att:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &att_)));
+          set_has_att();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(88)) goto parse_defe;
+        break;
+      }
+
+      // optional int32 defe = 11;
+      case 11: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_defe:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &defe_)));
+          set_has_defe();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -591,6 +736,41 @@ void AvatarAsset::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->distance(), output);
   }
 
+  // optional int32 speed = 5;
+  if (has_speed()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->speed(), output);
+  }
+
+  // optional int32 bulletx = 6;
+  if (has_bulletx()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(6, this->bulletx(), output);
+  }
+
+  // optional int32 bullety = 7;
+  if (has_bullety()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(7, this->bullety(), output);
+  }
+
+  // optional int32 bodywidth = 8;
+  if (has_bodywidth()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(8, this->bodywidth(), output);
+  }
+
+  // optional int32 hp = 9;
+  if (has_hp()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(9, this->hp(), output);
+  }
+
+  // optional int32 att = 10;
+  if (has_att()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(10, this->att(), output);
+  }
+
+  // optional int32 defe = 11;
+  if (has_defe()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(11, this->defe(), output);
+  }
+
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -627,6 +807,41 @@ void AvatarAsset::SerializeWithCachedSizes(
   // optional int32 distance = 4;
   if (has_distance()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->distance(), target);
+  }
+
+  // optional int32 speed = 5;
+  if (has_speed()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->speed(), target);
+  }
+
+  // optional int32 bulletx = 6;
+  if (has_bulletx()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(6, this->bulletx(), target);
+  }
+
+  // optional int32 bullety = 7;
+  if (has_bullety()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(7, this->bullety(), target);
+  }
+
+  // optional int32 bodywidth = 8;
+  if (has_bodywidth()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(8, this->bodywidth(), target);
+  }
+
+  // optional int32 hp = 9;
+  if (has_hp()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(9, this->hp(), target);
+  }
+
+  // optional int32 att = 10;
+  if (has_att()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(10, this->att(), target);
+  }
+
+  // optional int32 defe = 11;
+  if (has_defe()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(11, this->defe(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -668,6 +883,57 @@ int AvatarAsset::ByteSize() const {
           this->distance());
     }
 
+    // optional int32 speed = 5;
+    if (has_speed()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->speed());
+    }
+
+    // optional int32 bulletx = 6;
+    if (has_bulletx()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->bulletx());
+    }
+
+    // optional int32 bullety = 7;
+    if (has_bullety()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->bullety());
+    }
+
+    // optional int32 bodywidth = 8;
+    if (has_bodywidth()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->bodywidth());
+    }
+
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    // optional int32 hp = 9;
+    if (has_hp()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->hp());
+    }
+
+    // optional int32 att = 10;
+    if (has_att()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->att());
+    }
+
+    // optional int32 defe = 11;
+    if (has_defe()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->defe());
+    }
+
   }
   if (!unknown_fields().empty()) {
     total_size +=
@@ -707,6 +973,29 @@ void AvatarAsset::MergeFrom(const AvatarAsset& from) {
     if (from.has_distance()) {
       set_distance(from.distance());
     }
+    if (from.has_speed()) {
+      set_speed(from.speed());
+    }
+    if (from.has_bulletx()) {
+      set_bulletx(from.bulletx());
+    }
+    if (from.has_bullety()) {
+      set_bullety(from.bullety());
+    }
+    if (from.has_bodywidth()) {
+      set_bodywidth(from.bodywidth());
+    }
+  }
+  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    if (from.has_hp()) {
+      set_hp(from.hp());
+    }
+    if (from.has_att()) {
+      set_att(from.att());
+    }
+    if (from.has_defe()) {
+      set_defe(from.defe());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -734,6 +1023,13 @@ void AvatarAsset::Swap(AvatarAsset* other) {
     std::swap(aname_, other->aname_);
     std::swap(name_, other->name_);
     std::swap(distance_, other->distance_);
+    std::swap(speed_, other->speed_);
+    std::swap(bulletx_, other->bulletx_);
+    std::swap(bullety_, other->bullety_);
+    std::swap(bodywidth_, other->bodywidth_);
+    std::swap(hp_, other->hp_);
+    std::swap(att_, other->att_);
+    std::swap(defe_, other->defe_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

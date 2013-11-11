@@ -1,4 +1,5 @@
 ../../Classes/AppDelegate.cpp \
+../../Classes/BaseLayer.cpp \
 ../../Classes/ConfigManager.cpp \
 ../../Classes/GameScene.cpp \
 ../../Classes/loader/LoadManger.cpp \
@@ -15,5 +16,6 @@
 ../../Classes/war/PersonView.cpp \
 ../../Classes/war/PersonVo.cpp \
 ../../Classes/war/SimpleControll.cpp \
+../../Classes/war/WarMap.cpp \
 ../../Classes/war/WarModel.cpp \
 ../../Classes/war/WarScene.cpp \

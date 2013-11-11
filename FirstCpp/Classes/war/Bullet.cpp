@@ -25,7 +25,7 @@ void Bullet::onExit()
 		mAvatar = NULL;
 	}
 
-	mId = NULL;
+	mId = 0;
 	mParent = NULL;
 	mFromNode = NULL;
 	mToNode = NULL;
@@ -85,8 +85,8 @@ void Bullet::initBullet(int id, CCNode* parent, CCNode* fromNode, CCNode* toNode
 	av->getAnimation()->playByIndex(0);
 	setAvatar(av);
 
-	int prx = fromNode->getPositionX() < toNode->getPositionX() ? 35 : -35;
-	setPosition(CCPoint(mFromNode->getPositionX() + prx, mFromNode->getPositionY() + 60));
+	int prx = fromNode->getPositionX() < toNode->getPositionX() ? mFromNode->getConfig()->bulletx() : -mFromNode->getConfig()->bulletx();
+	setPosition(CCPoint(mFromNode->getPositionX() + prx, mFromNode->getPositionY() + mFromNode->getConfig()->bullety()));
 	parent->addChild(this);
 
 	//mAvatar->getAnimation()->play("atteck");
@@ -125,10 +125,10 @@ void Bullet::delayComplete()
 {
 	if (mToNode != NULL && mFromNode != NULL)
 	{
-		((PartenerView*)mToNode)->getController()->beAttack(260.0f);
-		if (((PartenerView*)mToNode)->getSelfInfo()->hp <= 0)
+		mToNode->getController()->beAttack(mFromNode->getInfo()->attack);
+		if (mToNode->getSelfInfo()->hp <= 0)
 		{
-			((PersonView*)mFromNode)->setTarget(NULL);
+			mFromNode->setTarget(NULL);
 			WarModel::shardWarModel()->removeEntity(mToNode);
 		}
 	}

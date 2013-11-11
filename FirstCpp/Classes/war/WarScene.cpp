@@ -35,6 +35,23 @@ bool WarScene::init()
 		return false;
 	}
 
+	mTouchX = 0;
+	mBeforX = 0;
+
+	mLayerBg = CCNode::create();
+	mLayerEntity = CCNode::create();
+	mLayerEffect = CCNode::create();
+	mLayerUI = CCNode::create();
+	mLayerBg->setPosition(CCPointZero);
+	mLayerEntity->setPosition(CCPointZero);
+	mLayerEffect->setPosition(CCPointZero);
+	mLayerUI->setPosition(CCPointZero);
+	addChild(mLayerBg, 1);
+	addChild(mLayerEntity, 2);
+	addChild(mLayerEffect, 3);
+	addChild(mLayerUI, 4);
+
+
 	CCSize visibleSize = CCDirector::sharedDirector()->getVisibleSize();
 	CCPoint origin = CCDirector::sharedDirector()->getVisibleOrigin();
 
@@ -46,7 +63,7 @@ bool WarScene::init()
 	//bg->setPosition(ccp(0, 0));
 	//addChild(bg);
 	UILayer* tlayer = UILayer::create();
-	addChild(tlayer);
+	addChild(tlayer, 0);
 	UIWidget* root = CCUIHELPER->createWidgetFromJsonFile("WarUI_1.json");
 	tlayer->addWidget(root);
 	 
@@ -54,16 +71,16 @@ bool WarScene::init()
 	//addChild(pNode);
 	//CCNode* root = pNode->getChildByTag(10011);
 
-	//bg1 = CCSprite::create("background.png");
-	//bg2 = CCSprite::create("background.png");
-	//bg1->setRotation(90);
-	//bg1->setAnchorPoint(ccp(0, 0));
-	//bg1->setPosition(ccp(0, visibleSize.height));
-	//bg2->setRotation(90);
-	//bg2->setAnchorPoint(ccp(0, 0));
-	//bg2->setPosition(ccp(1020, visibleSize.height));
-	//addChild(bg1);
-	//addChild(bg2);
+	bg1 = CCSprite::create("background.png");
+	bg2 = CCSprite::create("background.png");
+	bg1->setRotation(90);
+	bg1->setAnchorPoint(ccp(0, 0));
+	bg1->setPosition(ccp(0, visibleSize.height));
+	bg2->setRotation(90);
+	bg2->setAnchorPoint(ccp(0, 0));
+	bg2->setPosition(ccp(1020, visibleSize.height));
+	mLayerBg->addChild(bg1);
+	mLayerBg->addChild(bg2);
 
 	CCLabelTTF* pLabel = CCLabelTTF::create("", "Arial", 24);
 
@@ -71,15 +88,15 @@ bool WarScene::init()
 	pLabel->setPosition(ccp(origin.x + visibleSize.width/2, origin.y + visibleSize.height - pLabel->getContentSize().height - 100));
 
 	// add the label as a child to this layer
-	addChild(pLabel, 1);
+	mLayerEntity->addChild(pLabel, 1);
 
 	SimpleControll* movecontroll = SimpleControll::create();
-	movecontroll->setSpeed(3);
+	//movecontroll->setSpeed(3);
 
 	hero = PartenerView::create();
-	hero->setBaseId(3);
+	hero->setBaseId(2);
 	hero->setPosition(ccp(visibleSize.width / 4, visibleSize.height / 4));
-	addChild(hero, 2);
+	mLayerEntity->addChild(hero, 2);
 
 	hero->setController(movecontroll);
 
@@ -87,13 +104,13 @@ bool WarScene::init()
 	const char* str = ((CCString*)strings->objectForKey("japanese"))->m_sString.c_str();
 	pLabel->setString(str);
 	movecontroll = SimpleControll::create();
-	movecontroll->setSpeed(2);
+	//movecontroll->setSpeed(2);
 	stone = PartenerView::create();
-	stone->setBaseId(1);
+	stone->setBaseId(4);
 	stone->setPosition(ccp(visibleSize.width / 2 + 200, visibleSize.height / 2));
 	stone->setTarget(hero);
 	stone->setController(movecontroll);
-	addChild(stone);
+	mLayerEntity->addChild(stone);
 
 	CCArray* partener = WarModel::shardWarModel()->getPartenerArray();
 	CCArray* enemy = WarModel::shardWarModel()->getEnemyArray();
@@ -103,35 +120,35 @@ bool WarScene::init()
 		PartenerView* pObj = (PartenerView*)partener->objectAtIndex(i);
 		pObj->setBaseId(1);
 		char* posid = new char[12];
-		sprintf(posid, "left%d", i);
+		sprintf(posid, "left%d", pObj->getInfo()->posId);
 		CCPoint tp = root->getChildByName("ImageView")->getChildByName(posid)->getPosition();
 		pObj->setPosition(tp);
 		delete posid;
 
 		movecontroll = SimpleControll::create();
-		movecontroll->setSpeed(0.5 + i * 0.5);
+		//movecontroll->setSpeed(0.5 + i * 0.5);
 		pObj->setController(movecontroll);
-		if (enemy->count() > i) pObj->setTarget((PartenerView*)enemy->objectAtIndex(i));
+		//if (enemy->count() > i) pObj->setTarget((PartenerView*)enemy->objectAtIndex(i));
 
-		addChild(pObj);
+		mLayerEntity->addChild(pObj);
 	}
 	
 	for (int i = enemy->count() - 1; i >= 0; i--) 
 	{
 		PartenerView* pObj = (PartenerView*)enemy->objectAtIndex(i);
-		pObj->setBaseId(1);
+		pObj->setBaseId(6);
 		char* posid = new char[12];
-		sprintf(posid, "right%d", i);
+		sprintf(posid, "right%d", pObj->getInfo()->posId);
 		CCPoint tp = root->getChildByName("ImageView")->getChildByName(posid)->getPosition();
 		pObj->setPosition(tp);
 		delete posid;
 
 		movecontroll = SimpleControll::create();
-		movecontroll->setSpeed(0.5 + i * 0.5);
+		//movecontroll->setSpeed(0.5 + i * 0.5);
 		pObj->setController(movecontroll);
-		pObj->setTarget((PartenerView*)partener->objectAtIndex(i));
+		//pObj->setTarget((PartenerView*)partener->objectAtIndex(i));
 
-		addChild(pObj);
+		mLayerEntity->addChild(pObj);
 	}
 
 	//CCEGLView* eglView = CCEGLView::sharedOpenGLView();
@@ -197,17 +214,17 @@ bool WarScene::init()
 // 每帧执行
 void WarScene::update(float delta)
 {
-	//bg1->setPosition(ccp(bg1->getPosition().x - 3, bg1->getPosition().y));
-	//bg2->setPosition(ccp(bg2->getPosition().x - 3, bg2->getPosition().y));
+	bg1->setPosition(ccp(bg1->getPosition().x - 3, bg1->getPosition().y));
+	bg2->setPosition(ccp(bg2->getPosition().x - 3, bg2->getPosition().y));
 
-	//if (bg1->getPosition().x < -1020)
-	//{
-	//	bg1->setPosition(ccp(1020, 640));
-	//}
-	//if (bg2->getPosition().x < -1020)
-	//{
-	//	bg2->setPosition(ccp(1020, 640)); 
-	//}
+	if (bg1->getPosition().x < -1020)
+	{
+		bg1->setPosition(ccp(1020, 640));
+	}
+	if (bg2->getPosition().x < -1020)
+	{
+		bg2->setPosition(ccp(1020, 640)); 
+	}
 }
 
 // 该函数每秒钟执行一次
@@ -217,6 +234,10 @@ void WarScene::onTimerHandler(float dt)
 	for (int i = partener->count() - 1; i >= 0; i--) 
 	{
 		PartenerView* pObj = (PartenerView*)partener->objectAtIndex(i);
+		if (pObj->getTarget() == NULL)
+		{
+			pObj->setTarget(getTargetBySelfPos(0, pObj->getInfo()->posId));
+		}
 		pObj->getController()->checkTargetPos();
 	}
 
@@ -224,6 +245,10 @@ void WarScene::onTimerHandler(float dt)
 	for (int i = enemy->count() - 1; i >= 0; i--) 
 	{
 		PartenerView* pObj = (PartenerView*)enemy->objectAtIndex(i);
+		if (pObj->getTarget() == NULL)
+		{
+			pObj->setTarget(getTargetBySelfPos(1, pObj->getInfo()->posId));
+		}
 		pObj->getController()->checkTargetPos();
 	}
 
@@ -233,13 +258,32 @@ void WarScene::onTimerHandler(float dt)
 		{
 			//for (int i = partener->count() - 1; i >= 0; i--) 
 			//{
-			if (partener->count() > 0) stone->setTarget((PartenerView*)partener->objectAtIndex(0));
+			if (partener->count() > 0) stone->setTarget((PartenerView*)partener->randomObject());
 			//}
 		}
 		stone->getController()->checkTargetPos();
 	}
 
 	checkDeep(); // 深度排序
+}
+
+PersonView* WarScene::getTargetBySelfPos(int selfType, int selfPos)
+{
+	CCArray* arr = selfType != 0 ? WarModel::shardWarModel()->getPartenerArray() : WarModel::shardWarModel()->getEnemyArray();
+	
+	for (int j = 0; j < 9; j++)
+	{
+		int tid;
+		if (selfPos == 0 || selfPos == 1 || selfPos == 2) tid = posArr1[j];
+		else if (selfPos == 3 || selfPos == 4 || selfPos == 5) tid = posArr2[j];
+		else tid = posArr3[j];
+		for (int i = arr->count() - 1; i >= 0; i--)
+		{
+			PartenerView* temp =  (PartenerView*)arr->objectAtIndex(i);
+			if (temp->getInfo()->posId == tid) return (PersonView*)temp;
+		}
+	}
+	return NULL;
 }
 
 // 检查深度排序
@@ -251,24 +295,28 @@ void WarScene::checkDeep()
 	for (int i = partener->count() - 1; i >= 0; i--) 
 	{
 		PartenerView* pObj = (PartenerView*)partener->objectAtIndex(i);
-		this->reorderChild(pObj, 1000 - pObj->getPositionY());
+		mLayerEntity->reorderChild(pObj, 1000 - pObj->getPositionY());
 	}
 
 	for (int i = enemy->count() - 1; i >= 0; i--) 
 	{
 		PartenerView* pObj = (PartenerView*)enemy->objectAtIndex(i);
-		this->reorderChild(pObj, 1000 - pObj->getPositionY());
+		mLayerEntity->reorderChild(pObj, 1000 - pObj->getPositionY());
 	}
 
-	this->reorderChild(hero, 1000 - hero->getPositionY());
-	stone->reorderChild(stone, 1000 - stone->getPositionY());
+	mLayerEntity->reorderChild(hero, 1000 - hero->getPositionY());
+	mLayerEntity->reorderChild(stone, 1000 - stone->getPositionY());
 }
 
 // 触摸开始
 bool WarScene::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
 {
 	CCPoint touchPoint = pTouch->getLocation();
-	printf("%f,%f",touchPoint.x,touchPoint.y);
+
+	mTouchX = touchPoint.x;
+	mBeforX = mLayerEntity->getPositionX();
+	CCLog("start %f", mTouchX);
+	//CCLog("%f,%f",touchPoint.x,touchPoint.y);
 	hero->getController()->moveTo(touchPoint);
 	return true;
 }
@@ -277,12 +325,22 @@ bool WarScene::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
 void WarScene::ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent)
 {
 	CCPoint touchPoint = pTouch->getLocation();
-	printf("%f,%f",touchPoint.x,touchPoint.y);
+	//CCLog("%f,%f",touchPoint.x,touchPoint.y);
+	
+	float temp = touchPoint.x - mTouchX + mBeforX;
+	if (temp <= 0)
+	{
+		mLayerBg->setPositionX(temp);
+		mLayerEntity->setPositionX(temp);
+		mLayerEffect->setPositionX(temp);
+	}
+	
 }
 
 // 触摸结束
 void WarScene::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)
 {
 	CCPoint touchPoint = pTouch->getLocation();
-	printf("%f,%f",touchPoint.x,touchPoint.y);
+	//CCLog("%f,%f",touchPoint.x,touchPoint.y);
+	mTouchX = 0;
 }

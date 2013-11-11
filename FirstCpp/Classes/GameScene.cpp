@@ -138,8 +138,8 @@ bool GameWorld::init()
 
 void GameWorld::menuCloseCallback(CCObject* pSender)
 {
-	int arr[] = {1, 2, 3};
-	for (int i = 0; i < 3; i++)
+	int arr[] = {1, 2, 3, 4,5,6};
+	for (int i = 0; i < 6; i++)
 	{
 		AvatarAsset* av = NULL;
 		config_manager_gettile(AvatarAssetTable, AvatarAsset, CONFIG_AvatarAsset, arr[i], av);
@@ -159,6 +159,15 @@ void GameWorld::menuCloseCallback(CCObject* pSender)
 	}
 	
 	LoadManager::shardLoadManager()->addLoadItem("weapon/Weapon0.png", "weapon/Weapon0.plist", "weapon/Weapon.ExportJson");
+	LoadManager::shardLoadManager()->addLoadItem("LoadUI/LoadingBar_ld03.png");
+	LoadManager::shardLoadManager()->addLoadItem("a.png");
+	LoadManager::shardLoadManager()->addLoadItem("b.png");
+	LoadManager::shardLoadManager()->addLoadItem("c.png");
+	LoadManager::shardLoadManager()->addLoadItem("d.png");
+	LoadManager::shardLoadManager()->addLoadItem("e.png");
+	LoadManager::shardLoadManager()->addLoadItem("f.png");
+	LoadManager::shardLoadManager()->addLoadItem("g.png");
+	LoadManager::shardLoadManager()->addLoadItem("h.jpg");
 	LoadManager::shardLoadManager()->load(SCENE_WAR);
 }
 
@@ -168,54 +177,34 @@ void GameWorld::initGame(void)
 	// 初始化游戏
 	SceneManager::shardSceneManager(); // 初始化场景管理器
 	ConfigManager::sharedConfigManager()->initConfig(); // 初始化配置
-	
 
-	// for test 初始化双方阵营数据
-	//int temp[9];
-	//int icount = 0;
-	//srand(unsigned(time(0)));
-	//while (icount < 9)
+	//int pa[4] = {0,3,6,4};
+	//CCArray* partener = WarModel::shardWarModel()->getPartenerArray();
+	//for (int i = 0; i < 4; i++)
 	//{
-	//	int idata = rand()%9;
-	//	for (int i = 0; i < 9; i++)
-	//	{
-	//		if (temp[i] == idata) break;
-	//		temp[i] = idata;
-	//		icount++;
-	//	}
+	//	PartenerView* p1 = PartenerView::create();
+	//	PartenerVo* pinfo1 = PartenerVo::create();
+	//	pinfo1->name = "fuwanghero";
+	//	pinfo1->posId = pa[i];
+	//	pinfo1->gender = 1;
+	//	p1->setInfo(pinfo1);
+	//	partener->addObject(p1);
 	//}
 
-	CCArray* partener = WarModel::shardWarModel()->getPartenerArray();
-	for (int i = 0; i < 3; i++)
-	{
-		PartenerView* p1 = PartenerView::create();
-		PartenerVo* pinfo1 = PartenerVo::create();
-		pinfo1->name = "fuwanghero";
-		pinfo1->posId = i;
-		pinfo1->gender = 1;
-		pinfo1->pngName = "fuwang/FuWang0.png";
-		pinfo1->xmlName = "fuwang/FuWang0.plist";
-		pinfo1->jsonName = "fuwang/FuWang.ExportJson";
-		p1->setInfo(pinfo1);
-		partener->addObject(p1);
-	}
+	//CCLog("init over");
 
-	CCLog("init over");
-
-	CCArray* enemy = WarModel::shardWarModel()->getEnemyArray();
-	for (int i = 0; i < 3; i++)
-	{
-		PartenerView* p1 = PartenerView::create();
-		PartenerVo* pinfo1 = PartenerVo::create();
-		pinfo1->name = "fuwanghero";
-		pinfo1->posId = i;
-		pinfo1->gender = 1;
-		pinfo1->pngName = "fuwang/FuWang0.png";
-		pinfo1->xmlName = "fuwang/FuWang0.plist";
-		pinfo1->jsonName = "fuwang/FuWang.ExportJson";
-		p1->setInfo(pinfo1);
-		enemy->addObject(p1);
-	}
+	//int ea[4] = {3,4,5,8};
+	//CCArray* enemy = WarModel::shardWarModel()->getEnemyArray();
+	//for (int i = 0; i < 4; i++)
+	//{
+	//	PartenerView* p1 = PartenerView::create();
+	//	PartenerVo* pinfo1 = PartenerVo::create();
+	//	pinfo1->name = "fuwanghero";
+	//	pinfo1->posId = ea[i];
+	//	pinfo1->gender = 1;
+	//	p1->setInfo(pinfo1);
+	//	enemy->addObject(p1);
+	//}
 
 	//CCDataReaderHelper::sharedDataReaderHelper()->addDataFromFileAsync();
 	//CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(string("fuwang/FuWang0.plist").c_str(), string("fuwang/FuWang0.png").c_str());

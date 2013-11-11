@@ -24,5 +24,6 @@ public:
 	virtual PERSON_STATE getState() = 0;
 	virtual PersonVo* getSelfInfo() = 0;
 	virtual void dieOut() = 0;
+	virtual bool checkHp() = 0;
 };
 

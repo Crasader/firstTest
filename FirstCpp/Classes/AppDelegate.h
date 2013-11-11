@@ -32,6 +32,12 @@ public:
     @param  the pointer of the application
     */
     virtual void applicationWillEnterForeground();
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	virtual void keyBackClicked();//android·µ»Ø¼ü
+	virtual void keyMenuClicked();//android²Ëµ¥¼ü
+#endif
+
 };
 
 #endif // _APP_DELEGATE_H_

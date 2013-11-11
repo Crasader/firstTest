@@ -1,8 +1,11 @@
 #include "PersonView.h"
 #include "ConfigManager.h"
+#include <map>
 
+static std::map<int, AvatarAsset*> avatarMap;
 
-PersonView::PersonView(void):mTarget(NULL), mAvatar(NULL), mController(NULL), mCurState(STAND), mDirection(DIR_RIGHT)
+PersonView::PersonView(void):mTarget(NULL), mAvatar(NULL), mController(NULL), mCurState(STAND), mDirection(DIR_RIGHT), mConfig(NULL), 
+	mBloodBar(NULL)
 {
 	mInfo = PersonVo::create();
 	CC_SAFE_RETAIN(mInfo);
@@ -11,21 +14,63 @@ PersonView::PersonView(void):mTarget(NULL), mAvatar(NULL), mController(NULL), mC
 
 PersonView::~PersonView(void)
 {
+	mConfig = NULL;
 	CC_SAFE_RELEASE_NULL(mInfo);
+}
+
+void PersonView::onEnter()
+{
+	CCNode::onEnter();
+}
+
+void PersonView::onExit()
+{
+
 }
 
 void PersonView::setBaseId(int id)
 {
 	mId = id;
-	AvatarAsset* con = NULL;
-	config_manager_gettile(AvatarAssetTable, AvatarAsset, CONFIG_AvatarAsset, mId, con);
-	CCArmature* armature = CCArmature::create(con->name().c_str());
+
+	std::map<int, AvatarAsset*>::iterator it = avatarMap.find(mId);
+	if (it == avatarMap.end())
+	{
+		AvatarAsset* con = NULL;
+		config_manager_gettile(AvatarAssetTable, AvatarAsset, CONFIG_AvatarAsset, mId, con);
+		mConfig = new AvatarAsset;
+		mConfig->CopyFrom(*con);
+		avatarMap[mId] = mConfig;
+	}
+	else
+	{
+		mConfig = it->second;
+	}
+
+	mInfo->hp = mInfo->maxHp = mConfig->hp();
+	mInfo->defense = mConfig->defe();
+	mInfo->attack = mConfig->att();
+	
+	CCArmature* armature = CCArmature::create(mConfig->name().c_str());
 	setAvatar(armature);
+
+	if (mBloodBar == NULL)
+	{
+		mBloodBar = BloodBar::create();
+		CCRect trect = CCRectApplyAffineTransform(armature->boundingBox(), armature->nodeToParentTransform()); // 获取模型的大小
+		mBloodBar->setPositionY(trect.getMaxY());
+		addChild(mBloodBar, 1);
+		
+	}
 }
 
 int PersonView::getBaseId() const
 {
 	return mId;
+}
+
+AvatarAsset* PersonView::getConfig()
+{
+	return mConfig;
 }
 
 // 设置形象
@@ -49,6 +94,8 @@ void PersonView::setController(ControllerBase* controller)
 	mController = controller;
 	controller->setControllerListener(this);
 	addChild(controller);
+	float sp = (float)mConfig->speed() / 10;
+	controller->setSpeed(sp);
 }
 
 // 获取控制器
@@ -221,4 +268,11 @@ void PersonView::dieOut()
 CCNode* PersonView::getSelfEntity()
 {
 	return this;
+}
+
+bool PersonView::checkHp()
+{
+	if (mInfo->hp < 0) mInfo->hp = 0;
+	mBloodBar->setPercentage((float)mInfo->hp / mInfo->maxHp);
+	return mInfo->hp == 0 ? false : true;
 }

@@ -112,11 +112,13 @@ void SimpleControll::checkTargetPos()
 {
 	PersonView* temptarget = (PersonView*)mControllerLintoner->getTarget();
 	PersonView* self = (PersonView*)mControllerLintoner->getSelfEntity();
-	AvatarAsset* con;
-	config_manager_gettile(AvatarAssetTable, AvatarAsset, CONFIG_AvatarAsset, self->getBaseId(), con);
-	int dist = con->distance();
+	
 	if (temptarget != NULL)
 	{
+		AvatarAsset* targetConfig = temptarget->getConfig();
+		AvatarAsset* selfConfig = self->getConfig();
+		int dist = temptarget != NULL ? selfConfig->distance() + targetConfig->bodywidth() : selfConfig->distance();
+
 		CCPoint pos = mControllerLintoner->getCurPostion();
 		float tempX = pos.x;
 		float tempY = pos.y;
@@ -158,7 +160,7 @@ void SimpleControll::useSkill(int skillId)
 	bul->initBullet(skillId, CCDirector::sharedDirector()->getRunningScene(), mControllerLintoner->getSelfEntity(), mControllerLintoner->getTarget());
 }
 
-void SimpleControll::simpleAttack(float dt)
+void SimpleControll::simpleAttack(int dt)
 {
 	if (mControllerLintoner->getTarget() == NULL)
 	{
@@ -180,12 +182,13 @@ void SimpleControll::simpleAttack(float dt)
 	}
 }
 
-int SimpleControll::beAttack(float aValue)
+int SimpleControll::beAttack(int aValue)
 {
 	mControllerLintoner->changeState(EMBATTLED);
 	int result = aValue - mControllerLintoner->getSelfInfo()->defense;
+	if (result < 0) result = 1;
 	mControllerLintoner->getSelfInfo()->hp -= result;
-	if (mControllerLintoner->getSelfInfo()->hp <= 0)
+	if (!mControllerLintoner->checkHp())
 	{
 		mControllerLintoner->dieOut();
 	}

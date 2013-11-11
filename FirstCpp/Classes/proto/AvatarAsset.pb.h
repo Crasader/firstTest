@@ -228,6 +228,55 @@ class AvatarAsset : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 distance() const;
   inline void set_distance(::google::protobuf::int32 value);
 
+  // optional int32 speed = 5;
+  inline bool has_speed() const;
+  inline void clear_speed();
+  static const int kSpeedFieldNumber = 5;
+  inline ::google::protobuf::int32 speed() const;
+  inline void set_speed(::google::protobuf::int32 value);
+
+  // optional int32 bulletx = 6;
+  inline bool has_bulletx() const;
+  inline void clear_bulletx();
+  static const int kBulletxFieldNumber = 6;
+  inline ::google::protobuf::int32 bulletx() const;
+  inline void set_bulletx(::google::protobuf::int32 value);
+
+  // optional int32 bullety = 7;
+  inline bool has_bullety() const;
+  inline void clear_bullety();
+  static const int kBulletyFieldNumber = 7;
+  inline ::google::protobuf::int32 bullety() const;
+  inline void set_bullety(::google::protobuf::int32 value);
+
+  // optional int32 bodywidth = 8;
+  inline bool has_bodywidth() const;
+  inline void clear_bodywidth();
+  static const int kBodywidthFieldNumber = 8;
+  inline ::google::protobuf::int32 bodywidth() const;
+  inline void set_bodywidth(::google::protobuf::int32 value);
+
+  // optional int32 hp = 9;
+  inline bool has_hp() const;
+  inline void clear_hp();
+  static const int kHpFieldNumber = 9;
+  inline ::google::protobuf::int32 hp() const;
+  inline void set_hp(::google::protobuf::int32 value);
+
+  // optional int32 att = 10;
+  inline bool has_att() const;
+  inline void clear_att();
+  static const int kAttFieldNumber = 10;
+  inline ::google::protobuf::int32 att() const;
+  inline void set_att(::google::protobuf::int32 value);
+
+  // optional int32 defe = 11;
+  inline bool has_defe() const;
+  inline void clear_defe();
+  static const int kDefeFieldNumber = 11;
+  inline ::google::protobuf::int32 defe() const;
+  inline void set_defe(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:AvatarAsset)
  private:
   inline void set_has_id();
@@ -238,6 +287,20 @@ class AvatarAsset : public ::google::protobuf::Message {
   inline void clear_has_name();
   inline void set_has_distance();
   inline void clear_has_distance();
+  inline void set_has_speed();
+  inline void clear_has_speed();
+  inline void set_has_bulletx();
+  inline void clear_has_bulletx();
+  inline void set_has_bullety();
+  inline void clear_has_bullety();
+  inline void set_has_bodywidth();
+  inline void clear_has_bodywidth();
+  inline void set_has_hp();
+  inline void clear_has_hp();
+  inline void set_has_att();
+  inline void clear_has_att();
+  inline void set_has_defe();
+  inline void clear_has_defe();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -245,9 +308,16 @@ class AvatarAsset : public ::google::protobuf::Message {
   ::google::protobuf::int32 id_;
   ::google::protobuf::int32 distance_;
   ::std::string* name_;
+  ::google::protobuf::int32 speed_;
+  ::google::protobuf::int32 bulletx_;
+  ::google::protobuf::int32 bullety_;
+  ::google::protobuf::int32 bodywidth_;
+  ::google::protobuf::int32 hp_;
+  ::google::protobuf::int32 att_;
+  ::google::protobuf::int32 defe_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(11 + 31) / 32];
 
   friend void  protobuf_AddDesc_AvatarAsset_2eproto();
   friend void protobuf_AssignDesc_AvatarAsset_2eproto();
@@ -544,6 +614,160 @@ inline ::google::protobuf::int32 AvatarAsset::distance() const {
 inline void AvatarAsset::set_distance(::google::protobuf::int32 value) {
   set_has_distance();
   distance_ = value;
+}
+
+// optional int32 speed = 5;
+inline bool AvatarAsset::has_speed() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void AvatarAsset::set_has_speed() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void AvatarAsset::clear_has_speed() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void AvatarAsset::clear_speed() {
+  speed_ = 0;
+  clear_has_speed();
+}
+inline ::google::protobuf::int32 AvatarAsset::speed() const {
+  return speed_;
+}
+inline void AvatarAsset::set_speed(::google::protobuf::int32 value) {
+  set_has_speed();
+  speed_ = value;
+}
+
+// optional int32 bulletx = 6;
+inline bool AvatarAsset::has_bulletx() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void AvatarAsset::set_has_bulletx() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void AvatarAsset::clear_has_bulletx() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void AvatarAsset::clear_bulletx() {
+  bulletx_ = 0;
+  clear_has_bulletx();
+}
+inline ::google::protobuf::int32 AvatarAsset::bulletx() const {
+  return bulletx_;
+}
+inline void AvatarAsset::set_bulletx(::google::protobuf::int32 value) {
+  set_has_bulletx();
+  bulletx_ = value;
+}
+
+// optional int32 bullety = 7;
+inline bool AvatarAsset::has_bullety() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void AvatarAsset::set_has_bullety() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void AvatarAsset::clear_has_bullety() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void AvatarAsset::clear_bullety() {
+  bullety_ = 0;
+  clear_has_bullety();
+}
+inline ::google::protobuf::int32 AvatarAsset::bullety() const {
+  return bullety_;
+}
+inline void AvatarAsset::set_bullety(::google::protobuf::int32 value) {
+  set_has_bullety();
+  bullety_ = value;
+}
+
+// optional int32 bodywidth = 8;
+inline bool AvatarAsset::has_bodywidth() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void AvatarAsset::set_has_bodywidth() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void AvatarAsset::clear_has_bodywidth() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void AvatarAsset::clear_bodywidth() {
+  bodywidth_ = 0;
+  clear_has_bodywidth();
+}
+inline ::google::protobuf::int32 AvatarAsset::bodywidth() const {
+  return bodywidth_;
+}
+inline void AvatarAsset::set_bodywidth(::google::protobuf::int32 value) {
+  set_has_bodywidth();
+  bodywidth_ = value;
+}
+
+// optional int32 hp = 9;
+inline bool AvatarAsset::has_hp() const {
+  return (_has_bits_[0] & 0x00000100u) != 0;
+}
+inline void AvatarAsset::set_has_hp() {
+  _has_bits_[0] |= 0x00000100u;
+}
+inline void AvatarAsset::clear_has_hp() {
+  _has_bits_[0] &= ~0x00000100u;
+}
+inline void AvatarAsset::clear_hp() {
+  hp_ = 0;
+  clear_has_hp();
+}
+inline ::google::protobuf::int32 AvatarAsset::hp() const {
+  return hp_;
+}
+inline void AvatarAsset::set_hp(::google::protobuf::int32 value) {
+  set_has_hp();
+  hp_ = value;
+}
+
+// optional int32 att = 10;
+inline bool AvatarAsset::has_att() const {
+  return (_has_bits_[0] & 0x00000200u) != 0;
+}
+inline void AvatarAsset::set_has_att() {
+  _has_bits_[0] |= 0x00000200u;
+}
+inline void AvatarAsset::clear_has_att() {
+  _has_bits_[0] &= ~0x00000200u;
+}
+inline void AvatarAsset::clear_att() {
+  att_ = 0;
+  clear_has_att();
+}
+inline ::google::protobuf::int32 AvatarAsset::att() const {
+  return att_;
+}
+inline void AvatarAsset::set_att(::google::protobuf::int32 value) {
+  set_has_att();
+  att_ = value;
+}
+
+// optional int32 defe = 11;
+inline bool AvatarAsset::has_defe() const {
+  return (_has_bits_[0] & 0x00000400u) != 0;
+}
+inline void AvatarAsset::set_has_defe() {
+  _has_bits_[0] |= 0x00000400u;
+}
+inline void AvatarAsset::clear_has_defe() {
+  _has_bits_[0] &= ~0x00000400u;
+}
+inline void AvatarAsset::clear_defe() {
+  defe_ = 0;
+  clear_has_defe();
+}
+inline ::google::protobuf::int32 AvatarAsset::defe() const {
+  return defe_;
+}
+inline void AvatarAsset::set_defe(::google::protobuf::int32 value) {
+  set_has_defe();
+  defe_ = value;
 }
 
 

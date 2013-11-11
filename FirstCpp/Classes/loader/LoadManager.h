@@ -9,7 +9,11 @@
 using namespace cocos2d::extension;
 USING_NS_CC;
 
-enum LoadType{LArmature = 0, LSprite};
+enum LoadType{
+	LArmature = 0, 
+	LSprite,
+	LImage
+};
 
 class LoadManager : public CCNode
 {
@@ -23,16 +27,19 @@ public:
 	void load(SCENE target);
 	void addLoadItem(const char *plist, const char *png, const char *json);
 	void addLoadItem(const char *plist, const char *png);
+	void addLoadItem(const char *png);
 
 protected:
-	float mAll;
+	int mAllNum;
 	int mLoaded;
 	CCArray* mLoadArray;
 
 	SCENE mNextScene;
-	CCScene* mLoadScene;
+	LoadScene* mLoadScene;
 
-	void doProgressCall(float pro);
+	void loadedImageCall(CCObject* obj);
+	void loadedArmatureCall(float pro);
+	void doProgressCall();
 	void changeScene();
 };
 
