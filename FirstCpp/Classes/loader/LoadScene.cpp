@@ -26,8 +26,11 @@ bool LoadScene::init()
 	//使用json文件给Layer层添加CocoStudio生成的控件
 	mUi = CCUIHELPER->createWidgetFromJsonFile("LoadUI/LoadUI_1.json");
 	layer->addWidget(mUi);
-
 	//UILoadingBar* bar = (UILoadingBar*)mUi->getChildByName("LoadingBar01");
+	//bar->setTexture("a.png");
+	//UILoadingBar* bar = (UILoadingBar*)mUi->getChildByName("LoadingBar01");
+	//UIImageView* img = (UIImageView*)mUi->getChildByName("ImageView");
+	//img->loadTexture("a.png");
 
 	//UILayer* lay = UILayer::create();
 	//UILoadingBar* bar1 = UILoadingBar::create();

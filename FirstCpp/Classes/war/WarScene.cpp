@@ -5,17 +5,51 @@
 #include "WarModel.h"
 #include "EnumCommon.h"
 #include "ConfigManager.h"
+#include "EnumEvent.h"
+#include "SkillVo.h"
 
 using namespace cocos2d::extension;
 USING_NS_CC;
 
-WarScene::WarScene(void)
+WarScene::WarScene(void):mTouchEntity(NULL)
 {
+	touchEntityArr = CCArray::create();
+	CC_SAFE_RETAIN(touchEntityArr);
+	mSkillBtnArr = CCArray::create();
+	CC_SAFE_RETAIN(mSkillBtnArr);
 }
 
 
 WarScene::~WarScene(void)
 {
+	CC_SAFE_RELEASE_NULL(touchEntityArr);
+	CC_SAFE_RELEASE_NULL(mSkillBtnArr);
+}
+
+void WarScene::onEnter()
+{
+	CCNode::onEnter();
+	
+	
+	// 添加侦听事件
+	CCNotificationCenter::sharedNotificationCenter()->addObserver(this, callfuncO_selector(WarScene::addTouchedEntity), EVENT_WAR_ADD_TOUCH_ENTITY, NULL);
+	CCNotificationCenter::sharedNotificationCenter()->addObserver(this, callfuncO_selector(WarScene::entityTouchEnd), EVENT_WAR_ADD_TOUCH_END, NULL);
+	CCNotificationCenter::sharedNotificationCenter()->addObserver(this, callfuncO_selector(WarScene::addEffect), EVENT_WAR_ADD_EFFECT, NULL);
+	CCNotificationCenter::sharedNotificationCenter()->addObserver(this, callfuncO_selector(WarScene::onEntityDie), EVENT_WAR_ENTITY_DIE, NULL);
+	CCNotificationCenter::sharedNotificationCenter()->addObserver(this, callfuncO_selector(WarScene::onUseSkill), EVENT_WAR_USE_SKILL, NULL);
+}
+
+void WarScene::onExit()
+{
+	// 移除侦听事件
+	CCNotificationCenter::sharedNotificationCenter()->removeObserver(this, EVENT_WAR_USE_SKILL);
+	CCNotificationCenter::sharedNotificationCenter()->removeObserver(this, EVENT_WAR_ENTITY_DIE);
+	CCNotificationCenter::sharedNotificationCenter()->removeObserver(this, EVENT_WAR_ADD_EFFECT);
+	CCNotificationCenter::sharedNotificationCenter()->removeObserver(this, EVENT_WAR_ADD_TOUCH_END);
+	CCNotificationCenter::sharedNotificationCenter()->removeObserver(this, EVENT_WAR_ADD_TOUCH_ENTITY);
+
+	
+	CCNode::onExit();
 }
 
 CCScene* WarScene::scene()
@@ -23,7 +57,7 @@ CCScene* WarScene::scene()
 	CCScene* mScene = CCScene::create();
 	WarScene* mWarScene = WarScene::create();
 
-	mScene->addChild(mWarScene);
+	mScene->addChild(mWarScene, 0, 1);
 
 	return mScene;
 }
@@ -57,6 +91,7 @@ bool WarScene::init()
 
 	//mSTimer = CCTimer::initWithTarget(this, SEL_SCHEDULE(WarScene::onTimerHandler()));
 	schedule(schedule_selector(WarScene::onTimerHandler), 0.5f);
+	
 
 	//bg = CCSprite::create("bg.jpg");
 	//bg->setAnchorPoint(ccp(0, 0));
@@ -88,37 +123,39 @@ bool WarScene::init()
 	pLabel->setPosition(ccp(origin.x + visibleSize.width/2, origin.y + visibleSize.height - pLabel->getContentSize().height - 100));
 
 	// add the label as a child to this layer
-	mLayerEntity->addChild(pLabel, 1);
+	mLayerUI->addChild(pLabel);
 
 	SimpleControll* movecontroll = SimpleControll::create();
 	//movecontroll->setSpeed(3);
 
-	hero = PartenerView::create();
-	hero->setBaseId(2);
-	hero->setPosition(ccp(visibleSize.width / 4, visibleSize.height / 4));
-	mLayerEntity->addChild(hero, 2);
+	//hero = PartenerView::create();
+	//hero->setBaseId(4);
+	//hero->setPosition(ccp(visibleSize.width / 4, visibleSize.height / 4));
+	//addEntity(hero);
 
-	hero->setController(movecontroll);
+	//hero->setController(movecontroll);
 
 	CCDictionary* strings = CCDictionary::createWithContentsOfFile("i18n_cn.xml");
 	const char* str = ((CCString*)strings->objectForKey("japanese"))->m_sString.c_str();
 	pLabel->setString(str);
 	movecontroll = SimpleControll::create();
 	//movecontroll->setSpeed(2);
-	stone = PartenerView::create();
-	stone->setBaseId(4);
-	stone->setPosition(ccp(visibleSize.width / 2 + 200, visibleSize.height / 2));
-	stone->setTarget(hero);
-	stone->setController(movecontroll);
-	mLayerEntity->addChild(stone);
+	//stone = PartenerView::create();
+	//stone->setBaseId(2);
+	//stone->setPosition(ccp(visibleSize.width / 2 + 200, visibleSize.height / 2));
+	//stone->setTarget(hero);
+	//stone->setController(movecontroll);
+	//addEntity(stone);
 
 	CCArray* partener = WarModel::shardWarModel()->getPartenerArray();
 	CCArray* enemy = WarModel::shardWarModel()->getEnemyArray();
 
+	int tempa[] = {1,1,2,3};
+	int tempb[] = {4,5,6,5};
 	for (int i = partener->count() - 1; i >= 0; i--) 
 	{
 		PartenerView* pObj = (PartenerView*)partener->objectAtIndex(i);
-		pObj->setBaseId(1);
+		pObj->setBaseId(tempa[i]);
 		char* posid = new char[12];
 		sprintf(posid, "left%d", pObj->getInfo()->posId);
 		CCPoint tp = root->getChildByName("ImageView")->getChildByName(posid)->getPosition();
@@ -130,13 +167,13 @@ bool WarScene::init()
 		pObj->setController(movecontroll);
 		//if (enemy->count() > i) pObj->setTarget((PartenerView*)enemy->objectAtIndex(i));
 
-		mLayerEntity->addChild(pObj);
+		addEntity(pObj);
 	}
 	
 	for (int i = enemy->count() - 1; i >= 0; i--) 
 	{
 		PartenerView* pObj = (PartenerView*)enemy->objectAtIndex(i);
-		pObj->setBaseId(6);
+		pObj->setBaseId(tempb[i]);
 		char* posid = new char[12];
 		sprintf(posid, "right%d", pObj->getInfo()->posId);
 		CCPoint tp = root->getChildByName("ImageView")->getChildByName(posid)->getPosition();
@@ -148,17 +185,59 @@ bool WarScene::init()
 		pObj->setController(movecontroll);
 		//pObj->setTarget((PartenerView*)partener->objectAtIndex(i));
 
-		mLayerEntity->addChild(pObj);
+		addEntity(pObj);
 	}
 
-	//CCEGLView* eglView = CCEGLView::sharedOpenGLView();
-	//eglView->setFrameSize(960, 640);
-	//eglView->setWndProc(myWndProcHook);
+	initUI();
 	
 	scheduleUpdate();
 	CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, 0, false);
 	return true;
 
+}
+
+void WarScene::initUI()
+{
+	////技能ui层
+	//UILayer* tempLayer = UILayer::create();
+	//tempLayer->scheduleUpdate();
+	//mLayerUI->addChild(tempLayer);
+	mSkillBar = CCUIHELPER->createWidgetFromJsonFile("WarSkillUI/WarSkillUI_1.json");
+	//tempLayer->addWidget(mSkillBar);
+
+	//UILoadingBar* skill0 = (UILoadingBar*)mSkillBar->getChildByName("skillBar0");
+	//skill0->setPercent(0);
+	//CCProgressTo *to = CCProgressTo::create(10, 100);
+	//skill0->runAction(to);
+
+	for (int i = 0; i < 5; i++)
+	{
+		SkillBtn* sbtn0 = SkillBtn::create();
+		sbtn0->setPosition(ccp(50 + 110*i, 570));
+		sbtn0->setVisible(false);
+		mLayerUI->addChild(sbtn0);
+		mSkillBtnArr->addObject(sbtn0);
+	}
+}
+
+void WarScene::onSkillTimerHandler(float dt)
+{
+	CCArray* heros = WarModel::shardWarModel()->getPartenerArray();
+	for (int j = heros->count() - 1; j >= 0; j--)
+	{
+		PersonView* hero = (PersonView*)heros->objectAtIndex(j);
+		for (int i = hero->getInfo()->getSkillArr()->count() - 1; i >= 0; i--)
+		{
+			SkillVo* vo = (SkillVo*)hero->getInfo()->getSkillArr()->objectAtIndex(i);
+			vo->setCurrentCd(vo->getCurrentCd() - dt);
+			if (mTouchEntity != NULL && mTouchEntity == hero)
+			{
+				SkillBtn* tbn = (SkillBtn*)mSkillBtnArr->objectAtIndex(i);
+				tbn->setId(j*10 + i);
+				tbn->setPercent(vo->getPercent());
+			}
+		}
+	}
 }
 
 //LRESULT myWndProcHook(UINT message, WPARAM wParam, LPARAM lParam, BOOL* pProcessed)
@@ -234,7 +313,7 @@ void WarScene::onTimerHandler(float dt)
 	for (int i = partener->count() - 1; i >= 0; i--) 
 	{
 		PartenerView* pObj = (PartenerView*)partener->objectAtIndex(i);
-		if (pObj->getTarget() == NULL)
+		if (pObj->getTarget() == NULL || WarModel::shardWarModel()->isDie((PersonView*)pObj->getTarget()))
 		{
 			pObj->setTarget(getTargetBySelfPos(0, pObj->getInfo()->posId));
 		}
@@ -245,24 +324,24 @@ void WarScene::onTimerHandler(float dt)
 	for (int i = enemy->count() - 1; i >= 0; i--) 
 	{
 		PartenerView* pObj = (PartenerView*)enemy->objectAtIndex(i);
-		if (pObj->getTarget() == NULL)
+		if (pObj->getTarget() == NULL || WarModel::shardWarModel()->isDie((PersonView*)pObj->getTarget()))
 		{
 			pObj->setTarget(getTargetBySelfPos(1, pObj->getInfo()->posId));
 		}
 		pObj->getController()->checkTargetPos();
 	}
 
-	if (stone != NULL)
-	{ 
-		if (stone->getTarget() == NULL)
-		{
-			//for (int i = partener->count() - 1; i >= 0; i--) 
-			//{
-			if (partener->count() > 0) stone->setTarget((PartenerView*)partener->randomObject());
-			//}
-		}
-		stone->getController()->checkTargetPos();
-	}
+	//if (stone != NULL)
+	//{ 
+	//	if (stone->getTarget() == NULL)
+	//	{
+	//		//for (int i = partener->count() - 1; i >= 0; i--) 
+	//		//{
+	//		if (partener->count() > 0) stone->setTarget((PartenerView*)partener->randomObject());
+	//		//}
+	//	}
+	//	stone->getController()->checkTargetPos();
+	//}
 
 	checkDeep(); // 深度排序
 }
@@ -280,7 +359,8 @@ PersonView* WarScene::getTargetBySelfPos(int selfType, int selfPos)
 		for (int i = arr->count() - 1; i >= 0; i--)
 		{
 			PartenerView* temp =  (PartenerView*)arr->objectAtIndex(i);
-			if (temp->getInfo()->posId == tid) return (PersonView*)temp;
+			if (temp->getInfo()->posId == tid) 
+				return (PersonView*)temp;
 		}
 	}
 	return NULL;
@@ -304,8 +384,8 @@ void WarScene::checkDeep()
 		mLayerEntity->reorderChild(pObj, 1000 - pObj->getPositionY());
 	}
 
-	mLayerEntity->reorderChild(hero, 1000 - hero->getPositionY());
-	mLayerEntity->reorderChild(stone, 1000 - stone->getPositionY());
+	//mLayerEntity->reorderChild(hero, 1000 - hero->getPositionY());
+	//mLayerEntity->reorderChild(stone, 1000 - stone->getPositionY());
 }
 
 // 触摸开始
@@ -315,9 +395,9 @@ bool WarScene::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
 
 	mTouchX = touchPoint.x;
 	mBeforX = mLayerEntity->getPositionX();
-	CCLog("start %f", mTouchX);
+	//CCLog("start %f", mTouchX);
 	//CCLog("%f,%f",touchPoint.x,touchPoint.y);
-	hero->getController()->moveTo(touchPoint);
+	//hero->getController()->moveTo(touchPoint);
 	return true;
 }
 
@@ -343,4 +423,95 @@ void WarScene::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)
 	CCPoint touchPoint = pTouch->getLocation();
 	//CCLog("%f,%f",touchPoint.x,touchPoint.y);
 	mTouchX = 0;
+}
+
+// 添加人物实体
+void WarScene::addEntity(CCNode* entity)
+{
+	mLayerEntity->addChild(entity);
+}
+
+// 添加效果动画
+void WarScene::addEffect(CCObject* effect)
+{
+	mLayerEffect->addChild((CCNode*)effect);
+}
+
+//添加当前触摸的对象
+void WarScene::addTouchedEntity(CCObject* p)
+{
+	touchEntityArr->addObject(p);
+}
+
+//对象触摸结束
+void WarScene::entityTouchEnd(CCObject* obj)
+{
+	PersonView* result = NULL;
+	PersonView* p = NULL;
+	int len = touchEntityArr->count();
+	if (len > 0)
+	{
+		result = (PersonView*)touchEntityArr->objectAtIndex(0);
+		if (len > 1)
+		{
+			for (int i = 1; i < len; i++)
+			{
+				p = (PersonView*)touchEntityArr->objectAtIndex(i);
+				if (p->getPositionY() < result->getPositionY())
+				{
+					result = p;
+				}
+			}
+		}
+		
+		if (result->getState() == DIE)
+		{
+			mTouchEntity = NULL;
+		}
+		else
+		{
+			mTouchEntity = result;
+			for (int i = mSkillBtnArr->count() - 1; i >= 0; i--)
+			{
+				SkillBtn* tbn = (SkillBtn*)mSkillBtnArr->objectAtIndex(i);
+				if (i >= mTouchEntity->getInfo()->getSkillArr()->count())
+					tbn->setVisible(false);
+				else
+					tbn->setVisible(true);
+			}
+			schedule(schedule_selector(WarScene::onSkillTimerHandler), 0.1f);
+		}
+		touchEntityArr->removeAllObjects();
+	}
+}
+
+// 人物死亡
+void WarScene::onEntityDie(CCObject* value)
+{
+	if (mTouchEntity == value)
+	{
+		mTouchEntity = NULL;
+		unschedule(schedule_selector(WarScene::onSkillTimerHandler));
+		for (int i = mSkillBtnArr->count() - 1; i >= 0; i--)
+		{
+			SkillBtn* tbn = (SkillBtn*)mSkillBtnArr->objectAtIndex(i);
+			tbn->setVisible(false);
+		}
+	}
+}
+
+// 使用技能
+void WarScene::onUseSkill(CCObject* value)
+{
+	SkillBtn* btn = (SkillBtn*)value;
+	if (mTouchEntity != NULL)
+	{
+		int sindex = mSkillBtnArr->indexOfObject(value);
+		SkillVo* vo = (SkillVo*)mTouchEntity->getInfo()->getSkillArr()->objectAtIndex(sindex);
+		if (vo->getPercent() >= 100)
+		{
+			CCLog("succ use skill");
+			mTouchEntity->getController()->useSkill(1);
+		}
+	}
 }

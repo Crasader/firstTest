@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cocos2d.h"
+#include "PersonView.h"
 
 USING_NS_CC;
 
@@ -15,11 +16,14 @@ public:
 
 	CCArray* getPartenerArray(); // 获取我方数据
 	CCArray* getEnemyArray(); // 获取地方数据
+	//CCArray* getDieArray();
 
 	void removeEntity(CCObject* entity); // 移除一个实例
+	bool isDie(PersonView* obj);
 
 protected:
 	CCArray* mPartenerArray; // 我方阵营
 	CCArray* mEnemyArray; // 地方阵营
+	//CCArray* mDieArray; // 存放已死亡对象
 };
 

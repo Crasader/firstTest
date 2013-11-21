@@ -12,6 +12,7 @@
 #include "loader/LoadManager.h"
 #include "proto/Wer.pb.h"
 #include "proto/AvatarAsset.pb.h"
+#include "war/SkillVo.h"
 //添加命名空间
 using namespace cocos2d::extension;
 
@@ -158,7 +159,7 @@ void GameWorld::menuCloseCallback(CCObject* pSender)
 		delete cJson;
 	}
 	
-	LoadManager::shardLoadManager()->addLoadItem("weapon/Weapon0.png", "weapon/Weapon0.plist", "weapon/Weapon.ExportJson");
+	LoadManager::shardLoadManager()->addLoadItem("weapon/Bullet0.png", "weapon/Bullet0.plist", "weapon/Bullet.ExportJson");
 	LoadManager::shardLoadManager()->addLoadItem("LoadUI/LoadingBar_ld03.png");
 	LoadManager::shardLoadManager()->addLoadItem("a.png");
 	LoadManager::shardLoadManager()->addLoadItem("b.png");
@@ -178,33 +179,37 @@ void GameWorld::initGame(void)
 	SceneManager::shardSceneManager(); // 初始化场景管理器
 	ConfigManager::sharedConfigManager()->initConfig(); // 初始化配置
 
-	//int pa[4] = {0,3,6,4};
-	//CCArray* partener = WarModel::shardWarModel()->getPartenerArray();
-	//for (int i = 0; i < 4; i++)
-	//{
-	//	PartenerView* p1 = PartenerView::create();
-	//	PartenerVo* pinfo1 = PartenerVo::create();
-	//	pinfo1->name = "fuwanghero";
-	//	pinfo1->posId = pa[i];
-	//	pinfo1->gender = 1;
-	//	p1->setInfo(pinfo1);
-	//	partener->addObject(p1);
-	//}
+	int pa[4] = {3,6,4,0};
+	CCArray* partener = WarModel::shardWarModel()->getPartenerArray();
+	for (int i = 0; i < 4; i++)
+	{
+		PartenerView* p1 = PartenerView::create();
+		PartenerVo* pinfo1 = PartenerVo::create();
+		pinfo1->name = "fuwanghero";
+		pinfo1->posId = pa[i];
+		pinfo1->gender = 1;
+		SkillVo* svo = SkillVo::create();
+		svo->setMaxCd(10 * i);
+		pinfo1->getSkillArr()->addObject(svo);
+		p1->setInfo(pinfo1);
+		partener->addObject(p1);
+	}
 
-	//CCLog("init over");
+	CCLog("init over");
 
-	//int ea[4] = {3,4,5,8};
-	//CCArray* enemy = WarModel::shardWarModel()->getEnemyArray();
-	//for (int i = 0; i < 4; i++)
-	//{
-	//	PartenerView* p1 = PartenerView::create();
-	//	PartenerVo* pinfo1 = PartenerVo::create();
-	//	pinfo1->name = "fuwanghero";
-	//	pinfo1->posId = ea[i];
-	//	pinfo1->gender = 1;
-	//	p1->setInfo(pinfo1);
-	//	enemy->addObject(p1);
-	//}
+	int ea[4] = {3,4,5,8};
+	CCArray* enemy = WarModel::shardWarModel()->getEnemyArray();
+	for (int i = 0; i < 4; i++)
+	{
+		PartenerView* p1 = PartenerView::create();
+		PartenerVo* pinfo1 = PartenerVo::create();
+		pinfo1->name = "fuwanghero";
+		pinfo1->posId = ea[i];
+		pinfo1->gender = 1;
+		
+		p1->setInfo(pinfo1);
+		enemy->addObject(p1);
+	}
 
 	//CCDataReaderHelper::sharedDataReaderHelper()->addDataFromFileAsync();
 	//CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(string("fuwang/FuWang0.plist").c_str(), string("fuwang/FuWang0.png").c_str());

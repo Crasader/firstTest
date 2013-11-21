@@ -1,4 +1,7 @@
 #include "SimpleControll.h"
+#include <stdlib.h>
+#include <time.inl>
+#include "Skill.h"
 
 
 SimpleControll::SimpleControll(void)
@@ -113,6 +116,9 @@ void SimpleControll::checkTargetPos()
 	PersonView* temptarget = (PersonView*)mControllerLintoner->getTarget();
 	PersonView* self = (PersonView*)mControllerLintoner->getSelfEntity();
 	
+	if (WarModel::shardWarModel()->isDie(temptarget)) return;
+	if (WarModel::shardWarModel()->isDie(self)) return;
+
 	if (temptarget != NULL)
 	{
 		AvatarAsset* targetConfig = temptarget->getConfig();
@@ -156,8 +162,22 @@ void SimpleControll::checkTargetPos()
 
 void SimpleControll::useSkill(int skillId)
 {
+	if (mControllerLintoner->getTarget() == NULL) return;
+	if (WarModel::shardWarModel()->isDie((PersonView*)mControllerLintoner->getTarget()))
+	{
+		((PersonView*)mControllerLintoner->getSelfEntity())->setTarget(NULL);
+		return;
+	}
+
+	unschedule(schedule_selector(SimpleControll::simpleAttack));
+	mControllerLintoner->changeState(SKILL);
+
 	Bullet* bul = Bullet::create();
-	bul->initBullet(skillId, CCDirector::sharedDirector()->getRunningScene(), mControllerLintoner->getSelfEntity(), mControllerLintoner->getTarget());
+	bul->initBullet(skillId, mControllerLintoner->getSelfEntity(), mControllerLintoner->getTarget());
+
+	Skill* skill = Skill::create();
+	skill->initSkill(skillId, mControllerLintoner->getSelfEntity(), mControllerLintoner->getTarget());
+	schedule(schedule_selector(SimpleControll::simpleAttack), 2.0f); // 停下来开始检测攻击
 }
 
 void SimpleControll::simpleAttack(int dt)
@@ -169,7 +189,7 @@ void SimpleControll::simpleAttack(int dt)
 	else
 	{
 		PersonView* tempTarget = (PersonView*)(mControllerLintoner->getTarget());
-		if (tempTarget->getState() == DIE)
+		if (WarModel::shardWarModel()->isDie(tempTarget) || tempTarget->getState() == DIE)
 		{
 			((PersonView*)mControllerLintoner->getSelfEntity())->setTarget(NULL);
 			return;
@@ -177,8 +197,10 @@ void SimpleControll::simpleAttack(int dt)
 	}
 	if (mControllerLintoner->getState() != RUN)
 	{
+		std::srand(time(0));
 		mControllerLintoner->changeState(ATTACK);
-		useSkill(0);
+		Bullet* bul = Bullet::create();
+		bul->initBullet(0, mControllerLintoner->getSelfEntity(), mControllerLintoner->getTarget());
 	}
 }
 

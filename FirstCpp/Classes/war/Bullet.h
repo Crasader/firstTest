@@ -19,13 +19,12 @@ public:
 	virtual void onEnter();
 	virtual void onExit();
 
-	virtual void initBullet(int id, CCNode* parent, CCNode* fromNode, CCNode* toNode);
+	virtual void initBullet(int id, CCNode* fromNode, CCNode* toNode);
 protected:
 	CCArmature* mAvatar; // 形象
 
 	int mId;
 
-	CCNode* mParent;
 	PersonView* mFromNode; // 攻击方
 	PersonView* mToNode; // 被攻击方
 
@@ -35,4 +34,5 @@ protected:
 	void scaleComplete(); // 初始形变结束
 	void delayComplete(); // 延时动作结束
 
+	bool checkEntity();
 };

@@ -15,6 +15,7 @@ public:
 
 	CREATE_FUNC(PersonVo);
 	virtual bool init();
+	CCArray* getSkillArr() const;
 
 	string name;
 	int posId;
@@ -28,6 +29,8 @@ public:
 	int attack;
 	int defense;
 	float attackDelay;
+
+	CCArray* skillArr;
 
 	int simpleBullet; // ÆÕÍ¨¹¥»÷×Óµ¯id
 };

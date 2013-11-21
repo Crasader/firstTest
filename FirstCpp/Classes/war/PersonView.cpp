@@ -1,6 +1,9 @@
 #include "PersonView.h"
 #include "ConfigManager.h"
 #include <map>
+#include "WarScene.h"
+#include "EnumEvent.h"
+#include "EnumCommon.h"
 
 static std::map<int, AvatarAsset*> avatarMap;
 
@@ -21,11 +24,18 @@ PersonView::~PersonView(void)
 void PersonView::onEnter()
 {
 	CCNode::onEnter();
+	setTouchEnable(true);
 }
 
 void PersonView::onExit()
 {
+	CCDirector::sharedDirector()->getTouchDispatcher()->removeDelegate(this);
 
+	mAvatar->removeFromParentAndCleanup(true);
+	mController->removeFromParentAndCleanup(true);
+	mBloodBar->removeFromParentAndCleanup(true);
+
+	CCNode::onExit();
 }
 
 void PersonView::setBaseId(int id)
@@ -68,6 +78,12 @@ int PersonView::getBaseId() const
 	return mId;
 }
 
+void PersonView::setTouchEnable(bool value)
+{
+	if (value) CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, 1, false);
+	else CCDirector::sharedDirector()->getTouchDispatcher()->removeDelegate(this);
+}
+
 AvatarAsset* PersonView::getConfig()
 {
 	return mConfig;
@@ -84,7 +100,7 @@ void PersonView::setAvatar(CCArmature* avatar)
 	mAvatar = avatar;
 	mAvatar->getAnimation()->setMovementEventCallFunc(this, movementEvent_selector(PersonView::onAnimationComplete));
 	addChild(mAvatar, 0);
-	mAvatar->getAnimation()->play("stand");
+	mAvatar->getAnimation()->play(STATE_STAND);
 }
 
 // 设置控制器
@@ -187,24 +203,25 @@ void PersonView::changeState(PERSON_STATE state)
 	switch (state)
 	{
 	case STAND:
-		mAvatar->getAnimation()->play("stand");
+		mAvatar->getAnimation()->play(STATE_STAND);
 		break;
 	case SKILL:
-		mAvatar->getAnimation()->play("skill");
+		mAvatar->getAnimation()->play(STATE_SKILL);
 		break;
 	case RUN:
-		mAvatar->getAnimation()->play("run");
+		mAvatar->getAnimation()->play(STATE_RUN);
 		break;
 	case EMBATTLED:
 		mController->stopMove();
-		mAvatar->getAnimation()->play("embattled");
+		mAvatar->getAnimation()->play(STATE_EMBATTLED);
 		break;
 	case ATTACK:
-		mAvatar->getAnimation()->play("attack");
+		mAvatar->getAnimation()->play(STATE_ATTACK);
 		break;
 	case DIE:
+		setTouchEnable(false);
 		mController->stopMove();
-		mAvatar->getAnimation()->play("die");
+		mAvatar->getAnimation()->play(STATE_DIE);
 		break;
 	}
 }
@@ -231,17 +248,16 @@ void PersonView::onAnimationComplete(CCArmature * arm, MovementEventType etype, 
 {
 	if (etype == COMPLETE || etype == LOOP_COMPLETE)
 	{
-		if (strcmp(ename, "run") == 0)
+		if (strcmp(ename, STATE_RUN) == 0)
 		{
 
 		}
-		else if (strcmp(ename, "die") == 0)
+		else if (strcmp(ename, STATE_DIE) == 0)
 		{
 			removeFromParent();
 		}
 		else
 		{
-			//mAvatar->getAnimation()->playByIndex(1);
 			changeState(STAND);
 		}
 	}
@@ -262,6 +278,7 @@ PersonVo* PersonView::getSelfInfo()
 void PersonView::dieOut()
 {
 	changeState(DIE);
+	CCNotificationCenter::sharedNotificationCenter()->postNotification(EVENT_WAR_ENTITY_DIE, this);
 }
 
 // 获取自身
@@ -275,4 +292,28 @@ bool PersonView::checkHp()
 	if (mInfo->hp < 0) mInfo->hp = 0;
 	mBloodBar->setPercentage((float)mInfo->hp / mInfo->maxHp);
 	return mInfo->hp == 0 ? false : true;
+}
+
+//触摸事件
+bool PersonView::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
+{
+	if (mAvatar != NULL)
+	{
+		CCSize size = mAvatar->getContentSize();
+		float minx = this->getPositionX() - size.width / 2;
+		float maxx = this->getPositionX() + size.width / 2;
+		float miny = this->getPositionY();
+		float maxy = this->getPositionY() + size.height;
+		CCPoint touchPoint = pTouch->getLocation();
+		if (touchPoint.x > minx && touchPoint.x < maxx && touchPoint.y > miny && touchPoint.y < maxy && mCurState != DIE)
+		{
+			CCNotificationCenter::sharedNotificationCenter()->postNotification(EVENT_WAR_ADD_TOUCH_ENTITY, this);
+		}
+	}
+	return true;
+}
+// 触摸结束事件
+void PersonView::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)
+{
+	CCNotificationCenter::sharedNotificationCenter()->postNotification(EVENT_WAR_ADD_TOUCH_END, this);
 }

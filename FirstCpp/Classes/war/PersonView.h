@@ -11,11 +11,11 @@ using namespace cocos2d::extension;
 
 USING_NS_CC;
 
-class PersonView : public CCNode, public ControllerListener
+class PersonView : public CCNode, public CCTargetedTouchDelegate, public ControllerListener
 {
 public:
 	PersonView(void);
-	~PersonView(void);
+	virtual ~PersonView(void);
 	virtual void onEnter();
 	virtual void onExit();
 
@@ -31,6 +31,7 @@ public:
 	virtual PersonVo* getInfo() const; // 获取基本信息
 	void setBaseId(int id); //
 	int getBaseId() const;
+	void setTouchEnable(bool value);
 
 
 	//实现ControllerListener接口
@@ -46,6 +47,11 @@ public:
 	virtual CCNode* getSelfEntity(); // 获取自己
 	virtual AvatarAsset* getConfig(); // 获取配置
 	virtual bool checkHp(); // 监测hp
+
+	//重写CCTouchDelegate方法
+	virtual bool ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent); // 触摸开始
+	//virtual void ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent); // 触摸移动
+	virtual void ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent); // 触摸结束
 
 protected:
 	AvatarAsset* mConfig; // 配置数据

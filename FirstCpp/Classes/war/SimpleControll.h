@@ -22,7 +22,7 @@ public:
 	virtual void checkTargetPos();
 	virtual void stopMove();
 
-	void useSkill(int skillId); // 使用技能
+	virtual void useSkill(int skillId); // 使用技能
 	void simpleAttack(int dt); // 普通攻击
 	
 

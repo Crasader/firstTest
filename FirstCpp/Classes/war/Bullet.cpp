@@ -1,4 +1,6 @@
 #include "Bullet.h"
+#include "WarScene.h"
+#include "EnumEvent.h"
 
 Bullet::Bullet(void)
 {
@@ -21,12 +23,11 @@ void Bullet::onExit()
 {
 	if (mAvatar != NULL)
 	{
-		mAvatar->removeFromParent();
+		mAvatar->removeFromParentAndCleanup(true);
 		mAvatar = NULL;
 	}
 
 	mId = 0;
-	mParent = NULL;
 	mFromNode = NULL;
 	mToNode = NULL;
 
@@ -59,10 +60,9 @@ void Bullet::setAvatar(CCArmature* avatar)
 }
 
 // 初始化子弹
-void Bullet::initBullet(int id, CCNode* parent, CCNode* fromNode, CCNode* toNode)
+void Bullet::initBullet(int id, CCNode* fromNode, CCNode* toNode)
 {
 	mId = id;
-	mParent = parent;
 	mFromNode = (PersonView*)fromNode;
 	mToNode = (PersonView*)toNode;
 
@@ -70,7 +70,7 @@ void Bullet::initBullet(int id, CCNode* parent, CCNode* fromNode, CCNode* toNode
 	if (id == 0)
 	{
 		mAvatar = NULL;
-		parent->addChild(this);
+		CCNotificationCenter::sharedNotificationCenter()->postNotification(EVENT_WAR_ADD_EFFECT, this);
 		CCFiniteTimeAction* mv = CCSequence::create(
 			CCDelayTime::create(0.5f),
 			CCCallFunc::create(this, callfunc_selector(Bullet::delayComplete)),
@@ -81,13 +81,13 @@ void Bullet::initBullet(int id, CCNode* parent, CCNode* fromNode, CCNode* toNode
 	}
 	
 	// 通过id到表中查询子弹的具体数据信息
-	CCArmature* av = CCArmature::create("Weapon");
+	CCArmature* av = CCArmature::create("Bullet");
 	av->getAnimation()->playByIndex(0);
 	setAvatar(av);
 
 	int prx = fromNode->getPositionX() < toNode->getPositionX() ? mFromNode->getConfig()->bulletx() : -mFromNode->getConfig()->bulletx();
 	setPosition(CCPoint(mFromNode->getPositionX() + prx, mFromNode->getPositionY() + mFromNode->getConfig()->bullety()));
-	parent->addChild(this);
+	CCNotificationCenter::sharedNotificationCenter()->postNotification(EVENT_WAR_ADD_EFFECT, this);
 
 	//mAvatar->getAnimation()->play("atteck");
 	//return;
@@ -106,24 +106,29 @@ void Bullet::initBullet(int id, CCNode* parent, CCNode* fromNode, CCNode* toNode
 void Bullet::scaleComplete()
 {
 	// 子弹移动动画
-	CCFiniteTimeAction* mv = CCSequence::create(
-		CCMoveTo::create(0.2, CCPoint(mToNode->getPositionX(), mToNode->getPositionY() + 50)),
-		CCCallFunc::create(this, callfunc_selector(Bullet::moveComplete)),
-		NULL);
-	runAction(mv);
+	if (checkEntity())
+	{
+		CCFiniteTimeAction* mv = CCSequence::create(
+			CCMoveTo::create(0.2, CCPoint(mToNode->getPositionX(), mToNode->getPositionY() + 50)),
+			CCCallFunc::create(this, callfunc_selector(Bullet::moveComplete)),
+			NULL);
+		runAction(mv);
+	}
 }
 
 void Bullet::moveComplete()
 {
-	((PartenerView*)mToNode)->getController()->beAttack(260.0f);
-	
-	mAvatar->getAnimation()->play("atteck");
-	
+	if (checkEntity()) 
+	{
+		((PartenerView*)mToNode)->getController()->beAttack(mFromNode->getInfo()->attack);
+	}
+	if (mAvatar)
+		mAvatar->getAnimation()->play("embattled");
 }
 
 void Bullet::delayComplete()
 {
-	if (mToNode != NULL && mFromNode != NULL)
+	if (checkEntity())
 	{
 		mToNode->getController()->beAttack(mFromNode->getInfo()->attack);
 		if (mToNode->getSelfInfo()->hp <= 0)
@@ -140,20 +145,20 @@ void Bullet::onAnimationComplete(CCArmature * arm, MovementEventType etype, cons
 {
 	if (etype == COMPLETE || etype == LOOP_COMPLETE)
 	{
-		if (strcmp(ename, "atteck") == 0)
+		if (strcmp(ename, "embattled") == 0)
 		{
-			if (mToNode != NULL)
+			if (checkEntity())
 			{
-				if (((PartenerView*)mToNode)->getSelfInfo()->hp <= 0)
+				if (mToNode->getSelfInfo()->hp <= 0)
 				{
-					((PersonView*)mFromNode)->setTarget(NULL);
+					mFromNode->setTarget(NULL);
 					WarModel::shardWarModel()->removeEntity(mToNode);
 				}
+				mAvatar->removeFromParentAndCleanup(true);
+				mAvatar = NULL;
+				//removeFromParent(); // 从父对象移除
+				removeFromParentAndCleanup(true);
 			}
-			mAvatar->removeFromParentAndCleanup(true);
-			mAvatar = NULL;
-			//removeFromParent(); // 从父对象移除
-			removeFromParentAndCleanup(true);
 		}
 		else
 		{
@@ -162,9 +167,51 @@ void Bullet::onAnimationComplete(CCArmature * arm, MovementEventType etype, cons
 	}
 	else
 	{
-		if (strcmp(ename, "atteck") == 0)
+		if (strcmp(ename, "embattled") == 0)
 		{
-			CCLog("attack start");
+			//CCLog("embattled start");
 		}
+	}
+}
+
+bool Bullet::checkEntity()
+{
+	bool todie = WarModel::shardWarModel()->isDie(mToNode);
+	bool fromdie = WarModel::shardWarModel()->isDie(mFromNode);
+	
+	if (todie && !fromdie)
+	{
+		mFromNode->setTarget(NULL);
+		if (mAvatar != NULL)
+		{
+			mAvatar->removeFromParentAndCleanup(true);
+			mAvatar = NULL;
+		}
+		removeFromParentAndCleanup(true);
+		return false;
+	}
+	else if (!todie && fromdie)
+	{
+		if (mAvatar != NULL)
+		{
+			mAvatar->removeFromParentAndCleanup(true);
+			mAvatar = NULL;
+		}
+		removeFromParentAndCleanup(true);
+		return false;
+	}
+	else if (todie && fromdie)
+	{
+		if (mAvatar != NULL)
+		{
+			mAvatar->removeFromParentAndCleanup(true);
+			mAvatar = NULL;
+		}
+		removeFromParentAndCleanup(true);
+		return false;
+	}
+	else
+	{
+		return true;
 	}
 }
