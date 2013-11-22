@@ -18,7 +18,7 @@ public:
 	virtual void setSpeed(float speed) = 0;
 
 	virtual int beAttack(int aValue) = 0; // 被攻击，参数为攻击力
-	virtual void useSkill(int skillId) = 0;
+	virtual bool useSkill(int skillId) = 0;
 
 protected:
 	ControllerListener* mControllerLintoner;

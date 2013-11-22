@@ -76,13 +76,15 @@ bool SkillBtn::init()
 
 void SkillBtn::onEnter()
 {
-	CCTexture2D* bgTexture = CCTextureCache::sharedTextureCache()->textureForKey("WarSkillUI/skill_kuan.png");
-	mBgImg = CCSprite::createWithTexture(bgTexture);
+	//CCTexture2D* bgTexture = CCTextureCache::sharedTextureCache()->textureForKey("WarSkillUI/skill_kuan.png");
+	//mBgImg = CCSprite::createWithTexture(bgTexture);
+	mBgImg = CCSprite::createWithSpriteFrameName("skill_kuan.png");
 	mBgImg->setPosition(ccp(1,-2));
 	addChild(mBgImg, 1);
 
-	CCTexture2D* grayTextrue = CCTextureCache::sharedTextureCache()->textureForKey("WarSkillUI/skill_1_1.png");
-	mGrayImg = CCSprite::createWithTexture(grayTextrue);
+	//CCTexture2D* grayTextrue = CCTextureCache::sharedTextureCache()->textureForKey("WarSkillUI/skill_1_1.png");
+	//mGrayImg = CCSprite::createWithTexture(grayTextrue);
+	mGrayImg = CCSprite::createWithSpriteFrameName("skill_1_1.png");
 	addChild(mGrayImg);
 
 	mPro = CCProgressTimer::create(mGrayImg);
@@ -107,8 +109,9 @@ void SkillBtn::setId(int value)
 	if (mId != value)
 	{
 		mId = value;
-		CCTexture2D* tpt = CCTextureCache::sharedTextureCache()->textureForKey("WarSkillUI/skill_1_0.png");
-		CCSprite* tps = CCSprite::createWithTexture(tpt);
+		//CCTexture2D* tpt = CCTextureCache::sharedTextureCache()->textureForKey("WarSkillUI/skill_1_0.png");
+		//CCSprite* tps = CCSprite::createWithTexture(tpt);
+		CCSprite* tps = CCSprite::createWithSpriteFrameName("skill_1_0.png");
 		if (mPro != NULL)
 			mPro->removeFromParentAndCleanup(true);
 		mPro = CCProgressTimer::create(tps);

@@ -160,13 +160,13 @@ void SimpleControll::checkTargetPos()
 	}
 }
 
-void SimpleControll::useSkill(int skillId)
+bool SimpleControll::useSkill(int skillId)
 {
-	if (mControllerLintoner->getTarget() == NULL) return;
+	if (mControllerLintoner->getTarget() == NULL) return false;
 	if (WarModel::shardWarModel()->isDie((PersonView*)mControllerLintoner->getTarget()))
 	{
 		((PersonView*)mControllerLintoner->getSelfEntity())->setTarget(NULL);
-		return;
+		return false;
 	}
 
 	unschedule(schedule_selector(SimpleControll::simpleAttack));
@@ -178,6 +178,8 @@ void SimpleControll::useSkill(int skillId)
 	Skill* skill = Skill::create();
 	skill->initSkill(skillId, mControllerLintoner->getSelfEntity(), mControllerLintoner->getTarget());
 	schedule(schedule_selector(SimpleControll::simpleAttack), 2.0f); // 停下来开始检测攻击
+
+	return true;
 }
 
 void SimpleControll::simpleAttack(int dt)

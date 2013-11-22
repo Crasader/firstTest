@@ -169,6 +169,7 @@ void GameWorld::menuCloseCallback(CCObject* pSender)
 	LoadManager::shardLoadManager()->addLoadItem("f.png");
 	LoadManager::shardLoadManager()->addLoadItem("g.png");
 	LoadManager::shardLoadManager()->addLoadItem("h.jpg");
+	LoadManager::shardLoadManager()->addLoadItem("WarSkillUI/WarSkillUI0.png", "WarSkillUI/WarSkillUI0.plist");
 	LoadManager::shardLoadManager()->load(SCENE_WAR);
 }
 

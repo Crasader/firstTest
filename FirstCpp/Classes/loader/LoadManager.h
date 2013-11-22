@@ -33,6 +33,7 @@ protected:
 	int mAllNum;
 	int mLoaded;
 	CCArray* mLoadArray;
+	CCArray* mSpriteLoadArray;
 
 	SCENE mNextScene;
 	LoadScene* mLoadScene;

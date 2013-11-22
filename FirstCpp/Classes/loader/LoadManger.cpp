@@ -26,6 +26,7 @@ LoadManager::~LoadManager(void)
 {
 	CC_SAFE_DELETE(mLoadManager);
 	CC_SAFE_RELEASE_NULL(mLoadArray);
+	CC_SAFE_RELEASE_NULL(mSpriteLoadArray);
 }
 
 LoadManager* LoadManager::shardLoadManager()
@@ -43,7 +44,9 @@ bool LoadManager::init()
 	mLoadScene = NULL;
 	mNextScene = SCENE_MAIN;
 	mLoadArray = CCArray::create();
-	mLoadArray->retain();
+	CC_SAFE_RETAIN(mLoadArray);
+	mSpriteLoadArray = CCArray::create();
+	CC_SAFE_RETAIN(mSpriteLoadArray);
 	return true;
 }
 
@@ -94,7 +97,6 @@ void LoadManager::load(SCENE target)
 		switch (pObj->mType)
 		{
 		case LArmature:
-			//CCArmatureDataManager::sharedArmatureDataManager()->addArmatureFileInfo(pObj->mImagePath.c_str(), pObj->mPlistPath.c_str(), pObj->mJsonPath.c_str());
 			CCArmatureDataManager::sharedArmatureDataManager()->addArmatureFileInfoAsync(pObj->mImagePath.c_str(), 
 				pObj->mPlistPath.c_str(), 
 				pObj->mJsonPath.c_str(),
@@ -102,7 +104,10 @@ void LoadManager::load(SCENE target)
 				schedule_selector(LoadManager::loadedArmatureCall));
 			break;
 		case LSprite:
-			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(pObj->mImagePath.c_str(), pObj->mPlistPath.c_str());
+			mSpriteLoadArray->addObject(pObj);
+			CCTextureCache::sharedTextureCache()->addImageAsync(pObj->mImagePath.c_str(),
+				this,
+				callfuncO_selector(LoadManager::loadedImageCall));
 			break;
 		case LImage:
 			CCTextureCache::sharedTextureCache()->addImageAsync(pObj->mImagePath.c_str(),
@@ -133,6 +138,12 @@ void LoadManager::doProgressCall()
 		mLoadScene->setProgress(pro);
 		if (pro >= 1)
 		{
+			for (int i = mSpriteLoadArray->count() - 1; i >= 0; i--)
+			{
+				LoadInfoVo* pObj = (LoadInfoVo*)mSpriteLoadArray->objectAtIndex(i);
+				CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(pObj->mPlistPath.c_str());
+			}
+			mSpriteLoadArray->removeAllObjects();
 			changeScene();
 		}
 	}

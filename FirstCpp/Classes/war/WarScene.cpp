@@ -202,7 +202,7 @@ void WarScene::initUI()
 	//UILayer* tempLayer = UILayer::create();
 	//tempLayer->scheduleUpdate();
 	//mLayerUI->addChild(tempLayer);
-	mSkillBar = CCUIHELPER->createWidgetFromJsonFile("WarSkillUI/WarSkillUI_1.json");
+	//mSkillBar = CCUIHELPER->createWidgetFromJsonFile("WarSkillUI/WarSkillUI_1.json");
 	//tempLayer->addWidget(mSkillBar);
 
 	//UILoadingBar* skill0 = (UILoadingBar*)mSkillBar->getChildByName("skillBar0");
@@ -510,8 +510,8 @@ void WarScene::onUseSkill(CCObject* value)
 		SkillVo* vo = (SkillVo*)mTouchEntity->getInfo()->getSkillArr()->objectAtIndex(sindex);
 		if (vo->getPercent() >= 100)
 		{
-			CCLog("succ use skill");
-			mTouchEntity->getController()->useSkill(1);
+			if (mTouchEntity->getController()->useSkill(1))
+				vo->setCurrentCd(vo->getMaxCd());
 		}
 	}
 }
