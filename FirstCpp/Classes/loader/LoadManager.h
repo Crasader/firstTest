@@ -32,7 +32,11 @@ public:
 protected:
 	int mAllNum;
 	int mLoaded;
+	int mArmatureNum;
+	int mArmatureLoaded;
+	
 	CCArray* mLoadArray;
+	CCArray* mArmatureLoadArray;
 	CCArray* mSpriteLoadArray;
 
 	SCENE mNextScene;
@@ -42,6 +46,7 @@ protected:
 	void loadedArmatureCall(float pro);
 	void doProgressCall();
 	void changeScene();
+	void loadArmature();
 };
 
 class LoadInfoVo : public CCObject

@@ -210,10 +210,13 @@ void WarScene::initUI()
 	//CCProgressTo *to = CCProgressTo::create(10, 100);
 	//skill0->runAction(to);
 
+	CCSize visibleSize = CCDirector::sharedDirector()->getVisibleSize();
+	CCPoint origin = CCDirector::sharedDirector()->getVisibleOrigin();
+
 	for (int i = 0; i < 5; i++)
 	{
 		SkillBtn* sbtn0 = SkillBtn::create();
-		sbtn0->setPosition(ccp(50 + 110*i, 570));
+		sbtn0->setPosition(ccp(origin.x + 60 + 110*i, origin.y - 60 + visibleSize.height));
 		sbtn0->setVisible(false);
 		mLayerUI->addChild(sbtn0);
 		mSkillBtnArr->addObject(sbtn0);
@@ -508,7 +511,7 @@ void WarScene::onUseSkill(CCObject* value)
 	{
 		int sindex = mSkillBtnArr->indexOfObject(value);
 		SkillVo* vo = (SkillVo*)mTouchEntity->getInfo()->getSkillArr()->objectAtIndex(sindex);
-		if (vo->getPercent() >= 100)
+		if (vo->getPercent() >= 100 && mTouchEntity->getBaseId() == 2 || mTouchEntity->getBaseId() == 3) // 暂时等于2和3的可以放技能
 		{
 			if (mTouchEntity->getController()->useSkill(1))
 				vo->setCurrentCd(vo->getMaxCd());

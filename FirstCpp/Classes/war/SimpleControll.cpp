@@ -1,7 +1,5 @@
 #include "SimpleControll.h"
 #include <stdlib.h>
-#include <time.inl>
-#include "Skill.h"
 
 
 SimpleControll::SimpleControll(void)
@@ -199,7 +197,6 @@ void SimpleControll::simpleAttack(int dt)
 	}
 	if (mControllerLintoner->getState() != RUN)
 	{
-		std::srand(time(0));
 		mControllerLintoner->changeState(ATTACK);
 		Bullet* bul = Bullet::create();
 		bul->initBullet(0, mControllerLintoner->getSelfEntity(), mControllerLintoner->getTarget());

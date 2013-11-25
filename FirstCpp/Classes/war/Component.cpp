@@ -21,19 +21,18 @@ bool BloodBar::init()
 void BloodBar::onEnter()
 {
 	CCNode::onEnter();
-
-	CCTexture2D* bloodTexture = CCTextureCache::sharedTextureCache()->textureForKey("LoadUI/LoadingBar_ld03.png");
-	CCSprite* progressSprite = CCSprite::createWithTexture(bloodTexture);
-	//addChild(progressSprite, 1);
+	addChild(CCSprite::createWithSpriteFrameName("war_commonui_xt_di.png"), 0);
+	addChild(CCSprite::createWithSpriteFrameName("war_commonui_xt_liti.png"), 2);
+	CCSprite* progressSprite = CCSprite::createWithSpriteFrameName("war_commoneui_xt_cont.png");
+	progressSprite->setCascadeColorEnabled(false);
+	progressSprite->setColor(ccc3(0, 255, 0));
 	mProgressBar = CCProgressTimer::create(progressSprite);
 	mProgressBar->setType(kCCProgressTimerTypeBar);
 	mProgressBar->setBarChangeRate(ccp(1, 0)); 
 	mProgressBar->setMidpoint(ccp(0,0));
+	
 	addChild(mProgressBar, 1);
 	setPercentage(0.999);
-	//mProgressBar->setPercentage(99.9);
-
-	
 }
 
 void BloodBar::onExit()
@@ -49,9 +48,11 @@ void BloodBar::setPercentage(float pro)
 {
 	if (pro >= 0 && pro <= 1)
 	{
+		int r = (1 - pro) * 255;
+		int g = pro * 255;
+		mProgressBar->getSprite()->setColor(ccc3(r, g, 0));
 		CCProgressTo *to = CCProgressTo::create(0.3, pro*100);
 		mProgressBar->runAction(to);
-		//mProgressBar->setPercentage(pro * 100);
 	}
 }
 

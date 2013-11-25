@@ -52,7 +52,7 @@ bool GameWorld::init()
     
     CCSize visibleSize = CCDirector::sharedDirector()->getVisibleSize();
     CCPoint origin = CCDirector::sharedDirector()->getVisibleOrigin();
-
+	
     /////////////////////////////
     // 2. add a menu item with "X" image, which is clicked to quit the program
     //    you may modify it.
@@ -65,7 +65,7 @@ bool GameWorld::init()
                                         menu_selector(GameWorld::menuCloseCallback));
     
 	pCloseItem->setPosition(ccp(pCloseItem->getContentSize().width/2 +origin.x,
-                                origin.y + pCloseItem->getContentSize().height/2));
+                                origin.y + pCloseItem->getContentSize().height/2 + visibleSize.height / 2));
 
     // create menu, it's an autorelease object
     CCMenu* pMenu = CCMenu::create(pCloseItem, NULL);
@@ -139,48 +139,47 @@ bool GameWorld::init()
 
 void GameWorld::menuCloseCallback(CCObject* pSender)
 {
-	//创建一个新的场景
-	CCScene * newscene  = CCScene::create();
-	//从CocoStudio场景编辑器生成的数据生成根节点
-	UIWidget* pNode = CCUIHELPER->createWidgetFromJsonFile("SceneEditorTest/SceneEditorTest.json");
-	UILayer* tlayer = UILayer::create();
-	addChild(tlayer, 0);
-	tlayer->addWidget(pNode);
-	//播放背景音乐
-	CCComAudio *pAudio = (CCComAudio*)(pNode->getChildByName("Audio"));
-	pAudio->playBackgroundMusic(pAudio->getFile(),true);
-	//给蝴蝶鱼配置动画
-	CCComRender *pFishRender = (CCComRender*)(pNode->getChildByTag(10010)->getChildByName( "butterFlyFish"));
-	CCArmature *pButterFlyFish= (CCArmature *)(pFishRender->getRender());
-	pButterFlyFish->getAnimation()->playByIndex(0);
-	newscene->addChild(tlayer, 0, 1);
-	//切换到新的场景
-	CCDirector::sharedDirector()->replaceScene(newscene);
+	////创建一个新的场景
+	//CCScene * newscene  = CCScene::create();
+	////从CocoStudio场景编辑器生成的数据生成根节点
+	//CCNode *pNode = CCSSceneReader::sharedSceneReader()->createNodeWithSceneFile("SceneEditorTest/SceneEditorTest.json");
 
-	//int arr[] = {1, 2, 3, 4,5,6};
-	//for (int i = 0; i < 6; i++)
-	//{
-	//	AvatarAsset* av = NULL;
-	//	config_manager_gettile(AvatarAssetTable, AvatarAsset, CONFIG_AvatarAsset, arr[i], av);
+	////播放背景音乐
+	//CCComAudio *pAudio = (CCComAudio*)(pNode->getComponent("Audio"));
+	////pAudio->playBackgroundMusic(pAudio->getFile(), pAudio->isLoop());
+	//pAudio->playBackgroundMusic(pAudio->getFile(), true);
+	////给蝴蝶鱼配置动画
+	//CCComRender *pFishRender = (CCComRender*)(pNode->getChildByTag(10010)->getComponent( "butterFlyFish"));
+	//CCArmature *pButterFlyFish= (CCArmature *)(pFishRender->getRender());
+	//pButterFlyFish->getAnimation()->playByIndex(0);
+	//newscene->addChild(pNode, 0, 1);
+	////切换到新的场景
+	//CCDirector::sharedDirector()->replaceScene(newscene);
 
-	//	string aname = av->name();
-	//	int nameLen = aname.length();
-	//	char* cPng = new char[nameLen + 13];
-	//	sprintf(cPng, "avatar/%s0.png", aname.c_str());
-	//	char* cXml = new char[nameLen + 15];
-	//	sprintf(cXml, "avatar/%s0.plist", aname.c_str());
-	//	char* cJson = new char[nameLen + 20];
-	//	sprintf(cJson, "avatar/%s.ExportJson", aname.c_str());
-	//	LoadManager::shardLoadManager()->addLoadItem(cPng, cXml, cJson);
-	//	delete cPng;
-	//	delete cXml;
-	//	delete cJson;
-	//}
-	//
-	//LoadManager::shardLoadManager()->addLoadItem("weapon/Bullet0.png", "weapon/Bullet0.plist", "weapon/Bullet.ExportJson");
-	//LoadManager::shardLoadManager()->addLoadItem("WarSkillUI/WarSkillUI0.png", "WarSkillUI/WarSkillUI0.plist");
-	//LoadManager::shardLoadManager()->addLoadItem("warimags/WarCommonUI0.png", "warimags/WarCommonUI0.plist");
-	//LoadManager::shardLoadManager()->load(SCENE_WAR);
+	int arr[] = {1, 2, 3, 4,5,6};
+	for (int i = 0; i < 6; i++)
+	{
+		AvatarAsset* av = NULL;
+		config_manager_gettile(AvatarAssetTable, AvatarAsset, CONFIG_AvatarAsset, arr[i], av);
+
+		string aname = av->name();
+		int nameLen = aname.length();
+		char* cPng = new char[nameLen + 13];
+		sprintf(cPng, "avatar/%s0.png", aname.c_str());
+		char* cXml = new char[nameLen + 15];
+		sprintf(cXml, "avatar/%s0.plist", aname.c_str());
+		char* cJson = new char[nameLen + 20];
+		sprintf(cJson, "avatar/%s.ExportJson", aname.c_str());
+		LoadManager::shardLoadManager()->addLoadItem(cPng, cXml, cJson);
+		delete cPng;
+		delete cXml;
+		delete cJson;
+	}
+	
+	LoadManager::shardLoadManager()->addLoadItem("weapon/Bullet0.png", "weapon/Bullet0.plist", "weapon/Bullet.ExportJson");
+	LoadManager::shardLoadManager()->addLoadItem("WarSkillUI/WarSkillUI0.png", "WarSkillUI/WarSkillUI0.plist");
+	LoadManager::shardLoadManager()->addLoadItem("warimags/WarCommonUI0.png", "warimags/WarCommonUI0.plist");
+	LoadManager::shardLoadManager()->load(SCENE_WAR);
 }
 
 // 初始化游戏

@@ -9,6 +9,7 @@
 ../../Classes/proto/Wer.pb.cc \
 ../../Classes/SceneManager.cpp \
 ../../Classes/war/Bullet.cpp \
+../../Classes/war/Component.cpp \
 ../../Classes/war/ControllerBase.cpp \
 ../../Classes/war/ControllerListener.cpp \
 ../../Classes/war/PartenerView.cpp \
@@ -16,6 +17,8 @@
 ../../Classes/war/PersonView.cpp \
 ../../Classes/war/PersonVo.cpp \
 ../../Classes/war/SimpleControll.cpp \
+../../Classes/war/Skill.cpp \
+../../Classes/war/SkillVo.cpp \
 ../../Classes/war/WarMap.cpp \
 ../../Classes/war/WarModel.cpp \
 ../../Classes/war/WarScene.cpp \

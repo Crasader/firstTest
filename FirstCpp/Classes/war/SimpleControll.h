@@ -3,6 +3,7 @@
 #include "cocos2d.h"
 #include "Bullet.h"
 #include "ConfigManager.h"
+#include "Skill.h"
 
 USING_NS_CC;
 
