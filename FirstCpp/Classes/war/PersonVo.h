@@ -11,7 +11,7 @@ class PersonVo: public CCObject
 public:
 
 	PersonVo(void);
-	~PersonVo(void);
+	virtual ~PersonVo(void);
 
 	CREATE_FUNC(PersonVo);
 	virtual bool init();

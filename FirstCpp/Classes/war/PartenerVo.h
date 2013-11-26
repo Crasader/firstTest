@@ -7,7 +7,7 @@ class PartenerVo : public PersonVo
 public:
 
 	PartenerVo(void);
-	~PartenerVo(void);
+	virtual ~PartenerVo(void);
 
 	bool init();
 	CREATE_FUNC(PartenerVo);

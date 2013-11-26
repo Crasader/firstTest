@@ -1,5 +1,6 @@
 ../../Classes/AppDelegate.cpp \
 ../../Classes/BaseLayer.cpp \
+../../Classes/CommonTool.cpp \
 ../../Classes/ConfigManager.cpp \
 ../../Classes/GameScene.cpp \
 ../../Classes/loader/LoadManger.cpp \

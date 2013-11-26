@@ -179,6 +179,7 @@ void GameWorld::menuCloseCallback(CCObject* pSender)
 	LoadManager::shardLoadManager()->addLoadItem("weapon/Bullet0.png", "weapon/Bullet0.plist", "weapon/Bullet.ExportJson");
 	LoadManager::shardLoadManager()->addLoadItem("WarSkillUI/WarSkillUI0.png", "WarSkillUI/WarSkillUI0.plist");
 	LoadManager::shardLoadManager()->addLoadItem("warimags/WarCommonUI0.png", "warimags/WarCommonUI0.plist");
+	LoadManager::shardLoadManager()->addLoadItem("warimags/redBlood.png");
 	LoadManager::shardLoadManager()->load(SCENE_WAR);
 }
 
@@ -191,6 +192,7 @@ void GameWorld::initGame(void)
 
 	int pa[4] = {3,6,4,0};
 	CCArray* partener = WarModel::shardWarModel()->getPartenerArray();
+	partener->removeAllObjects();
 	for (int i = 0; i < 4; i++)
 	{
 		PartenerView* p1 = PartenerView::create();
@@ -209,6 +211,7 @@ void GameWorld::initGame(void)
 
 	int ea[4] = {3,4,5,8};
 	CCArray* enemy = WarModel::shardWarModel()->getEnemyArray();
+	enemy->removeAllObjects();
 	for (int i = 0; i < 4; i++)
 	{
 		PartenerView* p1 = PartenerView::create();

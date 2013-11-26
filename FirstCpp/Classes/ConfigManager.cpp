@@ -39,6 +39,8 @@ bool ConfigManager::initConfig()
 
 bool ConfigManager::addConfig(const char* fileName)
 {
+	std::string temp = std::string(fileName);
+	if (mMap[temp] != NULL) return true;
 	std::string fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(fileName);
 	unsigned long* filesize = new unsigned long;
 	unsigned char* data = CCFileUtils::sharedFileUtils()->getFileData(fullPath.c_str(), "rb", filesize);
@@ -46,9 +48,8 @@ bool ConfigManager::addConfig(const char* fileName)
 	table->ParseFromArray(data, (int)(&filesize));
 	delete filesize;
 	filesize = NULL;
-
 	mMap[table->tname()] = table;
-
+	CCFileUtils::sharedFileUtils()->purgeCachedEntries();
 	return true;
 }
 

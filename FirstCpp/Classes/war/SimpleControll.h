@@ -12,7 +12,7 @@ class SimpleControll :
 {
 public:
 	SimpleControll(void);
-	~SimpleControll(void);
+	virtual ~SimpleControll(void);
 
 	CREATE_FUNC(SimpleControll);
 	virtual bool init();

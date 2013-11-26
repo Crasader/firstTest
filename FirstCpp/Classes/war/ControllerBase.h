@@ -9,7 +9,7 @@ class ControllerBase : public CCNode
 {
 public:
 	ControllerBase(void);
-	~ControllerBase(void);
+	virtual ~ControllerBase(void);
 
 	void setControllerListener(ControllerListener* controllerListener);
 	virtual void moveTo(CCPoint targetPos);

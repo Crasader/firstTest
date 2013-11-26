@@ -30,7 +30,7 @@ void Bullet::onExit()
 	mId = 0;
 	mFromNode = NULL;
 	mToNode = NULL;
-
+	removeAllChildrenWithCleanup(true);
 	unscheduleUpdate();
 	stopAllActions();
 	CCNode::onExit();

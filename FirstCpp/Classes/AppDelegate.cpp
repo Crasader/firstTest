@@ -53,14 +53,3 @@ void AppDelegate::applicationWillEnterForeground() {
     // if you use SimpleAudioEngine, it must resume here
     // SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();
 }
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-void AppDelegate::keyBackClicked()
-{
-
-}
-void AppDelegate::keyMenuClicked()
-{
-
-}
-#endif

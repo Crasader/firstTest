@@ -1,5 +1,6 @@
 #include "SimpleControll.h"
 #include <stdlib.h>
+#include "EnumEvent.h"
 
 
 SimpleControll::SimpleControll(void)
@@ -199,7 +200,7 @@ void SimpleControll::simpleAttack(int dt)
 	{
 		mControllerLintoner->changeState(ATTACK);
 		Bullet* bul = Bullet::create();
-		bul->initBullet(0, mControllerLintoner->getSelfEntity(), mControllerLintoner->getTarget());
+		bul->initBullet(1, mControllerLintoner->getSelfEntity(), mControllerLintoner->getTarget());
 	}
 }
 
@@ -211,7 +212,15 @@ int SimpleControll::beAttack(int aValue)
 	mControllerLintoner->getSelfInfo()->hp -= result;
 	if (!mControllerLintoner->checkHp())
 	{
-		mControllerLintoner->dieOut();
+		mControllerLintoner->dieOut(); // hp小于0就死出去
 	}
+
+	// 创建飘血字
+	BloodFont* bft = BloodFont::create();
+	PersonView* selfentity = (PersonView*)mControllerLintoner->getSelfEntity();
+	float contenth = selfentity->getContentHeight();
+	bft->initBloodFont(result,mControllerLintoner->getSelfEntity()->getPositionX(),
+		mControllerLintoner->getSelfEntity()->getPositionY() + contenth - 40);
+	CCNotificationCenter::sharedNotificationCenter()->postNotification(EVENT_WAR_SHOW_BLOOD_FONT, bft);
 	return result;
 }

@@ -6,7 +6,7 @@ class PartenerView :
 {
 public:
 	PartenerView(void);
-	~PartenerView(void);
+	virtual ~PartenerView(void);
 
 	CREATE_FUNC(PartenerView);
 	virtual bool init();

@@ -11,3 +11,4 @@ const char * const EVENT_WAR_ADD_ENTITY = "event_war_add_entity"; // Ìí¼ÓÈËÎï¶ÔÏ
 const char * const EVENT_WAR_ADD_EFFECT = "event_war_add_effect"; // Ìí¼ÓĞ§¹û¶¯»­
 const char * const EVENT_WAR_ENTITY_DIE = "event_war_entity_die"; // ÈËÎïËÀÍö
 const char * const EVENT_WAR_USE_SKILL = "event_war_use_skill"; // Ê¹ÓÃ¼¼ÄÜ
+const char * const EVENT_WAR_SHOW_BLOOD_FONT = "event_war_show_blood_font"; // ÏÔÊ¾Æ®Ñª×Ö

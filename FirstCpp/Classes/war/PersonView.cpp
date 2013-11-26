@@ -29,7 +29,7 @@ void PersonView::onEnter()
 
 void PersonView::onExit()
 {
-	CCDirector::sharedDirector()->getTouchDispatcher()->removeDelegate(this);
+	setTouchEnable(false);
 
 	mAvatar->removeFromParentAndCleanup(true);
 	mController->removeFromParentAndCleanup(true);
@@ -316,4 +316,15 @@ bool PersonView::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
 void PersonView::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)
 {
 	CCNotificationCenter::sharedNotificationCenter()->postNotification(EVENT_WAR_ADD_TOUCH_END, this);
+}
+
+float PersonView::getContentHeight()
+{
+	if (mAvatar) return mAvatar->getContentSize().height;
+	return 0;
+}
+float PersonView::getContentWidth()
+{
+	if (mAvatar) return mAvatar->getContentSize().width;
+	return 0;
 }

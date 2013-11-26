@@ -46,4 +46,20 @@ private:
 	int mId;
 };
 
+//Æ®Ñª×Ö
+class BloodFont : public CCNode
+{
+public:
+	BloodFont();
+	virtual ~BloodFont();
+	virtual void onEnter();
+	virtual void onExit();
+	CREATE_FUNC(BloodFont);
+	virtual bool init();
+	void initBloodFont(int value,float posx, float posy);
+private:
+	void moveComplete();
+	CCLabelAtlas* labelAtlas;
+};
+
 //Ëµ»°ÆøÅÝ

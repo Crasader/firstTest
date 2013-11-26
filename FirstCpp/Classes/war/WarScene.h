@@ -27,6 +27,8 @@ public:
 	CCSprite* bg;
 
 	// function
+	void purgeSelf(); // 
+	void menuCloseCallback(CCObject* pSender);
 	void onTimerHandler(float dt); // 秒计时器处理函数
 	void onSkillTimerHandler(float dt); // 技能计时器函数
 	void checkDeep(); // 检查深度排序
@@ -46,6 +48,7 @@ public:
 	//PartenerView* hero;
 
 	CREATE_FUNC(WarScene);
+
 
 private:
 	CCNode* mLayerBg; // 背景层

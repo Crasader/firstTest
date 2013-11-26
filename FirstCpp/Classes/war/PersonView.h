@@ -32,6 +32,8 @@ public:
 	void setBaseId(int id); //
 	int getBaseId() const;
 	void setTouchEnable(bool value);
+	float getContentWidth();
+	float getContentHeight();
 
 
 	//实现ControllerListener接口

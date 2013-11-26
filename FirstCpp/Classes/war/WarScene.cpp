@@ -7,6 +7,8 @@
 #include "ConfigManager.h"
 #include "EnumEvent.h"
 #include "SkillVo.h"
+#include "CommonTool.h"
+#include "GameScene.h"
 
 using namespace cocos2d::extension;
 USING_NS_CC;
@@ -28,7 +30,7 @@ WarScene::~WarScene(void)
 
 void WarScene::onEnter()
 {
-	CCNode::onEnter();
+	CCLayer::onEnter();
 	
 	
 	// 添加侦听事件
@@ -37,37 +39,9 @@ void WarScene::onEnter()
 	CCNotificationCenter::sharedNotificationCenter()->addObserver(this, callfuncO_selector(WarScene::addEffect), EVENT_WAR_ADD_EFFECT, NULL);
 	CCNotificationCenter::sharedNotificationCenter()->addObserver(this, callfuncO_selector(WarScene::onEntityDie), EVENT_WAR_ENTITY_DIE, NULL);
 	CCNotificationCenter::sharedNotificationCenter()->addObserver(this, callfuncO_selector(WarScene::onUseSkill), EVENT_WAR_USE_SKILL, NULL);
-}
+	CCNotificationCenter::sharedNotificationCenter()->addObserver(this, callfuncO_selector(WarScene::addEffect), EVENT_WAR_SHOW_BLOOD_FONT, NULL);
 
-void WarScene::onExit()
-{
-	// 移除侦听事件
-	CCNotificationCenter::sharedNotificationCenter()->removeObserver(this, EVENT_WAR_USE_SKILL);
-	CCNotificationCenter::sharedNotificationCenter()->removeObserver(this, EVENT_WAR_ENTITY_DIE);
-	CCNotificationCenter::sharedNotificationCenter()->removeObserver(this, EVENT_WAR_ADD_EFFECT);
-	CCNotificationCenter::sharedNotificationCenter()->removeObserver(this, EVENT_WAR_ADD_TOUCH_END);
-	CCNotificationCenter::sharedNotificationCenter()->removeObserver(this, EVENT_WAR_ADD_TOUCH_ENTITY);
-
-	
-	CCNode::onExit();
-}
-
-CCScene* WarScene::scene()
-{
-	CCScene* mScene = CCScene::create();
-	WarScene* mWarScene = WarScene::create();
-
-	mScene->addChild(mWarScene, 0, 1);
-
-	return mScene;
-}
-
-bool WarScene::init()
-{
-	if (!CCLayer::init())
-	{
-		return false;
-	}
+	CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, 0, false);
 
 	mTouchX = 0;
 	mBeforX = 0;
@@ -91,31 +65,26 @@ bool WarScene::init()
 
 	//mSTimer = CCTimer::initWithTarget(this, SEL_SCHEDULE(WarScene::onTimerHandler()));
 	schedule(schedule_selector(WarScene::onTimerHandler), 0.5f);
-	
 
-	//bg = CCSprite::create("bg.jpg");
-	//bg->setAnchorPoint(ccp(0, 0));
-	//bg->setPosition(ccp(0, 0));
-	//addChild(bg);
 	UILayer* tlayer = UILayer::create();
 	addChild(tlayer, 0);
 	UIWidget* root = CCUIHELPER->createWidgetFromJsonFile("WarUI_1.json");
 	tlayer->addWidget(root);
-	 
+
 	//CCNode* pNode = CCSSceneReader::sharedSceneReader()->createNodeWithSceneFile("WarScene.json");
 	//addChild(pNode);
 	//CCNode* root = pNode->getChildByTag(10011);
 
-	bg1 = CCSprite::create("background.png");
-	bg2 = CCSprite::create("background.png");
-	bg1->setRotation(90);
-	bg1->setAnchorPoint(ccp(0, 0));
-	bg1->setPosition(ccp(0, visibleSize.height));
-	bg2->setRotation(90);
-	bg2->setAnchorPoint(ccp(0, 0));
-	bg2->setPosition(ccp(1020, visibleSize.height));
-	mLayerBg->addChild(bg1);
-	mLayerBg->addChild(bg2);
+	//bg1 = CCSprite::create("background.png");
+	//bg2 = CCSprite::create("background.png");
+	//bg1->setRotation(90);
+	//bg1->setAnchorPoint(ccp(0, 0));
+	//bg1->setPosition(ccp(0, visibleSize.height));
+	//bg2->setRotation(90);
+	//bg2->setAnchorPoint(ccp(0, 0));
+	//bg2->setPosition(ccp(1020, visibleSize.height));
+	//mLayerBg->addChild(bg1);
+	//mLayerBg->addChild(bg2);
 
 	CCLabelTTF* pLabel = CCLabelTTF::create("", "Arial", 24);
 
@@ -169,7 +138,7 @@ bool WarScene::init()
 
 		addEntity(pObj);
 	}
-	
+
 	for (int i = enemy->count() - 1; i >= 0; i--) 
 	{
 		PartenerView* pObj = (PartenerView*)enemy->objectAtIndex(i);
@@ -189,27 +158,56 @@ bool WarScene::init()
 	}
 
 	initUI();
-	
+
 	scheduleUpdate();
-	CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, 0, false);
+}
+
+void WarScene::onExit()
+{
+	purgeSelf();
+	CCLayer::onExit();
+}
+
+CCScene* WarScene::scene()
+{
+	CCScene* mScene = CCScene::create();
+	WarScene* mWarScene = WarScene::create();
+
+	mScene->addChild(mWarScene, 0, 1);
+
+	return mScene;
+}
+
+bool WarScene::init()
+{
+	if (!CCLayer::init())
+	{
+		return false;
+	}
 	return true;
 
 }
 
+void WarScene::purgeSelf()
+{
+	// 移除侦听事件
+	CCNotificationCenter::sharedNotificationCenter()->removeObserver(this, EVENT_WAR_USE_SKILL);
+	CCNotificationCenter::sharedNotificationCenter()->removeObserver(this, EVENT_WAR_ENTITY_DIE);
+	CCNotificationCenter::sharedNotificationCenter()->removeObserver(this, EVENT_WAR_ADD_EFFECT);
+	CCNotificationCenter::sharedNotificationCenter()->removeObserver(this, EVENT_WAR_ADD_TOUCH_END);
+	CCNotificationCenter::sharedNotificationCenter()->removeObserver(this, EVENT_WAR_ADD_TOUCH_ENTITY);
+	CCNotificationCenter::sharedNotificationCenter()->removeObserver(this, EVENT_WAR_SHOW_BLOOD_FONT);
+
+	CCDirector::sharedDirector()->getTouchDispatcher()->removeDelegate(this);
+	unschedule(schedule_selector(WarScene::onSkillTimerHandler));
+	unschedule(schedule_selector(WarScene::onTimerHandler));
+	unscheduleUpdate();
+
+	this->removeAllChildrenWithCleanup(true);
+}
+
 void WarScene::initUI()
 {
-	////技能ui层
-	//UILayer* tempLayer = UILayer::create();
-	//tempLayer->scheduleUpdate();
-	//mLayerUI->addChild(tempLayer);
-	//mSkillBar = CCUIHELPER->createWidgetFromJsonFile("WarSkillUI/WarSkillUI_1.json");
-	//tempLayer->addWidget(mSkillBar);
-
-	//UILoadingBar* skill0 = (UILoadingBar*)mSkillBar->getChildByName("skillBar0");
-	//skill0->setPercent(0);
-	//CCProgressTo *to = CCProgressTo::create(10, 100);
-	//skill0->runAction(to);
-
 	CCSize visibleSize = CCDirector::sharedDirector()->getVisibleSize();
 	CCPoint origin = CCDirector::sharedDirector()->getVisibleOrigin();
 
@@ -221,6 +219,32 @@ void WarScene::initUI()
 		mLayerUI->addChild(sbtn0);
 		mSkillBtnArr->addObject(sbtn0);
 	}
+
+	// 创建返回按钮
+	CCMenuItemImage *pCloseItem = CommonTool::shardCommonTool()->createCCMenuItemImage(
+		"war_commonui_back.png",
+		"war_commonui_back.png",
+		NULL,
+		this,
+		menu_selector(WarScene::menuCloseCallback));
+	pCloseItem->setPosition(ccp(origin.x + visibleSize.width - pCloseItem->getContentSize().width / 2, origin.y + visibleSize.height - pCloseItem->getContentSize().height / 2));
+	CCMenu* pMenu = CCMenu::create(pCloseItem, NULL);
+	pMenu->setPosition(CCPointZero);
+	mLayerUI->addChild(pMenu);
+}
+
+// 返回按钮事件处理
+void WarScene::menuCloseCallback(CCObject* pSender)
+{
+	purgeSelf();
+	CCScene *pScene = GameWorld::scene();
+	CCDirector::sharedDirector()->replaceScene(pScene);
+	CCDirector::sharedDirector()->purgeCachedData();
+	//CCAnimationCache::purgeSharedAnimationCache();
+	//CCSpriteFrameCache::purgeSharedSpriteFrameCache();
+	//CCTextureCache::purgeSharedTextureCache();
+	//CCShaderCache::purgeSharedShaderCache();
+	//CCFileUtils::purgeFileUtils();
 }
 
 void WarScene::onSkillTimerHandler(float dt)
@@ -296,17 +320,17 @@ void WarScene::onSkillTimerHandler(float dt)
 // 每帧执行
 void WarScene::update(float delta)
 {
-	bg1->setPosition(ccp(bg1->getPosition().x - 3, bg1->getPosition().y));
-	bg2->setPosition(ccp(bg2->getPosition().x - 3, bg2->getPosition().y));
+	//bg1->setPosition(ccp(bg1->getPosition().x - 3, bg1->getPosition().y));
+	//bg2->setPosition(ccp(bg2->getPosition().x - 3, bg2->getPosition().y));
 
-	if (bg1->getPosition().x < -1020)
-	{
-		bg1->setPosition(ccp(1020, 640));
-	}
-	if (bg2->getPosition().x < -1020)
-	{
-		bg2->setPosition(ccp(1020, 640)); 
-	}
+	//if (bg1->getPosition().x < -1020)
+	//{
+	//	bg1->setPosition(ccp(1020, 640));
+	//}
+	//if (bg2->getPosition().x < -1020)
+	//{
+	//	bg2->setPosition(ccp(1020, 640)); 
+	//}
 }
 
 // 该函数每秒钟执行一次

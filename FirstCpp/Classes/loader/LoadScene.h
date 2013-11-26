@@ -10,13 +10,15 @@ USING_NS_CC;
 class LoadScene : public BaseLayer
 {
 public:
+	LoadScene();
+	~LoadScene();
 	virtual bool init();
 	static CCScene* scene();
 	CREATE_FUNC(LoadScene);
 
 	void setProgress(float value);
 	LoadScene* getLoadScene();
-protected:
 private:
 	UIWidget* mUi;
+	UILayer* mLayer;
 };

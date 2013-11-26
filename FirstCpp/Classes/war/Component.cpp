@@ -42,6 +42,8 @@ void BloodBar::onExit()
 		mProgressBar->removeFromParentAndCleanup(true);
 		mProgressBar = NULL;
 	}
+	removeAllChildrenWithCleanup(true);
+	CCNode::onExit();
 }
 
 void BloodBar::setPercentage(float pro)
@@ -77,14 +79,13 @@ bool SkillBtn::init()
 
 void SkillBtn::onEnter()
 {
+	CCNode::onEnter();
 	//CCTexture2D* bgTexture = CCTextureCache::sharedTextureCache()->textureForKey("WarSkillUI/skill_kuan.png");
 	//mBgImg = CCSprite::createWithTexture(bgTexture);
 	mBgImg = CCSprite::createWithSpriteFrameName("skill_kuan.png");
 	mBgImg->setPosition(ccp(1,-2));
 	addChild(mBgImg, 1);
 
-	//CCTexture2D* grayTextrue = CCTextureCache::sharedTextureCache()->textureForKey("WarSkillUI/skill_1_1.png");
-	//mGrayImg = CCSprite::createWithTexture(grayTextrue);
 	mGrayImg = CCSprite::createWithSpriteFrameName("skill_1_1.png");
 	addChild(mGrayImg);
 
@@ -101,8 +102,9 @@ void SkillBtn::onExit()
 {
 	mBgImg->removeFromParentAndCleanup(true);
 	mGrayImg->removeFromParentAndCleanup(true);
-
+	removeAllChildrenWithCleanup(true);
 	CCDirector::sharedDirector()->getTouchDispatcher()->removeDelegate(this);
+	CCNode::onExit();
 }
 
 void SkillBtn::setId(int value)
@@ -110,8 +112,6 @@ void SkillBtn::setId(int value)
 	if (mId != value)
 	{
 		mId = value;
-		//CCTexture2D* tpt = CCTextureCache::sharedTextureCache()->textureForKey("WarSkillUI/skill_1_0.png");
-		//CCSprite* tps = CCSprite::createWithTexture(tpt);
 		CCSprite* tps = CCSprite::createWithSpriteFrameName("skill_1_0.png");
 		if (mPro != NULL)
 			mPro->removeFromParentAndCleanup(true);
@@ -160,6 +160,57 @@ bool SkillBtn::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
 void SkillBtn::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)
 {
 
+}
+
+/////////////////////
+// Æ®Ñª×Ö////////////
+////////////////////
+BloodFont::BloodFont():labelAtlas(NULL)
+{
+
+}
+BloodFont::~BloodFont()
+{
+
+}
+void BloodFont::onEnter()
+{
+	CCNode::onEnter();
+	// CCSpawn
+	CCFiniteTimeAction* mv = CCSequence::create(
+		CCMoveTo::create(1, CCPoint(getPositionX(), getPositionY() + 60)),
+		CCDelayTime::create(0.5f),
+		CCCallFunc::create(this, callfunc_selector(BloodFont::moveComplete)),
+		NULL);
+	runAction(mv);
+}
+void BloodFont::onExit()
+{
+	stopAllActions();
+	if (labelAtlas) labelAtlas->removeAllChildrenWithCleanup(true);
+	removeAllChildrenWithCleanup(true);
+	CCNode::onExit();
+}
+bool BloodFont::init()
+{
+	return true;
+}
+
+void BloodFont::initBloodFont(int value, float posx, float posy)
+{
+	char* posid = new char[13];
+	sprintf(posid, ":%d", value);
+	setPositionY(posy);
+	labelAtlas = CCLabelAtlas::create(posid, "warimags/redBlood.png", 18, 24, '0');
+	delete[] posid;
+	int www = labelAtlas->getContentSize().width;
+	addChild(labelAtlas);
+	setPositionX(-www / 2 + posx);
+}
+
+void BloodFont::moveComplete()
+{
+	removeFromParentAndCleanup(true);
 }
 
 /////////////////////
