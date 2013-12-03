@@ -65,10 +65,12 @@ void WarScene::onEnter()
 
 	//mSTimer = CCTimer::initWithTarget(this, SEL_SCHEDULE(WarScene::onTimerHandler()));
 	schedule(schedule_selector(WarScene::onTimerHandler), 0.5f);
+	schedule(schedule_selector(WarScene::onSkillTimerHandler), 0.1f);
 
 	UILayer* tlayer = UILayer::create();
 	addChild(tlayer, 0);
 	UIWidget* root = CCUIHELPER->createWidgetFromJsonFile("WarUI_1.json");
+	root->setPosition(origin);
 	tlayer->addWidget(root);
 
 	//CCNode* pNode = CCSSceneReader::sharedSceneReader()->createNodeWithSceneFile("WarScene.json");
@@ -399,18 +401,17 @@ void WarScene::checkDeep()
 	CCArray* partener = WarModel::shardWarModel()->getPartenerArray();
 	CCArray* enemy = WarModel::shardWarModel()->getEnemyArray();
 
-	for (int i = partener->count() - 1; i >= 0; i--) 
-	{
-		PartenerView* pObj = (PartenerView*)partener->objectAtIndex(i);
-		mLayerEntity->reorderChild(pObj, 1000 - pObj->getPositionY());
-	}
-
 	for (int i = enemy->count() - 1; i >= 0; i--) 
 	{
 		PartenerView* pObj = (PartenerView*)enemy->objectAtIndex(i);
 		mLayerEntity->reorderChild(pObj, 1000 - pObj->getPositionY());
 	}
 
+	for (int i = partener->count() - 1; i >= 0; i--) 
+	{
+		PartenerView* pObj = (PartenerView*)partener->objectAtIndex(i);
+		mLayerEntity->reorderChild(pObj, 1000 - pObj->getPositionY());
+	}
 	//mLayerEntity->reorderChild(hero, 1000 - hero->getPositionY());
 	//mLayerEntity->reorderChild(stone, 1000 - stone->getPositionY());
 }
@@ -506,7 +507,7 @@ void WarScene::entityTouchEnd(CCObject* obj)
 				else
 					tbn->setVisible(true);
 			}
-			schedule(schedule_selector(WarScene::onSkillTimerHandler), 0.1f);
+			//schedule(schedule_selector(WarScene::onSkillTimerHandler), 0.1f);
 		}
 		touchEntityArr->removeAllObjects();
 	}
@@ -518,7 +519,7 @@ void WarScene::onEntityDie(CCObject* value)
 	if (mTouchEntity == value)
 	{
 		mTouchEntity = NULL;
-		unschedule(schedule_selector(WarScene::onSkillTimerHandler));
+		//unschedule(schedule_selector(WarScene::onSkillTimerHandler));
 		for (int i = mSkillBtnArr->count() - 1; i >= 0; i--)
 		{
 			SkillBtn* tbn = (SkillBtn*)mSkillBtnArr->objectAtIndex(i);

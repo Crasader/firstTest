@@ -63,6 +63,15 @@ void PersonView::setBaseId(int id)
 	CCArmature* armature = CCArmature::create(mConfig->name().c_str());
 	setAvatar(armature);
 
+	//if (id == 3)
+	//{
+	//	CCBone* bone = armature->getBone("staff");
+	//	CCSpriteDisplayData displayData;  
+	//	displayData.setParam("Pastor-weapon-pastor_staff_1.png");
+	//	bone->addDisplay(&displayData, 1);  
+	//	bone->changeDisplayByIndex(1, true);
+	//}
+
 	if (mBloodBar == NULL)
 	{
 		mBloodBar = BloodBar::create();

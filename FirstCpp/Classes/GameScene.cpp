@@ -209,7 +209,7 @@ void GameWorld::initGame(void)
 
 	CCLog("init over");
 
-	int ea[4] = {3,4,5,8};
+	int ea[4] = {2,4,5,8};
 	CCArray* enemy = WarModel::shardWarModel()->getEnemyArray();
 	enemy->removeAllObjects();
 	for (int i = 0; i < 4; i++)

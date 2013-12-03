@@ -62,12 +62,15 @@ void Bullet::setAvatar(CCArmature* avatar)
 // 初始化子弹
 void Bullet::initBullet(int id, CCNode* fromNode, CCNode* toNode)
 {
-	mId = id;
+	if (id == 1 || id == 4 || id == 5 || id == 6) 
+		mId = 0;
+	else 
+		mId = 1;
 	mFromNode = (PersonView*)fromNode;
 	mToNode = (PersonView*)toNode;
 
 	// 如果id为0，则表示没有子弹动画, 不进行动画处理
-	if (id == 0)
+	if (mId == 0)
 	{
 		mAvatar = NULL;
 		CCNotificationCenter::sharedNotificationCenter()->postNotification(EVENT_WAR_ADD_EFFECT, this);
@@ -88,10 +91,6 @@ void Bullet::initBullet(int id, CCNode* fromNode, CCNode* toNode)
 	int prx = fromNode->getPositionX() < toNode->getPositionX() ? mFromNode->getConfig()->bulletx() : -mFromNode->getConfig()->bulletx();
 	setPosition(CCPoint(mFromNode->getPositionX() + prx, mFromNode->getPositionY() + mFromNode->getConfig()->bullety()));
 	CCNotificationCenter::sharedNotificationCenter()->postNotification(EVENT_WAR_ADD_EFFECT, this);
-
-	//mAvatar->getAnimation()->play("atteck");
-	//return;
-
 	this->setScale(0.2);
 
 	// 子弹移动动画

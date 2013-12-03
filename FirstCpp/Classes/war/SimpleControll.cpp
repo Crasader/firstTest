@@ -122,12 +122,24 @@ void SimpleControll::checkTargetPos()
 	{
 		AvatarAsset* targetConfig = temptarget->getConfig();
 		AvatarAsset* selfConfig = self->getConfig();
-		int dist = temptarget != NULL ? selfConfig->distance() + targetConfig->bodywidth() : selfConfig->distance();
-
 		CCPoint pos = mControllerLintoner->getCurPostion();
 		float tempX = pos.x;
 		float tempY = pos.y;
-		if (fabs(pos.y - temptarget->getPositionY()) > 10)
+
+		int dist = fabs(pos.y - temptarget->getPositionY()) < 10 ? selfConfig->distance() + targetConfig->bodywidth() : selfConfig->distance() / 1.414;
+		float maxDis = pos.getDistance(temptarget->getPosition());
+
+		if (maxDis > dist)
+		{
+			float dt = (maxDis - dist) / maxDis;
+			tempX += (temptarget->getPositionX() - tempX) * dt;
+			tempY += (temptarget->getPositionY() - tempY) * dt;
+		}
+		if (selfConfig->distance() < 100 && fabs(pos.y - temptarget->getPositionY()) > 10)
+		{
+			tempY = temptarget->getPositionY();
+		}
+		/*if (fabs(pos.y - temptarget->getPositionY()) > 10)
 		{
 			tempY = temptarget->getPositionY();
 		}
@@ -138,7 +150,7 @@ void SimpleControll::checkTargetPos()
 		else if (pos.x - temptarget->getPositionX() < -dist)
 		{
 			tempX = temptarget->getPositionX() - dist;
-		}
+		}*/
 		if (tempX != pos.x || tempY != pos.y)
 		{
 			moveTo(CCPoint(tempX, tempY)); // 跑到能打到目标的地方
@@ -200,7 +212,9 @@ void SimpleControll::simpleAttack(int dt)
 	{
 		mControllerLintoner->changeState(ATTACK);
 		Bullet* bul = Bullet::create();
-		bul->initBullet(1, mControllerLintoner->getSelfEntity(), mControllerLintoner->getTarget());
+		bul->initBullet(((PersonView*)mControllerLintoner->getSelfEntity())->getBaseId(), 
+			mControllerLintoner->getSelfEntity(), 
+			mControllerLintoner->getTarget());
 	}
 }
 

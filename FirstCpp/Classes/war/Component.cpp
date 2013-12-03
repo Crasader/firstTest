@@ -183,6 +183,9 @@ void BloodFont::onEnter()
 		CCCallFunc::create(this, callfunc_selector(BloodFont::moveComplete)),
 		NULL);
 	runAction(mv);
+
+	CCActionInterval* fadeto = CCFadeOut::create(1.5f);
+	labelAtlas->runAction(fadeto);
 }
 void BloodFont::onExit()
 {
