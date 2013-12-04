@@ -1,16 +1,19 @@
 #include "LoadScene.h"
 
-LoadScene::LoadScene()
+LoadScene::LoadScene():mLayer(NULL)
 {
 
 }
 
 LoadScene::~LoadScene()
 {
-	mLayer->unscheduleUpdate();
-	mLayer->removeAllChildrenWithCleanup(true);
-	mLayer->removeFromParentAndCleanup(true);
-	mLayer = NULL;
+	if (mLayer)
+	{
+		mLayer->unscheduleUpdate();
+		mLayer->removeAllChildrenWithCleanup(true);
+		mLayer->removeFromParentAndCleanup(true);
+		mLayer = NULL;
+	}
 	this->removeAllChildrenWithCleanup(true);
 }
 
