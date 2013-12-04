@@ -89,6 +89,12 @@ void LoadManager::load(SCENE target)
 {
 	mNextScene = target;
 
+	if (mAllNum + mArmatureNum <= 0)
+	{
+		changeScene();
+		return;
+	}
+
 	CCScene* tempSc = LoadScene::scene();
 	mLoadScene = (LoadScene*)(tempSc->getChildren()->objectAtIndex(0));
 	CCDirector::sharedDirector()->replaceScene(tempSc);
@@ -96,6 +102,7 @@ void LoadManager::load(SCENE target)
 	if (mLoadArray->count() == 0)
 	{
 		loadArmature();
+		return;
 	}
 
 	for (int i = mLoadArray->count() - 1; i >= 0; i--) 
@@ -149,6 +156,12 @@ void LoadManager::loadedImageCall(CCObject* obj)
 
 void LoadManager::loadArmature()
 {
+	if (mArmatureNum <= 0)
+	{
+		changeScene();
+		return;
+	}
+
 	for (int i = mArmatureLoadArray->count() - 1; i >= 0; i--) 
 	{
 		LoadInfoVo* pObj = (LoadInfoVo*)mArmatureLoadArray->objectAtIndex(i);
