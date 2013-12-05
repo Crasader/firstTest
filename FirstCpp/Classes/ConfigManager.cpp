@@ -47,6 +47,7 @@ bool ConfigManager::addConfig(const char* fileName)
 	AvatarAssetTable* table = new AvatarAssetTable;
 	table->ParseFromArray(data, (int)(&filesize));
 	delete filesize;
+	delete[] data;
 	filesize = NULL;
 	mMap[table->tname()] = table;
 	CCFileUtils::sharedFileUtils()->purgeCachedEntries();
