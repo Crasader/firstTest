@@ -21,6 +21,16 @@ PersonView::~PersonView(void)
 	CC_SAFE_RELEASE_NULL(mInfo);
 }
 
+void PersonView::pure()
+{
+	std::map<int, AvatarAsset*>::iterator it;
+	for(it = avatarMap.begin(); it != avatarMap.end(); it++)
+	{
+		delete it->second;
+	}
+	avatarMap.clear();
+}
+
 void PersonView::onEnter()
 {
 	CCNode::onEnter();

@@ -11,7 +11,6 @@ SceneManager::SceneManager(void)
 SceneManager::~SceneManager(void)
 {
 	CCNotificationCenter::sharedNotificationCenter()->removeObserver(this, EVNET_SCENE_VIEW_WAR);
-	CC_SAFE_DELETE(mSceneManager);
 }
 
 SceneManager* SceneManager::shardSceneManager()
@@ -28,6 +27,11 @@ bool SceneManager::init()
 {
 	CCNotificationCenter::sharedNotificationCenter()->addObserver(this, callfuncO_selector(SceneManager::viewToWar), EVNET_SCENE_VIEW_WAR, NULL);// 进入战斗场景
 	return true;
+}
+
+void SceneManager::pure()
+{
+	CC_SAFE_DELETE(mSceneManager);
 }
 
 // 进入战斗场景

@@ -10,7 +10,7 @@ CommonTool::CommonTool()
 
 CommonTool::~CommonTool()
 {
-	CC_SAFE_DELETE(mCommonTool);
+	
 }
 
 CommonTool* CommonTool::shardCommonTool()
@@ -26,6 +26,11 @@ CommonTool* CommonTool::shardCommonTool()
 bool CommonTool::init()
 {
 	return true;
+}
+
+void CommonTool::pure()
+{
+	CC_SAFE_DELETE(mCommonTool);
 }
 
 CCMenuItemImage* CommonTool::createCCMenuItemImage(const char *normalImage, const char *selectedImage, const char *disabledImage, CCObject* target, SEL_MenuHandler selector)

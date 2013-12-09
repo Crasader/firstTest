@@ -44,21 +44,21 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // run
     pDirector->runWithScene(pScene);
 
-	// register lua engine
-	CCLuaEngine* pEngine = CCLuaEngine::defaultEngine();
-	CCScriptEngineManager::sharedManager()->setScriptEngine(pEngine);
-
-	CCLuaStack *pStack = pEngine->getLuaStack();
-	lua_State *tolua_s = pStack->getLuaState();
-	tolua_extensions_ccb_open(tolua_s);
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-	pStack = pEngine->getLuaStack();
-	tolua_s = pStack->getLuaState();
-	tolua_web_socket_open(tolua_s);
-#endif
-
-	std::string path = CCFileUtils::sharedFileUtils()->fullPathForFilename("hello.lua");
-	pEngine->executeScriptFile(path.c_str());
+//	// register lua engine
+//	CCLuaEngine* pEngine = CCLuaEngine::defaultEngine();
+//	CCScriptEngineManager::sharedManager()->setScriptEngine(pEngine);
+//
+//	CCLuaStack *pStack = pEngine->getLuaStack();
+//	lua_State *tolua_s = pStack->getLuaState();
+//	tolua_extensions_ccb_open(tolua_s);
+//#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+//	pStack = pEngine->getLuaStack();
+//	tolua_s = pStack->getLuaState();
+//	tolua_web_socket_open(tolua_s);
+//#endif
+//
+//	std::string path = CCFileUtils::sharedFileUtils()->fullPathForFilename("hello.lua");
+//	pEngine->executeScriptFile(path.c_str());
 
     return true;
 }

@@ -24,6 +24,7 @@ WarScene::WarScene(void):mTouchEntity(NULL)
 
 WarScene::~WarScene(void)
 {
+
 	CC_SAFE_RELEASE_NULL(touchEntityArr);
 	CC_SAFE_RELEASE_NULL(mSkillBtnArr);
 }
@@ -32,7 +33,19 @@ void WarScene::onEnter()
 {
 	CCLayer::onEnter();
 	
-	
+	//// 创建返回按钮
+	//CCMenuItemImage *pCloseItem = CommonTool::shardCommonTool()->createCCMenuItemImage(
+	//	"war_commonui_back.png",
+	//	"war_commonui_back.png",
+	//	NULL,
+	//	this,
+	//	menu_selector(WarScene::menuCloseCallback));
+	//pCloseItem->setPosition(ccp(pCloseItem->getContentSize().width, pCloseItem->getContentSize().height));
+	//CCMenu* pMenu = CCMenu::create(pCloseItem, NULL);
+	//pMenu->setPosition(CCPointZero);
+	//addChild(pMenu);	
+	//return;
+
 	// 添加侦听事件
 	CCNotificationCenter::sharedNotificationCenter()->addObserver(this, callfuncO_selector(WarScene::addTouchedEntity), EVENT_WAR_ADD_TOUCH_ENTITY, NULL);
 	CCNotificationCenter::sharedNotificationCenter()->addObserver(this, callfuncO_selector(WarScene::entityTouchEnd), EVENT_WAR_ADD_TOUCH_END, NULL);
@@ -67,11 +80,11 @@ void WarScene::onEnter()
 	schedule(schedule_selector(WarScene::onTimerHandler), 0.5f);
 	schedule(schedule_selector(WarScene::onSkillTimerHandler), 0.1f);
 
-	UILayer* tlayer = UILayer::create();
-	addChild(tlayer, 0);
-	UIWidget* root = CCUIHELPER->createWidgetFromJsonFile("WarUI_1.json");
+	mBgUILayer = UILayer::create();
+	addChild(mBgUILayer, 0);
+	UIWidget* root = GUIReader::shareReader()->widgetFromJsonFile("WarUI_1.json");
 	root->setPosition(origin);
-	tlayer->addWidget(root);
+	mBgUILayer->addWidget(root);
 
 	//CCNode* pNode = CCSSceneReader::sharedSceneReader()->createNodeWithSceneFile("WarScene.json");
 	//addChild(pNode);
@@ -122,7 +135,7 @@ void WarScene::onEnter()
 	CCArray* enemy = WarModel::shardWarModel()->getEnemyArray();
 
 	int tempa[] = {1,1,2,3};
-	int tempb[] = {4,5,6,5};
+	int tempb[] = {5,5,6,4};
 	for (int i = partener->count() - 1; i >= 0; i--) 
 	{
 		PartenerView* pObj = (PartenerView*)partener->objectAtIndex(i);
@@ -130,7 +143,7 @@ void WarScene::onEnter()
 		char* posid = new char[12];
 		sprintf(posid, "left%d", pObj->getInfo()->posId);
 		CCPoint tp = root->getChildByName("ImageView")->getChildByName(posid)->getPosition();
-		pObj->setPosition(tp);
+		pObj->setPosition(ccp(tp.x + origin.x, tp.y + origin.y));
 		delete posid;
 
 		movecontroll = SimpleControll::create();
@@ -148,7 +161,7 @@ void WarScene::onEnter()
 		char* posid = new char[12];
 		sprintf(posid, "right%d", pObj->getInfo()->posId);
 		CCPoint tp = root->getChildByName("ImageView")->getChildByName(posid)->getPosition();
-		pObj->setPosition(tp);
+		pObj->setPosition(ccp(tp.x + origin.x, tp.y + origin.y));
 		delete posid;
 
 		movecontroll = SimpleControll::create();
@@ -166,7 +179,6 @@ void WarScene::onEnter()
 
 void WarScene::onExit()
 {
-	purgeSelf();
 	CCLayer::onExit();
 }
 
@@ -239,14 +251,21 @@ void WarScene::initUI()
 void WarScene::menuCloseCallback(CCObject* pSender)
 {
 	purgeSelf();
+
+	//CCDirector::sharedDirector()->stopAnimation();
+	CCDirector::sharedDirector()->purgeCachedData();
+	CCTextureCache::sharedTextureCache()->removeAllTextures();
+	CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFrames();
+	ActionManager::shareManager()->releaseActions();
+	ActionManager::purgeActionManager();
+	GUIReader::shareReader()->purgeGUIReader();
+	CCArmatureDataManager::purge();
+	CCDataReaderHelper::purge();
+	//DictionaryHelper::purgeDictionaryHelper();
+	//CCScriptEngineManager::purgeSharedManager();
+
 	CCScene *pScene = GameWorld::scene();
 	CCDirector::sharedDirector()->replaceScene(pScene);
-	CCDirector::sharedDirector()->purgeCachedData();
-	//CCAnimationCache::purgeSharedAnimationCache();
-	//CCSpriteFrameCache::purgeSharedSpriteFrameCache();
-	//CCTextureCache::purgeSharedTextureCache();
-	//CCShaderCache::purgeSharedShaderCache();
-	//CCFileUtils::purgeFileUtils();
 }
 
 void WarScene::onSkillTimerHandler(float dt)

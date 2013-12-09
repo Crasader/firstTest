@@ -23,6 +23,7 @@ public:
 
 	static LoadManager* shardLoadManager();
 	bool init();
+	static void pure();
 
 	void load(SCENE target);
 	void addLoadItem(const char *plist, const char *png, const char *json);

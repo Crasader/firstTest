@@ -12,7 +12,12 @@ ConfigManager::ConfigManager(void)
 
 ConfigManager::~ConfigManager(void)
 {
-
+	std::map<std::string, ::google::protobuf::Message*>::iterator it;
+	for(it = mMap.begin(); it != mMap.end(); it++)
+	{
+		delete it->second;
+	}
+	mMap.clear();
 }
 
 ConfigManager* ConfigManager::sharedConfigManager()
@@ -22,6 +27,15 @@ ConfigManager* ConfigManager::sharedConfigManager()
 		mConfigManager = new ConfigManager();
 	}
 	return mConfigManager;
+}
+
+void ConfigManager::pure()
+{
+	if (mConfigManager)
+	{
+		delete mConfigManager;
+		mConfigManager = NULL;
+	}
 }
 
 bool ConfigManager::init()

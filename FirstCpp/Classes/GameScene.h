@@ -15,6 +15,7 @@ public:
     
     // a selector callback
     void menuCloseCallback(CCObject* pSender);
+	void onCloseCpp(CCObject* pSender);
     
     // implement the "static node()" method manually
     CREATE_FUNC(GameWorld);

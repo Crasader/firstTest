@@ -277,6 +277,13 @@ class AvatarAsset : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 defe() const;
   inline void set_defe(::google::protobuf::int32 value);
 
+  // optional int32 isremote = 12;
+  inline bool has_isremote() const;
+  inline void clear_isremote();
+  static const int kIsremoteFieldNumber = 12;
+  inline ::google::protobuf::int32 isremote() const;
+  inline void set_isremote(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:AvatarAsset)
  private:
   inline void set_has_id();
@@ -301,6 +308,8 @@ class AvatarAsset : public ::google::protobuf::Message {
   inline void clear_has_att();
   inline void set_has_defe();
   inline void clear_has_defe();
+  inline void set_has_isremote();
+  inline void clear_has_isremote();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -315,9 +324,10 @@ class AvatarAsset : public ::google::protobuf::Message {
   ::google::protobuf::int32 hp_;
   ::google::protobuf::int32 att_;
   ::google::protobuf::int32 defe_;
+  ::google::protobuf::int32 isremote_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(11 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(12 + 31) / 32];
 
   friend void  protobuf_AddDesc_AvatarAsset_2eproto();
   friend void protobuf_AssignDesc_AvatarAsset_2eproto();
@@ -768,6 +778,28 @@ inline ::google::protobuf::int32 AvatarAsset::defe() const {
 inline void AvatarAsset::set_defe(::google::protobuf::int32 value) {
   set_has_defe();
   defe_ = value;
+}
+
+// optional int32 isremote = 12;
+inline bool AvatarAsset::has_isremote() const {
+  return (_has_bits_[0] & 0x00000800u) != 0;
+}
+inline void AvatarAsset::set_has_isremote() {
+  _has_bits_[0] |= 0x00000800u;
+}
+inline void AvatarAsset::clear_has_isremote() {
+  _has_bits_[0] &= ~0x00000800u;
+}
+inline void AvatarAsset::clear_isremote() {
+  isremote_ = 0;
+  clear_has_isremote();
+}
+inline ::google::protobuf::int32 AvatarAsset::isremote() const {
+  return isremote_;
+}
+inline void AvatarAsset::set_isremote(::google::protobuf::int32 value) {
+  set_has_isremote();
+  isremote_ = value;
 }
 
 

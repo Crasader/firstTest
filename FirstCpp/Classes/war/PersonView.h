@@ -16,6 +16,7 @@ class PersonView : public CCNode, public CCTargetedTouchDelegate, public Control
 public:
 	PersonView(void);
 	virtual ~PersonView(void);
+	static void pure();
 	virtual void onEnter();
 	virtual void onExit();
 

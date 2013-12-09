@@ -38,11 +38,12 @@ void SimpleControll::update(float dt)
 	CCPoint pos = mControllerLintoner->getCurPostion();
 	if (targetX == pos.x && targetY == pos.y)
 	{
-		actionSpeedX = 0;
-		actionSpeedY = 0;
+		/*actionSpeedX = 0;
+		actionSpeedY = 0;*/
+		stopMove();
 		mControllerLintoner->changeState(STAND);
-		unschedule(schedule_selector(SimpleControll::simpleAttack));
-		schedule(schedule_selector(SimpleControll::simpleAttack), 2.0f); // 停下来开始检测攻击
+		//unschedule(schedule_selector(SimpleControll::simpleAttack));
+		//schedule(schedule_selector(SimpleControll::simpleAttack), 2.0f); // 停下来开始检测攻击
 		return;
 	}
 
@@ -82,7 +83,7 @@ void SimpleControll::moveTo(CCPoint targetPos)
 		//
 		if (mControllerLintoner->getState() == EMBATTLED || mControllerLintoner->getState() == DIE)
 		{
-
+			//unschedule(schedule_selector(SimpleControll::simpleAttack));
 		}
 		else
 		{
@@ -92,22 +93,15 @@ void SimpleControll::moveTo(CCPoint targetPos)
 			mControllerLintoner->changeState(RUN);
 		}
 	}
-	else
-	{
-		// 走路停下来
-		stopMove();
-	}
-
-	if (actionSpeedX == 0 && actionSpeedY == 0)
-	{
-		
-	}
 }
 
 void SimpleControll::stopMove()
 {
+	mControllerLintoner->changeState(STAND);
 	actionSpeedX = 0;
 	actionSpeedY = 0;
+	unschedule(schedule_selector(SimpleControll::simpleAttack));
+	schedule(schedule_selector(SimpleControll::simpleAttack), 2.0f); // 停下来开始检测攻击
 }
 
 void SimpleControll::checkTargetPos()
@@ -126,7 +120,7 @@ void SimpleControll::checkTargetPos()
 		float tempX = pos.x;
 		float tempY = pos.y;
 
-		int dist = fabs(pos.y - temptarget->getPositionY()) < 10 ? selfConfig->distance() + targetConfig->bodywidth() : selfConfig->distance() / 1.414;
+		int dist = fabs(pos.y - temptarget->getPositionY()) < 10 ? selfConfig->distance() + targetConfig->bodywidth() + selfConfig->bodywidth() : selfConfig->distance() / 1.414;
 		float maxDis = pos.getDistance(temptarget->getPosition());
 
 		if (maxDis > dist)
@@ -135,9 +129,17 @@ void SimpleControll::checkTargetPos()
 			tempX += (temptarget->getPositionX() - tempX) * dt;
 			tempY += (temptarget->getPositionY() - tempY) * dt;
 		}
-		if (selfConfig->distance() < 100 && fabs(pos.y - temptarget->getPositionY()) > 10)
+		if (selfConfig->isremote() == 0 && fabs(pos.y - temptarget->getPositionY()) > 20)
 		{
 			tempY = temptarget->getPositionY();
+			if (pos.x - temptarget->getPositionX() >= dist)
+			{
+				tempX = temptarget->getPositionX() + dist;
+			}
+			else if (pos.x - temptarget->getPositionX() < -dist)
+			{
+				tempX = temptarget->getPositionX() - dist;
+			}
 		}
 		/*if (fabs(pos.y - temptarget->getPositionY()) > 10)
 		{

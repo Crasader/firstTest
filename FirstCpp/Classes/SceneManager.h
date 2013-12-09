@@ -14,6 +14,7 @@ public:
 
 	static SceneManager* shardSceneManager();
 	bool init();
+	static void pure();
 
 private:
 	void viewToWar(CCObject* obj); // 进入战斗场景

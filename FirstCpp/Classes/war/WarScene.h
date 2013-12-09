@@ -56,6 +56,8 @@ private:
 	CCNode* mLayerEffect; // 效果层
 	CCNode* mLayerUI; // UI层
 
+	UILayer* mBgUILayer;
+
 	float mTouchX; // 触摸时x
 	float mBeforX; // 移动前x
 

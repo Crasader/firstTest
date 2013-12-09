@@ -13,6 +13,7 @@ public:
 	LoadScene();
 	~LoadScene();
 	virtual bool init();
+	virtual void onExit();
 	static CCScene* scene();
 	CREATE_FUNC(LoadScene);
 

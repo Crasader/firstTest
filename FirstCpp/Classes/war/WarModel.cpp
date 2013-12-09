@@ -19,7 +19,6 @@ WarModel::~WarModel(void)
 	CC_SAFE_RELEASE_NULL(mPartenerArray);
 	CC_SAFE_RELEASE_NULL(mEnemyArray);
 	//CC_SAFE_RELEASE_NULL(mDieArray);
-	CC_SAFE_DELETE(mWarModel);
 }
 
 WarModel* WarModel::shardWarModel()
@@ -70,4 +69,13 @@ bool WarModel::isDie(PersonView* obj)
 	if (WarModel::shardWarModel()->getPartenerArray()->containsObject(obj)) return false;
 	if (WarModel::shardWarModel()->getEnemyArray()->containsObject(obj)) return false;
 	return true;
+}
+
+void WarModel::pure()
+{
+	if (mWarModel)
+	{
+		delete mWarModel;
+		mWarModel = NULL;
+	}
 }

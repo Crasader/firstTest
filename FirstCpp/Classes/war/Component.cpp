@@ -217,5 +217,34 @@ void BloodFont::moveComplete()
 }
 
 /////////////////////
+// 头像    //////////
+////////////////////
+HeadBtn::HeadBtn()
+{
+
+}
+
+HeadBtn::~HeadBtn()
+{
+
+}
+
+bool HeadBtn::init()
+{
+	return true;
+}
+
+void HeadBtn::onEnter()
+{
+	CCNode::onEnter();
+}
+
+void HeadBtn::onExit()
+{
+	CCNode::onExit();
+}
+
+
+/////////////////////
 // 说话气泡//////////
 ////////////////////

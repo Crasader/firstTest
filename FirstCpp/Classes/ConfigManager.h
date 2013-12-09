@@ -37,6 +37,7 @@ public:
 	~ConfigManager(void);
 
 	static ConfigManager* sharedConfigManager();
+	static void pure();
 
 	bool initConfig();
 	::google::protobuf::Message* getConfigByName(const char* fileName);

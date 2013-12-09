@@ -13,6 +13,7 @@
 #include "proto/Wer.pb.h"
 #include "proto/AvatarAsset.pb.h"
 #include "war/SkillVo.h"
+#include "CommonTool.h"
 //添加命名空间
 using namespace cocos2d::extension;
 
@@ -64,55 +65,30 @@ bool GameWorld::init()
                                         this,
                                         menu_selector(GameWorld::menuCloseCallback));
     
-	pCloseItem->setPosition(ccp(pCloseItem->getContentSize().width/2 +origin.x,
-                                origin.y + pCloseItem->getContentSize().height/2 + visibleSize.height / 2));
+	pCloseItem->setPosition(ccp(-pCloseItem->getContentSize().width/2 +origin.x + visibleSize.width,
+                                origin.y - pCloseItem->getContentSize().height/2 + visibleSize.height));
+
+	CCMenuItemImage *pCloseItem1 = CCMenuItemImage::create(
+		"CloseNormal.png",
+		"CloseSelected.png",
+		this,
+		menu_selector(GameWorld::onCloseCpp));
+	pCloseItem1->setPosition(ccp(100,100));
 
     // create menu, it's an autorelease object
-    CCMenu* pMenu = CCMenu::create(pCloseItem, NULL);
+    CCMenu* pMenu = CCMenu::create(pCloseItem, pCloseItem1, NULL);
     pMenu->setPosition(CCPointZero);
     this->addChild(pMenu, 1);
 
-    /////////////////////////////
-    // 3. add your codes below...
+	//return true;
 
-    // add a label shows "Hello World"
-    // create and initialize a label
-
-	//std::fstream input("E:/cocoswork/cocos2d-x-2-1-5/projects/FirstCpp/Resources/config/AvatarAsset.dbp", ios::in | ios::binary);
-	//AvatarAssetTable table;
-	//table.ParseFromIstream(&input);
-	//std::string sssss = table.tname();
-	//CCLog("ok");
-	//std::string str = ((AvatarAsset)table.tlist(0)).aname();
     CCLabelTTF* pLabel = CCLabelTTF::create("ssss", "Arial", 24);
-    
-    // position the label on the center of the screen
     pLabel->setPosition(ccp(origin.x + visibleSize.width/2,
                             origin.y + visibleSize.height - pLabel->getContentSize().height));
-
-    // add the label as a child to this layer
     this->addChild(pLabel, 1);
-
-    // add "HelloWorld" splash screen"
     CCSprite* pSprite = CCSprite::create("HelloWorld.png");
-
-    // position the sprite on the center of the screen
     pSprite->setPosition(ccp(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
-
-    // add the sprite as a child to this layer
     this->addChild(pSprite, 0);
-
-	////创建一个UILayer层
-	//UILayer*   ul =UILayer::create();
-	////开启刷新函数
-	//ul->scheduleUpdate();
-	////将UILayer层加入到当前的场景
-	//this->addChild(ul);
-	////使用json文件给Layer层添加CocoStudio生成的控件
-	//ul->addWidget(CCUIHELPER->createWidgetFromJsonFile("UIEditorTest/UIEditorTest_1.json"));
-
-
-	//首先读取png,plist和ExportJson/json文件，
 	CCArmatureDataManager::sharedArmatureDataManager()->addArmatureFileInfo("ActionEditor/Cowboy0.png", "ActionEditor/Cowboy0.plist", "ActionEditor/Cowboy.ExportJson");
 	//然后创建armature类，并将进行初始化
 	CCArmature *armature = CCArmature::create("Cowboy");
@@ -136,6 +112,28 @@ bool GameWorld::init()
     return true;
 }
 
+void GameWorld::onCloseCpp(CCObject* pSender)
+{
+	google::protobuf::ShutdownProtobufLibrary();
+	PersonView::pure();
+	CommonTool::pure();
+	SceneManager::pure();
+	ConfigManager::pure();
+	WarModel::pure();
+	LoadManager::pure();
+	CCScriptEngineManager::sharedManager()->removeScriptEngine();
+	//CCScriptEngineManager::purgeSharedManager();
+	CCDirector::sharedDirector()->stopAnimation();
+	//CCDirector::sharedDirector()->purgeCachedData();
+	CCTextureCache::sharedTextureCache()->removeAllTextures();
+	CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFrames();
+	GUIReader::shareReader()->purgeGUIReader();
+	CCArmatureDataManager::purge();
+	CCDataReaderHelper::purge();
+	DictionaryHelper::purgeDictionaryHelper();
+	
+	CCDirector::sharedDirector()->end();
+}
 
 void GameWorld::menuCloseCallback(CCObject* pSender)
 {
@@ -209,7 +207,7 @@ void GameWorld::initGame(void)
 
 	CCLog("init over");
 
-	int ea[4] = {2,4,5,8};
+	int ea[4] = {0,4,5,7};
 	CCArray* enemy = WarModel::shardWarModel()->getEnemyArray();
 	enemy->removeAllObjects();
 	for (int i = 0; i < 4; i++)

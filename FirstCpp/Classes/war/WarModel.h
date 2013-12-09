@@ -13,6 +13,7 @@ public:
 
 	virtual bool init();
 	static WarModel* shardWarModel();
+	static void pure();
 
 	CCArray* getPartenerArray(); // 获取我方数据
 	CCArray* getEnemyArray(); // 获取地方数据

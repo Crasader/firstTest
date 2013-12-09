@@ -24,10 +24,18 @@ LoadManager::LoadManager(void):mAllNum(0), mLoaded(0),mArmatureNum(0),mArmatureL
 
 LoadManager::~LoadManager(void)
 {
-	CC_SAFE_DELETE(mLoadManager);
 	CC_SAFE_RELEASE_NULL(mLoadArray);
 	CC_SAFE_RELEASE_NULL(mSpriteLoadArray);
 	CC_SAFE_RELEASE_NULL(mArmatureLoadArray);
+}
+
+void LoadManager::pure()
+{
+	if (mLoadManager)
+	{
+		delete mLoadManager;
+		mLoadManager = NULL;
+	}
 }
 
 LoadManager* LoadManager::shardLoadManager()

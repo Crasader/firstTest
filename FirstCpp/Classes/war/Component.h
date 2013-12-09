@@ -62,4 +62,22 @@ private:
 	CCLabelAtlas* labelAtlas;
 };
 
+//头像
+class HeadBtn : public CCNode, public cocos2d::CCTargetedTouchDelegate
+{
+public:
+	HeadBtn();
+	virtual ~HeadBtn();
+	virtual void onEnter();
+	virtual void onExit();
+	CREATE_FUNC(HeadBtn);
+	virtual bool init();
+
+	////重写CCTouchDelegate方法
+	//virtual bool ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent); // 触摸开始
+	////virtual void ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent); // 触摸移动
+	//virtual void ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent); // 触摸结束
+private:
+};
+
 //说话气泡

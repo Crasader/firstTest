@@ -27,12 +27,19 @@ CCScene* LoadScene::scene()
 	return mScene;
 }
 
+void LoadScene::onExit()
+{
+	mLayer->removeWidgetAndCleanUp(mUi, true);
+	BaseLayer::onExit();
+}
+
 bool LoadScene::init()
 {
 	if (!CCLayer::init())
 	{
 		return false;
 	}
+	
 
 	//创建一个UILayer层
 	mLayer = UILayer::create();
@@ -41,7 +48,7 @@ bool LoadScene::init()
 	//将UILayer层加入到当前的场景
 	this->addChild(mLayer);
 	//使用json文件给Layer层添加CocoStudio生成的控件
-	mUi = CCUIHELPER->createWidgetFromJsonFile("LoadUI/LoadUI_1.json");
+	mUi = GUIReader::shareReader()->widgetFromJsonFile("LoadUI/LoadUI_1.json");
 	mLayer->addWidget(mUi);
 	//UILoadingBar* bar = (UILoadingBar*)mUi->getChildByName("LoadingBar01");
 	//bar->setTexture("a.png");
@@ -60,6 +67,7 @@ bool LoadScene::init()
 
 void LoadScene::setProgress(float value)
 {
+
 	int result = int(value * 100);
 	UILoadingBar* bar = (UILoadingBar*)mUi->getChildByName("LoadingBar01");
 	bar->setPercent(result);
