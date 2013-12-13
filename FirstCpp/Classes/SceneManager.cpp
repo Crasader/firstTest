@@ -10,7 +10,8 @@ SceneManager::SceneManager(void)
 
 SceneManager::~SceneManager(void)
 {
-	CCNotificationCenter::sharedNotificationCenter()->removeObserver(this, EVNET_SCENE_VIEW_WAR);
+	CCNotificationCenter::sharedNotificationCenter()->removeObserver(this, EVENT_SCENE_VIEW_MAIN);
+	CCNotificationCenter::sharedNotificationCenter()->removeObserver(this, EVENT_SCENE_VIEW_WAR);
 }
 
 SceneManager* SceneManager::shardSceneManager()
@@ -25,7 +26,8 @@ SceneManager* SceneManager::shardSceneManager()
 
 bool SceneManager::init()
 {
-	CCNotificationCenter::sharedNotificationCenter()->addObserver(this, callfuncO_selector(SceneManager::viewToWar), EVNET_SCENE_VIEW_WAR, NULL);// 进入战斗场景
+	CCNotificationCenter::sharedNotificationCenter()->addObserver(this, callfuncO_selector(SceneManager::viewToMain), EVENT_SCENE_VIEW_MAIN, NULL);// 进入主场景
+	CCNotificationCenter::sharedNotificationCenter()->addObserver(this, callfuncO_selector(SceneManager::viewToWar), EVENT_SCENE_VIEW_WAR, NULL);// 进入战斗场景
 	return true;
 }
 
@@ -38,4 +40,10 @@ void SceneManager::pure()
 void SceneManager::viewToWar(CCObject* obj)
 {
 	CCDirector::sharedDirector()->replaceScene(WarScene::scene());
+}
+
+// 进入主场景
+void SceneManager::viewToMain(CCObject* obj)
+{
+	CCDirector::sharedDirector()->replaceScene(GameWorld::scene());
 }

@@ -6,7 +6,7 @@ pre = '../../Classes/'
 
 def checkFile(fallpath, filepath, filename):
     if os.path.isfile(fallpath):
-        if filename[-4:] == '.cpp' or filename[-3:] == '.cc':
+        if filename[-4:] == '.cpp' or filename[-3:] == '.cc' or filename[-4:] == '.hpp':
             global files
             files = files + pre + filepath + filename + ' \\\n'
     elif os.path.isdir(fallpath):

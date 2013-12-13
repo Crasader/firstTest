@@ -91,11 +91,11 @@ void Bullet::initBullet(int id, CCNode* fromNode, CCNode* toNode)
 	int prx = fromNode->getPositionX() < toNode->getPositionX() ? mFromNode->getConfig()->bulletx() : -mFromNode->getConfig()->bulletx();
 	setPosition(CCPoint(mFromNode->getPositionX() + prx, mFromNode->getPositionY() + mFromNode->getConfig()->bullety()));
 	CCNotificationCenter::sharedNotificationCenter()->postNotification(EVENT_WAR_ADD_EFFECT, this);
-	this->setScale(0.2);
+	this->setScale(0.2f);
 
 	// ×Óµ¯ÒÆ¶¯¶¯»­
 	CCFiniteTimeAction* mv = CCSequence::create(
-		CCScaleTo::create(0.6, 1, 1),
+		CCScaleTo::create(0.6f, 1, 1),
 		CCCallFunc::create(this, callfunc_selector(Bullet::scaleComplete)),
 		NULL);
 
@@ -108,7 +108,7 @@ void Bullet::scaleComplete()
 	if (checkEntity())
 	{
 		CCFiniteTimeAction* mv = CCSequence::create(
-			CCMoveTo::create(0.2, CCPoint(mToNode->getPositionX(), mToNode->getPositionY() + 50)),
+			CCMoveTo::create(0.2f, CCPoint(mToNode->getPositionX(), mToNode->getPositionY() + 50)),
 			CCCallFunc::create(this, callfunc_selector(Bullet::moveComplete)),
 			NULL);
 		runAction(mv);
@@ -119,7 +119,7 @@ void Bullet::moveComplete()
 {
 	if (checkEntity()) 
 	{
-		((PartenerView*)mToNode)->getController()->beAttack(mFromNode->getInfo()->attack);
+		((PersonView*)mToNode)->getController()->beAttack(mFromNode->getInfo()->attack);
 	}
 	if (mAvatar)
 		mAvatar->getAnimation()->play("embattled");

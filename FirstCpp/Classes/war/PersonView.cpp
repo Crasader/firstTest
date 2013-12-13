@@ -8,7 +8,7 @@
 static std::map<int, AvatarAsset*> avatarMap;
 
 PersonView::PersonView(void):mTarget(NULL), mAvatar(NULL), mController(NULL), mCurState(STAND), mDirection(DIR_RIGHT), mConfig(NULL), 
-	mBloodBar(NULL)
+	mBloodBar(NULL), mHeadBtn(NULL)
 {
 	mInfo = PersonVo::create();
 	CC_SAFE_RETAIN(mInfo);
@@ -19,6 +19,11 @@ PersonView::~PersonView(void)
 {
 	mConfig = NULL;
 	CC_SAFE_RELEASE_NULL(mInfo);
+}
+
+bool PersonView::init()
+{
+	return true;
 }
 
 void PersonView::pure()
@@ -35,17 +40,45 @@ void PersonView::onEnter()
 {
 	CCNode::onEnter();
 	setTouchEnable(true);
+	createUI();
 }
 
 void PersonView::onExit()
 {
 	setTouchEnable(false);
 
-	mAvatar->removeFromParentAndCleanup(true);
-	mController->removeFromParentAndCleanup(true);
-	mBloodBar->removeFromParentAndCleanup(true);
+	removeAllChildrenWithCleanup(true);
 
 	CCNode::onExit();
+}
+
+void PersonView::createUI(void)
+{
+	mInfo->hp = mInfo->maxHp = mConfig->hp();
+	mInfo->defense = mConfig->defe();
+	mInfo->attack = mConfig->att();
+	mInfo->attackDelay = (float)mConfig->delay() / 1000;
+
+	CCArmature* armature = CCArmature::create(mConfig->name().c_str());
+	setAvatar(armature);
+
+	//if (id == 3)
+	//{
+	//	CCBone* bone = armature->getBone("staff");
+	//	CCSpriteDisplayData displayData;  
+	//	displayData.setParam("Pastor-weapon-pastor_staff_1.png");
+	//	bone->addDisplay(&displayData, 1);  
+	//	bone->changeDisplayByIndex(1, true);
+	//}
+
+	if (mBloodBar == NULL)
+	{
+		mBloodBar = BloodBar::create();
+		CCRect trect = CCRectApplyAffineTransform(armature->boundingBox(), armature->nodeToParentTransform()); // 获取模型的大小
+		mBloodBar->setPositionY(trect.getMaxY());
+		addChild(mBloodBar, 1);
+
+	}
 }
 
 void PersonView::setBaseId(int id)
@@ -66,30 +99,7 @@ void PersonView::setBaseId(int id)
 		mConfig = it->second;
 	}
 
-	mInfo->hp = mInfo->maxHp = mConfig->hp();
-	mInfo->defense = mConfig->defe();
-	mInfo->attack = mConfig->att();
 	
-	CCArmature* armature = CCArmature::create(mConfig->name().c_str());
-	setAvatar(armature);
-
-	//if (id == 3)
-	//{
-	//	CCBone* bone = armature->getBone("staff");
-	//	CCSpriteDisplayData displayData;  
-	//	displayData.setParam("Pastor-weapon-pastor_staff_1.png");
-	//	bone->addDisplay(&displayData, 1);  
-	//	bone->changeDisplayByIndex(1, true);
-	//}
-
-	if (mBloodBar == NULL)
-	{
-		mBloodBar = BloodBar::create();
-		CCRect trect = CCRectApplyAffineTransform(armature->boundingBox(), armature->nodeToParentTransform()); // 获取模型的大小
-		mBloodBar->setPositionY(trect.getMaxY());
-		addChild(mBloodBar, 1);
-		
-	}
 }
 
 int PersonView::getBaseId() const
@@ -212,7 +222,7 @@ CCNode* PersonView::getTarget()
 void PersonView::changeState(PERSON_STATE state)
 {
 	if (mAvatar == NULL) return;
-	if (mCurState == state) return;
+	if (mCurState == state && state != ATTACK) return;
 
 	if (mCurState == ATTACK && state == EMBATTLED) return; // 在攻击动作时，不播放被攻击动画 
 	if (mCurState == DIE && state != DIE) return; // 播放死亡动画时，不播放别的动画
@@ -253,7 +263,7 @@ void PersonView::setInfo(PersonVo* info)
 		CC_SAFE_RELEASE_NULL(mInfo);
 	}
 	mInfo = info;
-	mInfo->retain();
+	CC_SAFE_RETAIN(mInfo);
 }
 
 // 获取基本信息
@@ -309,7 +319,12 @@ CCNode* PersonView::getSelfEntity()
 bool PersonView::checkHp()
 {
 	if (mInfo->hp < 0) mInfo->hp = 0;
-	mBloodBar->setPercentage((float)mInfo->hp / mInfo->maxHp);
+	float per = (float)mInfo->hp / mInfo->maxHp;
+	mBloodBar->setPercentage(per);
+	if (mHeadBtn != NULL)
+	{
+		mHeadBtn->setPercentage(per);
+	}
 	return mInfo->hp == 0 ? false : true;
 }
 
@@ -346,4 +361,10 @@ float PersonView::getContentWidth()
 {
 	if (mAvatar) return mAvatar->getContentSize().width;
 	return 0;
+}
+
+//设置对应头像
+void PersonView::setHeadBtn(HeadBtn* btn)
+{
+	mHeadBtn = btn;
 }

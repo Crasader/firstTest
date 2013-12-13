@@ -1,7 +1,6 @@
 #pragma once
 
 #include "cocos2d.h"
-#include "PartenerView.h"
 #include "PersonView.h"
 #include "WarModel.h"
 

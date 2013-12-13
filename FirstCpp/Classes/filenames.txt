@@ -5,6 +5,8 @@
 ../../Classes/GameScene.cpp \
 ../../Classes/loader/LoadManger.cpp \
 ../../Classes/loader/LoadScene.cpp \
+../../Classes/LuaManager.cpp \
+../../Classes/MLua.cpp \
 ../../Classes/proto/AvatarAsset.pb.cc \
 ../../Classes/proto/Person.pb.cc \
 ../../Classes/proto/Wer.pb.cc \
@@ -13,8 +15,6 @@
 ../../Classes/war/Component.cpp \
 ../../Classes/war/ControllerBase.cpp \
 ../../Classes/war/ControllerListener.cpp \
-../../Classes/war/PartenerView.cpp \
-../../Classes/war/PartenerVo.cpp \
 ../../Classes/war/PersonView.cpp \
 ../../Classes/war/PersonVo.cpp \
 ../../Classes/war/SimpleControll.cpp \

@@ -7,14 +7,8 @@ LoadScene::LoadScene():mLayer(NULL)
 
 LoadScene::~LoadScene()
 {
-	if (mLayer)
-	{
-		mLayer->unscheduleUpdate();
-		mLayer->removeAllChildrenWithCleanup(true);
-		mLayer->removeFromParentAndCleanup(true);
-		mLayer = NULL;
-	}
 	this->removeAllChildrenWithCleanup(true);
+	mLayer = NULL;
 }
 
 CCScene* LoadScene::scene()
@@ -29,7 +23,12 @@ CCScene* LoadScene::scene()
 
 void LoadScene::onExit()
 {
-	mLayer->removeWidgetAndCleanUp(mUi, true);
+	if (mLayer)
+	{
+		mLayer->removeWidgetAndCleanUp(mUi, true);
+		mLayer->unscheduleUpdate();
+		mLayer->removeAllChildrenWithCleanup(true);
+	}
 	BaseLayer::onExit();
 }
 
@@ -39,35 +38,18 @@ bool LoadScene::init()
 	{
 		return false;
 	}
-	
-
-	//创建一个UILayer层
+	//return true;
 	mLayer = UILayer::create();
-	//开启刷新函数
 	mLayer->scheduleUpdate();
-	//将UILayer层加入到当前的场景
 	this->addChild(mLayer);
-	//使用json文件给Layer层添加CocoStudio生成的控件
 	mUi = GUIReader::shareReader()->widgetFromJsonFile("LoadUI/LoadUI_1.json");
 	mLayer->addWidget(mUi);
-	//UILoadingBar* bar = (UILoadingBar*)mUi->getChildByName("LoadingBar01");
-	//bar->setTexture("a.png");
-	//UILoadingBar* bar = (UILoadingBar*)mUi->getChildByName("LoadingBar01");
-	//UIImageView* img = (UIImageView*)mUi->getChildByName("ImageView");
-	//img->loadTexture("a.png");
-
-	//UILayer* lay = UILayer::create();
-	//UILoadingBar* bar1 = UILoadingBar::create();
-	//bar1->copyWithZone((CCZone*)bar);
-	//lay->addWidget(bar1);
-	//layer->addChild(lay);
-
 	return true;
 }
 
 void LoadScene::setProgress(float value)
 {
-
+	//return;
 	int result = int(value * 100);
 	UILoadingBar* bar = (UILoadingBar*)mUi->getChildByName("LoadingBar01");
 	bar->setPercent(result);

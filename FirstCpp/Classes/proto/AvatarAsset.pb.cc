@@ -51,7 +51,7 @@ void protobuf_AssignDesc_AvatarAsset_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(AvatarAssetTable));
   AvatarAsset_descriptor_ = file->message_type(1);
-  static const int AvatarAsset_offsets_[12] = {
+  static const int AvatarAsset_offsets_[13] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, aname_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, name_),
@@ -64,6 +64,7 @@ void protobuf_AssignDesc_AvatarAsset_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, att_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, defe_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, isremote_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, delay_),
   };
   AvatarAsset_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -112,12 +113,12 @@ void protobuf_AddDesc_AvatarAsset_2eproto() {
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\021AvatarAsset.proto\">\n\020AvatarAssetTable\022"
     "\r\n\005tname\030\001 \001(\t\022\033\n\005tlist\030\002 \003(\0132\014.AvatarAs"
-    "set\"\305\001\n\013AvatarAsset\022\n\n\002id\030\001 \001(\005\022\r\n\005aname"
+    "set\"\324\001\n\013AvatarAsset\022\n\n\002id\030\001 \001(\005\022\r\n\005aname"
     "\030\002 \001(\t\022\014\n\004name\030\003 \001(\t\022\020\n\010distance\030\004 \001(\005\022\r"
     "\n\005speed\030\005 \001(\005\022\017\n\007bulletx\030\006 \001(\005\022\017\n\007bullet"
     "y\030\007 \001(\005\022\021\n\tbodywidth\030\010 \001(\005\022\n\n\002hp\030\t \001(\005\022\013"
     "\n\003att\030\n \001(\005\022\014\n\004defe\030\013 \001(\005\022\020\n\010isremote\030\014 "
-    "\001(\005", 283);
+    "\001(\005\022\r\n\005delay\030\r \001(\005", 298);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "AvatarAsset.proto", &protobuf_RegisterTypes);
   AvatarAssetTable::default_instance_ = new AvatarAssetTable();
@@ -414,6 +415,7 @@ const int AvatarAsset::kHpFieldNumber;
 const int AvatarAsset::kAttFieldNumber;
 const int AvatarAsset::kDefeFieldNumber;
 const int AvatarAsset::kIsremoteFieldNumber;
+const int AvatarAsset::kDelayFieldNumber;
 #endif  // !_MSC_VER
 
 AvatarAsset::AvatarAsset()
@@ -444,6 +446,7 @@ void AvatarAsset::SharedCtor() {
   att_ = 0;
   defe_ = 0;
   isremote_ = 0;
+  delay_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -507,6 +510,7 @@ void AvatarAsset::Clear() {
     att_ = 0;
     defe_ = 0;
     isremote_ = 0;
+    delay_ = 0;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -707,6 +711,22 @@ bool AvatarAsset::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(104)) goto parse_delay;
+        break;
+      }
+
+      // optional int32 delay = 13;
+      case 13: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_delay:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &delay_)));
+          set_has_delay();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -797,6 +817,11 @@ void AvatarAsset::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(12, this->isremote(), output);
   }
 
+  // optional int32 delay = 13;
+  if (has_delay()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(13, this->delay(), output);
+  }
+
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -873,6 +898,11 @@ void AvatarAsset::SerializeWithCachedSizes(
   // optional int32 isremote = 12;
   if (has_isremote()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(12, this->isremote(), target);
+  }
+
+  // optional int32 delay = 13;
+  if (has_delay()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(13, this->delay(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -972,6 +1002,13 @@ int AvatarAsset::ByteSize() const {
           this->isremote());
     }
 
+    // optional int32 delay = 13;
+    if (has_delay()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->delay());
+    }
+
   }
   if (!unknown_fields().empty()) {
     total_size +=
@@ -1037,6 +1074,9 @@ void AvatarAsset::MergeFrom(const AvatarAsset& from) {
     if (from.has_isremote()) {
       set_isremote(from.isremote());
     }
+    if (from.has_delay()) {
+      set_delay(from.delay());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -1072,6 +1112,7 @@ void AvatarAsset::Swap(AvatarAsset* other) {
     std::swap(att_, other->att_);
     std::swap(defe_, other->defe_);
     std::swap(isremote_, other->isremote_);
+    std::swap(delay_, other->delay_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

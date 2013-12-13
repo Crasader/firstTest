@@ -1,7 +1,8 @@
 #pragma once
 
 // ³¡¾°Ïà¹Ø
-const char * const EVNET_SCENE_VIEW_WAR = "evnet_scene_view_war"; // ÊÂ¼ş£ºÏÔÊ¾Õ½¶·³¡¾°
+const char * const EVENT_SCENE_VIEW_MAIN = "event_scene_view_main"; // ÏÔÊ¾Ö÷³¡¾°
+const char * const EVENT_SCENE_VIEW_WAR = "event_scene_view_war"; // ÊÂ¼ş£ºÏÔÊ¾Õ½¶·³¡¾°
 
 
 // Õ½³¡Ïà¹Ø
@@ -12,3 +13,4 @@ const char * const EVENT_WAR_ADD_EFFECT = "event_war_add_effect"; // Ìí¼ÓĞ§¹û¶¯»
 const char * const EVENT_WAR_ENTITY_DIE = "event_war_entity_die"; // ÈËÎïËÀÍö
 const char * const EVENT_WAR_USE_SKILL = "event_war_use_skill"; // Ê¹ÓÃ¼¼ÄÜ
 const char * const EVENT_WAR_SHOW_BLOOD_FONT = "event_war_show_blood_font"; // ÏÔÊ¾Æ®Ñª×Ö
+const char * const EVENT_WAR_SELECT_HEADBTN = "event_war_select_headbtn"; // µ¥»÷Í·Ïñ°´Å¥

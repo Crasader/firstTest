@@ -30,6 +30,8 @@ public:
 	void addLoadItem(const char *plist, const char *png);
 	void addLoadItem(const char *png);
 
+	void clearCache();
+
 protected:
 	int mAllNum;
 	int mLoaded;

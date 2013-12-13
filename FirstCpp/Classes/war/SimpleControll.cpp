@@ -19,8 +19,22 @@ bool SimpleControll::init()
 	targetY = 0;
 	actionSpeedX = 0;
 	actionSpeedY = 0;
-	scheduleUpdate(); // 开启计时器
+	mTempDelay = 2.0f;
 	return true;
+}
+
+void SimpleControll::onEnter()
+{
+	ControllerBase::onEnter();
+
+	scheduleUpdate(); // 开启计时器
+}
+
+void SimpleControll::onExit()
+{
+	unscheduleUpdate();
+
+	ControllerBase::onExit();
 }
 
 void SimpleControll::update(float dt)
@@ -29,21 +43,26 @@ void SimpleControll::update(float dt)
 	{
 		return;
 	}
-
+	CCPoint pos = mControllerLintoner->getCurPostion();
 	if (actionSpeedX == 0 && actionSpeedY == 0)
 	{
-		return;
+		if (targetX == pos.x && targetY == pos.y)
+		{
+			return;
+		}
+		else
+		{
+			targetX = pos.x;
+			targetY = pos.y;
+		}
 	}
 
-	CCPoint pos = mControllerLintoner->getCurPostion();
 	if (targetX == pos.x && targetY == pos.y)
 	{
-		/*actionSpeedX = 0;
-		actionSpeedY = 0;*/
 		stopMove();
-		mControllerLintoner->changeState(STAND);
-		//unschedule(schedule_selector(SimpleControll::simpleAttack));
-		//schedule(schedule_selector(SimpleControll::simpleAttack), 2.0f); // 停下来开始检测攻击
+		unschedule(schedule_selector(SimpleControll::simpleAttack));
+		schedule(schedule_selector(SimpleControll::simpleAttack), mControllerLintoner->getSelfInfo()->attackDelay); // 停下来开始检测攻击
+		
 		return;
 	}
 
@@ -91,6 +110,7 @@ void SimpleControll::moveTo(CCPoint targetPos)
 			actionSpeedY = (targetPos.y - pos.y) / distance * mSpeed;
 			if (actionSpeedX != 0) mControllerLintoner->changeDirection(actionSpeedX > 0 ? DIR_RIGHT : DIR_LEFT);
 			mControllerLintoner->changeState(RUN);
+			
 		}
 	}
 }
@@ -100,8 +120,6 @@ void SimpleControll::stopMove()
 	mControllerLintoner->changeState(STAND);
 	actionSpeedX = 0;
 	actionSpeedY = 0;
-	unschedule(schedule_selector(SimpleControll::simpleAttack));
-	schedule(schedule_selector(SimpleControll::simpleAttack), 2.0f); // 停下来开始检测攻击
 }
 
 void SimpleControll::checkTargetPos()
@@ -156,6 +174,10 @@ void SimpleControll::checkTargetPos()
 		if (tempX != pos.x || tempY != pos.y)
 		{
 			moveTo(CCPoint(tempX, tempY)); // 跑到能打到目标的地方
+			if (self->getBaseId() == 1)
+			{
+				CCLog("(%f,%f),(%f,%f)",tempX,tempY,pos.x,pos.y);
+			}
 		}
 
 		// 根据目标位置设置自己的朝向
@@ -190,7 +212,7 @@ bool SimpleControll::useSkill(int skillId)
 
 	Skill* skill = Skill::create();
 	skill->initSkill(skillId, mControllerLintoner->getSelfEntity(), mControllerLintoner->getTarget());
-	schedule(schedule_selector(SimpleControll::simpleAttack), 2.0f); // 停下来开始检测攻击
+	schedule(schedule_selector(SimpleControll::simpleAttack), mControllerLintoner->getSelfInfo()->attackDelay); // 停下来开始检测攻击
 
 	return true;
 }
@@ -210,6 +232,7 @@ void SimpleControll::simpleAttack(int dt)
 			return;
 		}
 	}
+
 	if (mControllerLintoner->getState() != RUN)
 	{
 		mControllerLintoner->changeState(ATTACK);
@@ -218,6 +241,7 @@ void SimpleControll::simpleAttack(int dt)
 			mControllerLintoner->getSelfEntity(), 
 			mControllerLintoner->getTarget());
 	}
+	mTempDelay = 0;
 }
 
 int SimpleControll::beAttack(int aValue)

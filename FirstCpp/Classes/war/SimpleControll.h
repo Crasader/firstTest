@@ -16,6 +16,10 @@ public:
 
 	CREATE_FUNC(SimpleControll);
 	virtual bool init();
+
+	virtual void onEnter();
+	virtual void onExit();
+
 	virtual void update(float dt);
 
 	virtual void setSpeed(float speed);
@@ -35,6 +39,7 @@ protected:
 	float actionSpeedY; // y方向执行速度
 	float targetX; // 目标点x
 	float targetY; // 目标点y
+	float mTempDelay; // 临时记录攻击间隔
 
 };
 

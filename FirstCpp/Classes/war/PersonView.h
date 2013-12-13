@@ -16,11 +16,15 @@ class PersonView : public CCNode, public CCTargetedTouchDelegate, public Control
 public:
 	PersonView(void);
 	virtual ~PersonView(void);
+public:
 	static void pure();
 	virtual void onEnter();
 	virtual void onExit();
-
-	// function
+	CREATE_FUNC(PersonView);
+	virtual bool init();
+protected:
+	void createUI(void);
+public:
 	void setAvatar(CCArmature* avatar); // 设置形象
 	void setController(ControllerBase* controller); // 设置控制器
 	void removeController(); // 移除控制器
@@ -35,6 +39,7 @@ public:
 	void setTouchEnable(bool value);
 	float getContentWidth();
 	float getContentHeight();
+	void setHeadBtn(HeadBtn* btn); //设置对应头像
 
 
 	//实现ControllerListener接口
@@ -66,6 +71,7 @@ protected:
 	PERSON_DIRECTION mDirection; // 方向
 	int mId;
 	BloodBar* mBloodBar; // 血条
+	HeadBtn* mHeadBtn; // 对应的头像
 	
 	void onAnimationComplete(CCArmature * arm, MovementEventType etype, const char * ename);
 	

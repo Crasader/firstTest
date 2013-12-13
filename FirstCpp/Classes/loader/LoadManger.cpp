@@ -95,6 +95,8 @@ void LoadManager::addLoadItem(const char *imagePath)
 
 void LoadManager::load(SCENE target)
 {
+	clearCache();
+
 	mNextScene = target;
 
 	if (mAllNum + mArmatureNum <= 0)
@@ -209,10 +211,23 @@ void LoadManager::changeScene()
 	switch (mNextScene)
 	{
 	case SCENE_MAIN:
-
+		CCNotificationCenter::sharedNotificationCenter()->postNotification(EVENT_SCENE_VIEW_MAIN, NULL);
 		break;
 	case SCENE_WAR:
-		CCNotificationCenter::sharedNotificationCenter()->postNotification(EVNET_SCENE_VIEW_WAR, NULL);
+		CCNotificationCenter::sharedNotificationCenter()->postNotification(EVENT_SCENE_VIEW_WAR, NULL);
 		break;
 	}
+}
+
+void LoadManager::clearCache()
+{
+	CCDirector::sharedDirector()->purgeCachedData();
+	CCTextureCache::sharedTextureCache()->removeAllTextures();
+	CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFrames();
+	ActionManager::shareManager()->releaseActions();
+	ActionManager::purgeActionManager();
+	GUIReader::purgeGUIReader();
+	CCArmatureDataManager::purge();
+	CCDataReaderHelper::purge();
+	DictionaryHelper::purgeDictionaryHelper();
 }

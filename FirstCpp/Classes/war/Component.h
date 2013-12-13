@@ -73,11 +73,25 @@ public:
 	CREATE_FUNC(HeadBtn);
 	virtual bool init();
 
-	////重写CCTouchDelegate方法
-	//virtual bool ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent); // 触摸开始
-	////virtual void ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent); // 触摸移动
-	//virtual void ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent); // 触摸结束
+	void setSelected(bool flag); // 设置选中状态
+	bool isSelected();
+
+	void setTaget(CCNode* target);
+	void checkSkillTime(); // 检测技能冷却时间
+	void useSkill(CCObject* value);
+	void setPercentage(float pro);
+
+	//重写CCTouchDelegate方法
+	virtual bool ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent); // 触摸开始
+	//virtual void ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent); // 触摸移动
+	virtual void ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent); // 触摸结束
+
 private:
+	bool mIsSelect;
+	CCSprite* mHeadIcon;
+	SkillBtn* mSkillBtn;
+	CCNode* mTarget;
+	BloodBar* mBloodBar;
 };
 
 //说话气泡

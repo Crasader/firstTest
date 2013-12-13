@@ -1,6 +1,5 @@
 #include "GameScene.h"
 #include "war/WarScene.h"
-#include "war/PartenerVo.h"
 #include "war/WarModel.h"
 #include "EnumCommon.h"
 #include "SceneManager.h"
@@ -14,6 +13,10 @@
 #include "proto/AvatarAsset.pb.h"
 #include "war/SkillVo.h"
 #include "CommonTool.h"
+#include "war/PersonView.h"
+#include "war/PersonVo.h"
+#include "MLua.h"
+#include "LuaManager.h"
 //添加命名空间
 using namespace cocos2d::extension;
 
@@ -80,12 +83,20 @@ bool GameWorld::init()
     pMenu->setPosition(CCPointZero);
     this->addChild(pMenu, 1);
 
-	//return true;
+	
 
-    CCLabelTTF* pLabel = CCLabelTTF::create("ssss", "Arial", 24);
-    pLabel->setPosition(ccp(origin.x + visibleSize.width/2,
-                            origin.y + visibleSize.height - pLabel->getContentSize().height));
-    this->addChild(pLabel, 1);
+ //   CCLabelTTF* pLabel = CCLabelTTF::create("ssss", "Arial", 24);
+ //   pLabel->setPosition(ccp(origin.x + visibleSize.width/2,
+ //                           origin.y + visibleSize.height - pLabel->getContentSize().height));
+ //   this->addChild(pLabel, 1);
+
+	//pLabel->setString("hello world");
+
+	CCLabelTTF* plll = CCLabelTTF::create("sasdf", "Arial", 30);
+	this->addChild(plll);
+
+	return true;
+
     CCSprite* pSprite = CCSprite::create("HelloWorld.png");
     pSprite->setPosition(ccp(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
     this->addChild(pSprite, 0);
@@ -127,7 +138,7 @@ void GameWorld::onCloseCpp(CCObject* pSender)
 	//CCDirector::sharedDirector()->purgeCachedData();
 	CCTextureCache::sharedTextureCache()->removeAllTextures();
 	CCSpriteFrameCache::sharedSpriteFrameCache()->removeSpriteFrames();
-	GUIReader::shareReader()->purgeGUIReader();
+	GUIReader::purgeGUIReader();
 	CCArmatureDataManager::purge();
 	CCDataReaderHelper::purge();
 	DictionaryHelper::purgeDictionaryHelper();
@@ -185,39 +196,50 @@ void GameWorld::menuCloseCallback(CCObject* pSender)
 void GameWorld::initGame(void)
 {
 	// 初始化游戏
+	LuaManager::shareLuaManager()->getMLua()->LoadLuaFile("mlua.lua");
+	//LuaManager::shareLuaManager()->getMLua()->LoadLuaString("setFormation('101011001', '000040000');");
+	
+	//LuaManager::shareLuaManager()->getMLua()->LoadString(CCFileUtils::sharedFileUtils()->fullPathForFilename("mlua.lua"));
+	//for (int i = 0; i < 9; i++)
+	//{
+	//	LuaManager::shareLuaManager()->aTeam[i] = 1;
+	//	LuaManager::shareLuaManager()->bTeam[i] = 2;
+	//}
 	SceneManager::shardSceneManager(); // 初始化场景管理器
 	ConfigManager::sharedConfigManager()->initConfig(); // 初始化配置
 
-	int pa[4] = {3,6,4,0};
+	LuaManager* luamanager = LuaManager::shareLuaManager();
 	CCArray* partener = WarModel::shardWarModel()->getPartenerArray();
 	partener->removeAllObjects();
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 9; i++)
 	{
-		PartenerView* p1 = PartenerView::create();
-		PartenerVo* pinfo1 = PartenerVo::create();
+		if (luamanager->aTeam[i] == 0) continue;
+		PersonView* p1 = PersonView::create();
+		PersonVo* pinfo1 = PersonVo::create();
 		pinfo1->name = "fuwanghero";
-		pinfo1->posId = pa[i];
+		pinfo1->posId = i;
 		pinfo1->gender = 1;
 		SkillVo* svo = SkillVo::create();
 		svo->setMaxCd(10 * i);
 		pinfo1->getSkillArr()->addObject(svo);
+		p1->setBaseId(luamanager->aTeam[i]);
 		p1->setInfo(pinfo1);
 		partener->addObject(p1);
 	}
 
 	CCLog("init over");
 
-	int ea[4] = {0,4,5,7};
 	CCArray* enemy = WarModel::shardWarModel()->getEnemyArray();
 	enemy->removeAllObjects();
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 9; i++)
 	{
-		PartenerView* p1 = PartenerView::create();
-		PartenerVo* pinfo1 = PartenerVo::create();
+		if (luamanager->bTeam[i] == 0) continue;
+		PersonView* p1 = PersonView::create();
+		PersonVo* pinfo1 = PersonVo::create();
 		pinfo1->name = "fuwanghero";
-		pinfo1->posId = ea[i];
+		pinfo1->posId = i;
 		pinfo1->gender = 1;
-		
+		p1->setBaseId(luamanager->bTeam[i]);
 		p1->setInfo(pinfo1);
 		enemy->addObject(p1);
 	}
@@ -265,11 +287,7 @@ void GameWorld::initGame(void)
 
 	//person.p
 	//CCFileUtils::sharedFileUtils()->
-}
 
-void GameWorld::enterWarScene()
-{
-	CCLog("callback");
-	CCScene* warScene = WarScene::scene();
-	CCDirector::sharedDirector()->replaceScene(warScene);
+	
+	
 }

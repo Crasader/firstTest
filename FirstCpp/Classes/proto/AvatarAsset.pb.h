@@ -284,6 +284,13 @@ class AvatarAsset : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 isremote() const;
   inline void set_isremote(::google::protobuf::int32 value);
 
+  // optional int32 delay = 13;
+  inline bool has_delay() const;
+  inline void clear_delay();
+  static const int kDelayFieldNumber = 13;
+  inline ::google::protobuf::int32 delay() const;
+  inline void set_delay(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:AvatarAsset)
  private:
   inline void set_has_id();
@@ -310,6 +317,8 @@ class AvatarAsset : public ::google::protobuf::Message {
   inline void clear_has_defe();
   inline void set_has_isremote();
   inline void clear_has_isremote();
+  inline void set_has_delay();
+  inline void clear_has_delay();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -325,9 +334,10 @@ class AvatarAsset : public ::google::protobuf::Message {
   ::google::protobuf::int32 att_;
   ::google::protobuf::int32 defe_;
   ::google::protobuf::int32 isremote_;
+  ::google::protobuf::int32 delay_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(12 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(13 + 31) / 32];
 
   friend void  protobuf_AddDesc_AvatarAsset_2eproto();
   friend void protobuf_AssignDesc_AvatarAsset_2eproto();
@@ -800,6 +810,28 @@ inline ::google::protobuf::int32 AvatarAsset::isremote() const {
 inline void AvatarAsset::set_isremote(::google::protobuf::int32 value) {
   set_has_isremote();
   isremote_ = value;
+}
+
+// optional int32 delay = 13;
+inline bool AvatarAsset::has_delay() const {
+  return (_has_bits_[0] & 0x00001000u) != 0;
+}
+inline void AvatarAsset::set_has_delay() {
+  _has_bits_[0] |= 0x00001000u;
+}
+inline void AvatarAsset::clear_has_delay() {
+  _has_bits_[0] &= ~0x00001000u;
+}
+inline void AvatarAsset::clear_delay() {
+  delay_ = 0;
+  clear_has_delay();
+}
+inline ::google::protobuf::int32 AvatarAsset::delay() const {
+  return delay_;
+}
+inline void AvatarAsset::set_delay(::google::protobuf::int32 value) {
+  set_has_delay();
+  delay_ = value;
 }
 
 
