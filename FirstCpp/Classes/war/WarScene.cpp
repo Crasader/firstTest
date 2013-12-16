@@ -136,9 +136,11 @@ void WarScene::onEnter()
 		delete[] posid;
 
 		movecontroll = SimpleControll::create();
+		
 		pObj->setController(movecontroll);
 
 		addEntity(pObj);
+		pObj->changeDirection(DIR_LEFT);
 	}
 
 	initUI();
@@ -439,6 +441,7 @@ void WarScene::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)
 void WarScene::addEntity(CCNode* entity)
 {
 	mLayerEntity->addChild(entity);
+	mLayerEntity->reorderChild(entity, 1000 - entity->getPositionY());
 }
 
 // 添加效果动画

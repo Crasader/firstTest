@@ -17,6 +17,8 @@
 #include "war/PersonVo.h"
 #include "MLua.h"
 #include "LuaManager.h"
+#include "DriveManager.h"
+
 //添加命名空间
 using namespace cocos2d::extension;
 
@@ -78,8 +80,15 @@ bool GameWorld::init()
 		menu_selector(GameWorld::onCloseCpp));
 	pCloseItem1->setPosition(ccp(100,100));
 
+	CCMenuItemImage *pCloseItem2 = CCMenuItemImage::create(
+		"CloseNormal.png",
+		"CloseSelected.png",
+		this,
+		menu_selector(GameWorld::onCallPhone));
+	pCloseItem2->setPosition(ccp(200,100));
+
     // create menu, it's an autorelease object
-    CCMenu* pMenu = CCMenu::create(pCloseItem, pCloseItem1, NULL);
+    CCMenu* pMenu = CCMenu::create(pCloseItem, pCloseItem1,pCloseItem2, NULL);
     pMenu->setPosition(CCPointZero);
     this->addChild(pMenu, 1);
 
@@ -125,6 +134,7 @@ bool GameWorld::init()
 
 void GameWorld::onCloseCpp(CCObject* pSender)
 {
+	DriveManager::pure();
 	google::protobuf::ShutdownProtobufLibrary();
 	PersonView::pure();
 	CommonTool::pure();
@@ -196,8 +206,8 @@ void GameWorld::menuCloseCallback(CCObject* pSender)
 void GameWorld::initGame(void)
 {
 	// 初始化游戏
-	LuaManager::shareLuaManager()->getMLua()->LoadLuaFile("mlua.lua");
-	//LuaManager::shareLuaManager()->getMLua()->LoadLuaString("setFormation('101011001', '000040000');");
+	//LuaManager::shareLuaManager()->getMLua()->LoadLuaFile("mlua.lua");
+	LuaManager::shareLuaManager()->getMLua()->LoadLuaString("setFormation('101011001', '000040000');");
 	
 	//LuaManager::shareLuaManager()->getMLua()->LoadString(CCFileUtils::sharedFileUtils()->fullPathForFilename("mlua.lua"));
 	//for (int i = 0; i < 9; i++)
@@ -290,4 +300,9 @@ void GameWorld::initGame(void)
 
 	
 	
+}
+
+void GameWorld::onCallPhone(CCObject* pSender)
+{
+	DriveManager::sharedDriveManager()->showTestDialog();
 }

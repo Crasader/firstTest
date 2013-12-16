@@ -2,7 +2,9 @@
 ../../Classes/BaseLayer.cpp \
 ../../Classes/CommonTool.cpp \
 ../../Classes/ConfigManager.cpp \
+../../Classes/DriveManager.cpp \
 ../../Classes/GameScene.cpp \
+../../Classes/I18N.cpp \
 ../../Classes/loader/LoadManger.cpp \
 ../../Classes/loader/LoadScene.cpp \
 ../../Classes/LuaManager.cpp \

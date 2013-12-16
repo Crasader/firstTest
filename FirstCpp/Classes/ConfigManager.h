@@ -1,3 +1,13 @@
+//-----------------------------------------------------------------------------------------------------------------------------
+// 名称: 配置管理器
+// 作者: lvxiangsong
+// 日期: 2013-10-8
+// 功能: 配置管理器
+// 版本: 
+//
+// 修改者           日期	           内容		
+// lvxiangsong      2013-10-8
+//-----------------------------------------------------------------------------------------------------------------------------
 #pragma once
 
 #include "cocos2d.h"
@@ -34,7 +44,7 @@ class ConfigManager : CCObject
 {
 public:
 	ConfigManager(void);
-	~ConfigManager(void);
+	virtual ~ConfigManager(void);
 
 	static ConfigManager* sharedConfigManager();
 	static void pure();

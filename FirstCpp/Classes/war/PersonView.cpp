@@ -57,6 +57,7 @@ void PersonView::createUI(void)
 	mInfo->hp = mInfo->maxHp = mConfig->hp();
 	mInfo->defense = mConfig->defe();
 	mInfo->attack = mConfig->att();
+	mInfo->maxattack = mConfig->maxatt();
 	mInfo->attackDelay = (float)mConfig->delay() / 1000;
 
 	CCArmature* armature = CCArmature::create(mConfig->name().c_str());

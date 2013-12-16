@@ -119,7 +119,9 @@ void Bullet::moveComplete()
 {
 	if (checkEntity()) 
 	{
-		((PersonView*)mToNode)->getController()->beAttack(mFromNode->getInfo()->attack);
+		PersonVo* info = mFromNode->getInfo();
+		int attack = info->attack + int(CCRANDOM_0_1() * (info->maxattack - info->attack));
+		mToNode->getController()->beAttack(attack);
 	}
 	if (mAvatar)
 		mAvatar->getAnimation()->play("embattled");
@@ -129,7 +131,9 @@ void Bullet::delayComplete()
 {
 	if (checkEntity())
 	{
-		mToNode->getController()->beAttack(mFromNode->getInfo()->attack);
+		PersonVo* info = mFromNode->getInfo();
+		int attack = info->attack + int(CCRANDOM_0_1() * (info->maxattack - info->attack));
+		mToNode->getController()->beAttack(attack);
 		if (mToNode->getSelfInfo()->hp <= 0)
 		{
 			mFromNode->setTarget(NULL);

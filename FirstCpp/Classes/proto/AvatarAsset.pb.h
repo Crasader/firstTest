@@ -270,24 +270,31 @@ class AvatarAsset : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 att() const;
   inline void set_att(::google::protobuf::int32 value);
 
-  // optional int32 defe = 11;
+  // optional int32 maxatt = 11;
+  inline bool has_maxatt() const;
+  inline void clear_maxatt();
+  static const int kMaxattFieldNumber = 11;
+  inline ::google::protobuf::int32 maxatt() const;
+  inline void set_maxatt(::google::protobuf::int32 value);
+
+  // optional int32 defe = 12;
   inline bool has_defe() const;
   inline void clear_defe();
-  static const int kDefeFieldNumber = 11;
+  static const int kDefeFieldNumber = 12;
   inline ::google::protobuf::int32 defe() const;
   inline void set_defe(::google::protobuf::int32 value);
 
-  // optional int32 isremote = 12;
+  // optional int32 isremote = 13;
   inline bool has_isremote() const;
   inline void clear_isremote();
-  static const int kIsremoteFieldNumber = 12;
+  static const int kIsremoteFieldNumber = 13;
   inline ::google::protobuf::int32 isremote() const;
   inline void set_isremote(::google::protobuf::int32 value);
 
-  // optional int32 delay = 13;
+  // optional int32 delay = 14;
   inline bool has_delay() const;
   inline void clear_delay();
-  static const int kDelayFieldNumber = 13;
+  static const int kDelayFieldNumber = 14;
   inline ::google::protobuf::int32 delay() const;
   inline void set_delay(::google::protobuf::int32 value);
 
@@ -313,6 +320,8 @@ class AvatarAsset : public ::google::protobuf::Message {
   inline void clear_has_hp();
   inline void set_has_att();
   inline void clear_has_att();
+  inline void set_has_maxatt();
+  inline void clear_has_maxatt();
   inline void set_has_defe();
   inline void clear_has_defe();
   inline void set_has_isremote();
@@ -332,12 +341,13 @@ class AvatarAsset : public ::google::protobuf::Message {
   ::google::protobuf::int32 bodywidth_;
   ::google::protobuf::int32 hp_;
   ::google::protobuf::int32 att_;
+  ::google::protobuf::int32 maxatt_;
   ::google::protobuf::int32 defe_;
   ::google::protobuf::int32 isremote_;
   ::google::protobuf::int32 delay_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(13 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(14 + 31) / 32];
 
   friend void  protobuf_AddDesc_AvatarAsset_2eproto();
   friend void protobuf_AssignDesc_AvatarAsset_2eproto();
@@ -768,15 +778,37 @@ inline void AvatarAsset::set_att(::google::protobuf::int32 value) {
   att_ = value;
 }
 
-// optional int32 defe = 11;
-inline bool AvatarAsset::has_defe() const {
+// optional int32 maxatt = 11;
+inline bool AvatarAsset::has_maxatt() const {
   return (_has_bits_[0] & 0x00000400u) != 0;
 }
-inline void AvatarAsset::set_has_defe() {
+inline void AvatarAsset::set_has_maxatt() {
   _has_bits_[0] |= 0x00000400u;
 }
-inline void AvatarAsset::clear_has_defe() {
+inline void AvatarAsset::clear_has_maxatt() {
   _has_bits_[0] &= ~0x00000400u;
+}
+inline void AvatarAsset::clear_maxatt() {
+  maxatt_ = 0;
+  clear_has_maxatt();
+}
+inline ::google::protobuf::int32 AvatarAsset::maxatt() const {
+  return maxatt_;
+}
+inline void AvatarAsset::set_maxatt(::google::protobuf::int32 value) {
+  set_has_maxatt();
+  maxatt_ = value;
+}
+
+// optional int32 defe = 12;
+inline bool AvatarAsset::has_defe() const {
+  return (_has_bits_[0] & 0x00000800u) != 0;
+}
+inline void AvatarAsset::set_has_defe() {
+  _has_bits_[0] |= 0x00000800u;
+}
+inline void AvatarAsset::clear_has_defe() {
+  _has_bits_[0] &= ~0x00000800u;
 }
 inline void AvatarAsset::clear_defe() {
   defe_ = 0;
@@ -790,15 +822,15 @@ inline void AvatarAsset::set_defe(::google::protobuf::int32 value) {
   defe_ = value;
 }
 
-// optional int32 isremote = 12;
+// optional int32 isremote = 13;
 inline bool AvatarAsset::has_isremote() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
+  return (_has_bits_[0] & 0x00001000u) != 0;
 }
 inline void AvatarAsset::set_has_isremote() {
-  _has_bits_[0] |= 0x00000800u;
+  _has_bits_[0] |= 0x00001000u;
 }
 inline void AvatarAsset::clear_has_isremote() {
-  _has_bits_[0] &= ~0x00000800u;
+  _has_bits_[0] &= ~0x00001000u;
 }
 inline void AvatarAsset::clear_isremote() {
   isremote_ = 0;
@@ -812,15 +844,15 @@ inline void AvatarAsset::set_isremote(::google::protobuf::int32 value) {
   isremote_ = value;
 }
 
-// optional int32 delay = 13;
+// optional int32 delay = 14;
 inline bool AvatarAsset::has_delay() const {
-  return (_has_bits_[0] & 0x00001000u) != 0;
+  return (_has_bits_[0] & 0x00002000u) != 0;
 }
 inline void AvatarAsset::set_has_delay() {
-  _has_bits_[0] |= 0x00001000u;
+  _has_bits_[0] |= 0x00002000u;
 }
 inline void AvatarAsset::clear_has_delay() {
-  _has_bits_[0] &= ~0x00001000u;
+  _has_bits_[0] &= ~0x00002000u;
 }
 inline void AvatarAsset::clear_delay() {
   delay_ = 0;

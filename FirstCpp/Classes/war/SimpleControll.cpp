@@ -174,10 +174,10 @@ void SimpleControll::checkTargetPos()
 		if (tempX != pos.x || tempY != pos.y)
 		{
 			moveTo(CCPoint(tempX, tempY)); // 跑到能打到目标的地方
-			if (self->getBaseId() == 1)
-			{
-				CCLog("(%f,%f),(%f,%f)",tempX,tempY,pos.x,pos.y);
-			}
+			//if (self->getBaseId() == 1)
+			//{
+			//	CCLog("(%f,%f),(%f,%f)",tempX,tempY,pos.x,pos.y);
+			//}
 		}
 
 		// 根据目标位置设置自己的朝向

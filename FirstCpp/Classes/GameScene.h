@@ -13,6 +13,7 @@ public:
     // a selector callback
     void menuCloseCallback(CCObject* pSender);
 	void onCloseCpp(CCObject* pSender);
+	void onCallPhone(CCObject* pSender); // 调用手机函数
     
     // implement the "static node()" method manually
     CREATE_FUNC(GameWorld);

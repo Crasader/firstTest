@@ -51,7 +51,7 @@ void protobuf_AssignDesc_AvatarAsset_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(AvatarAssetTable));
   AvatarAsset_descriptor_ = file->message_type(1);
-  static const int AvatarAsset_offsets_[13] = {
+  static const int AvatarAsset_offsets_[14] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, aname_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, name_),
@@ -62,6 +62,7 @@ void protobuf_AssignDesc_AvatarAsset_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, bodywidth_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, hp_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, att_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, maxatt_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, defe_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, isremote_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AvatarAsset, delay_),
@@ -113,12 +114,12 @@ void protobuf_AddDesc_AvatarAsset_2eproto() {
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\021AvatarAsset.proto\">\n\020AvatarAssetTable\022"
     "\r\n\005tname\030\001 \001(\t\022\033\n\005tlist\030\002 \003(\0132\014.AvatarAs"
-    "set\"\324\001\n\013AvatarAsset\022\n\n\002id\030\001 \001(\005\022\r\n\005aname"
+    "set\"\344\001\n\013AvatarAsset\022\n\n\002id\030\001 \001(\005\022\r\n\005aname"
     "\030\002 \001(\t\022\014\n\004name\030\003 \001(\t\022\020\n\010distance\030\004 \001(\005\022\r"
     "\n\005speed\030\005 \001(\005\022\017\n\007bulletx\030\006 \001(\005\022\017\n\007bullet"
     "y\030\007 \001(\005\022\021\n\tbodywidth\030\010 \001(\005\022\n\n\002hp\030\t \001(\005\022\013"
-    "\n\003att\030\n \001(\005\022\014\n\004defe\030\013 \001(\005\022\020\n\010isremote\030\014 "
-    "\001(\005\022\r\n\005delay\030\r \001(\005", 298);
+    "\n\003att\030\n \001(\005\022\016\n\006maxatt\030\013 \001(\005\022\014\n\004defe\030\014 \001("
+    "\005\022\020\n\010isremote\030\r \001(\005\022\r\n\005delay\030\016 \001(\005", 314);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "AvatarAsset.proto", &protobuf_RegisterTypes);
   AvatarAssetTable::default_instance_ = new AvatarAssetTable();
@@ -413,6 +414,7 @@ const int AvatarAsset::kBulletyFieldNumber;
 const int AvatarAsset::kBodywidthFieldNumber;
 const int AvatarAsset::kHpFieldNumber;
 const int AvatarAsset::kAttFieldNumber;
+const int AvatarAsset::kMaxattFieldNumber;
 const int AvatarAsset::kDefeFieldNumber;
 const int AvatarAsset::kIsremoteFieldNumber;
 const int AvatarAsset::kDelayFieldNumber;
@@ -444,6 +446,7 @@ void AvatarAsset::SharedCtor() {
   bodywidth_ = 0;
   hp_ = 0;
   att_ = 0;
+  maxatt_ = 0;
   defe_ = 0;
   isremote_ = 0;
   delay_ = 0;
@@ -508,6 +511,7 @@ void AvatarAsset::Clear() {
   if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     hp_ = 0;
     att_ = 0;
+    maxatt_ = 0;
     defe_ = 0;
     isremote_ = 0;
     delay_ = 0;
@@ -679,12 +683,28 @@ bool AvatarAsset::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(88)) goto parse_defe;
+        if (input->ExpectTag(88)) goto parse_maxatt;
         break;
       }
 
-      // optional int32 defe = 11;
+      // optional int32 maxatt = 11;
       case 11: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_maxatt:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &maxatt_)));
+          set_has_maxatt();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(96)) goto parse_defe;
+        break;
+      }
+
+      // optional int32 defe = 12;
+      case 12: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_defe:
@@ -695,12 +715,12 @@ bool AvatarAsset::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(96)) goto parse_isremote;
+        if (input->ExpectTag(104)) goto parse_isremote;
         break;
       }
 
-      // optional int32 isremote = 12;
-      case 12: {
+      // optional int32 isremote = 13;
+      case 13: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_isremote:
@@ -711,12 +731,12 @@ bool AvatarAsset::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(104)) goto parse_delay;
+        if (input->ExpectTag(112)) goto parse_delay;
         break;
       }
 
-      // optional int32 delay = 13;
-      case 13: {
+      // optional int32 delay = 14;
+      case 14: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_delay:
@@ -807,19 +827,24 @@ void AvatarAsset::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(10, this->att(), output);
   }
 
-  // optional int32 defe = 11;
+  // optional int32 maxatt = 11;
+  if (has_maxatt()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(11, this->maxatt(), output);
+  }
+
+  // optional int32 defe = 12;
   if (has_defe()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(11, this->defe(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(12, this->defe(), output);
   }
 
-  // optional int32 isremote = 12;
+  // optional int32 isremote = 13;
   if (has_isremote()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(12, this->isremote(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(13, this->isremote(), output);
   }
 
-  // optional int32 delay = 13;
+  // optional int32 delay = 14;
   if (has_delay()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(13, this->delay(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(14, this->delay(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -890,19 +915,24 @@ void AvatarAsset::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(10, this->att(), target);
   }
 
-  // optional int32 defe = 11;
+  // optional int32 maxatt = 11;
+  if (has_maxatt()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(11, this->maxatt(), target);
+  }
+
+  // optional int32 defe = 12;
   if (has_defe()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(11, this->defe(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(12, this->defe(), target);
   }
 
-  // optional int32 isremote = 12;
+  // optional int32 isremote = 13;
   if (has_isremote()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(12, this->isremote(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(13, this->isremote(), target);
   }
 
-  // optional int32 delay = 13;
+  // optional int32 delay = 14;
   if (has_delay()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(13, this->delay(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(14, this->delay(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -988,21 +1018,28 @@ int AvatarAsset::ByteSize() const {
           this->att());
     }
 
-    // optional int32 defe = 11;
+    // optional int32 maxatt = 11;
+    if (has_maxatt()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->maxatt());
+    }
+
+    // optional int32 defe = 12;
     if (has_defe()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->defe());
     }
 
-    // optional int32 isremote = 12;
+    // optional int32 isremote = 13;
     if (has_isremote()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->isremote());
     }
 
-    // optional int32 delay = 13;
+    // optional int32 delay = 14;
     if (has_delay()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
@@ -1068,6 +1105,9 @@ void AvatarAsset::MergeFrom(const AvatarAsset& from) {
     if (from.has_att()) {
       set_att(from.att());
     }
+    if (from.has_maxatt()) {
+      set_maxatt(from.maxatt());
+    }
     if (from.has_defe()) {
       set_defe(from.defe());
     }
@@ -1110,6 +1150,7 @@ void AvatarAsset::Swap(AvatarAsset* other) {
     std::swap(bodywidth_, other->bodywidth_);
     std::swap(hp_, other->hp_);
     std::swap(att_, other->att_);
+    std::swap(maxatt_, other->maxatt_);
     std::swap(defe_, other->defe_);
     std::swap(isremote_, other->isremote_);
     std::swap(delay_, other->delay_);
