@@ -66,6 +66,7 @@ private:
 	CCNode* mLayerUI; // UI²ã
 
 	UILayer* mBgUILayer;
+	UILayer* mPreUILayer;
 
 	float mTouchX; // ´¥ÃþÊ±x
 	float mBeforX; // ÒÆ¶¯Ç°x

@@ -1,3 +1,13 @@
+//-----------------------------------------------------------------------------------------------------------------------------
+// 名称: 国际化管理器
+// 作者: lvxiangsong
+// 日期: 2013-10-8
+// 功能: 国际化管理器
+// 版本: 
+//
+// 修改者           日期	           内容		
+// lvxiangsong      2013-10-8
+//-----------------------------------------------------------------------------------------------------------------------------
 #pragma once
 
 #include "cocos2d.h"
@@ -15,9 +25,11 @@ public:
 	static I18N* sharedI18N(void);
 	static void pure(void);
 public:
-	string getString(const char* str) const;
-	//string getString(const char* str, ...) const;
-	const char* getCharArray(const char* str) const;
+	// 通过名字获取字符串
+	string getString(const char* name) const;
+	// 通过名字获取字符串，支持int、float、char型传参
+	string getStringArgs(const char* name, ...) const;
 private:
 	CCDictionary* mDictionary;
+	static const int I18N_MAX = 1024;
 };

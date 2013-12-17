@@ -23,6 +23,7 @@ public:
 	virtual ~LuaManager();
 public:
 	static LuaManager* shareLuaManager();
+	static void pure();
 	MLua* getMLua(void);
 public:
 	static int Max(int a,int b);

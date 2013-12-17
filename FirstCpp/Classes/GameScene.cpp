@@ -18,6 +18,7 @@
 #include "MLua.h"
 #include "LuaManager.h"
 #include "DriveManager.h"
+#include "I18N.h"
 
 //Ìí¼ÓÃüÃû¿Õ¼ä
 using namespace cocos2d::extension;
@@ -134,6 +135,8 @@ bool GameWorld::init()
 
 void GameWorld::onCloseCpp(CCObject* pSender)
 {
+	LuaManager::pure();
+	I18N::pure();
 	DriveManager::pure();
 	google::protobuf::ShutdownProtobufLibrary();
 	PersonView::pure();
@@ -143,7 +146,7 @@ void GameWorld::onCloseCpp(CCObject* pSender)
 	WarModel::pure();
 	LoadManager::pure();
 	CCScriptEngineManager::sharedManager()->removeScriptEngine();
-	//CCScriptEngineManager::purgeSharedManager();
+	
 	CCDirector::sharedDirector()->stopAnimation();
 	//CCDirector::sharedDirector()->purgeCachedData();
 	CCTextureCache::sharedTextureCache()->removeAllTextures();
@@ -152,7 +155,7 @@ void GameWorld::onCloseCpp(CCObject* pSender)
 	CCArmatureDataManager::purge();
 	CCDataReaderHelper::purge();
 	DictionaryHelper::purgeDictionaryHelper();
-	
+	CCScriptEngineManager::purgeSharedManager();
 	CCDirector::sharedDirector()->end();
 }
 

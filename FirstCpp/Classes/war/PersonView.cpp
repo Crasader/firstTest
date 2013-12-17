@@ -7,25 +7,35 @@
 
 static std::map<int, AvatarAsset*> avatarMap;
 
-PersonView::PersonView(void):mTarget(NULL), mAvatar(NULL), mController(NULL), mCurState(STAND), mDirection(DIR_RIGHT), mConfig(NULL), 
-	mBloodBar(NULL), mHeadBtn(NULL)
+//-----------------------------------------------------------------------------------------------------------------------------
+PersonView::PersonView(void):
+	mTarget(NULL), 
+	mAvatar(NULL), 
+	mController(NULL), 
+	mCurState(STAND), 
+	mDirection(DIR_RIGHT), 
+	mConfig(NULL), 
+	mBloodBar(NULL), 
+	mHeadBtn(NULL)
 {
 	mInfo = PersonVo::create();
 	CC_SAFE_RETAIN(mInfo);
 }
 
-
+//-----------------------------------------------------------------------------------------------------------------------------
 PersonView::~PersonView(void)
 {
 	mConfig = NULL;
 	CC_SAFE_RELEASE_NULL(mInfo);
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 bool PersonView::init()
 {
 	return true;
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 void PersonView::pure()
 {
 	std::map<int, AvatarAsset*>::iterator it;
@@ -36,6 +46,7 @@ void PersonView::pure()
 	avatarMap.clear();
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 void PersonView::onEnter()
 {
 	CCNode::onEnter();
@@ -43,6 +54,7 @@ void PersonView::onEnter()
 	createUI();
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 void PersonView::onExit()
 {
 	setTouchEnable(false);
@@ -52,6 +64,7 @@ void PersonView::onExit()
 	CCNode::onExit();
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 void PersonView::createUI(void)
 {
 	mInfo->hp = mInfo->maxHp = mConfig->hp();
@@ -78,10 +91,10 @@ void PersonView::createUI(void)
 		CCRect trect = CCRectApplyAffineTransform(armature->boundingBox(), armature->nodeToParentTransform()); // 获取模型的大小
 		mBloodBar->setPositionY(trect.getMaxY());
 		addChild(mBloodBar, 1);
-
 	}
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 void PersonView::setBaseId(int id)
 {
 	mId = id;
@@ -103,22 +116,26 @@ void PersonView::setBaseId(int id)
 	
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 int PersonView::getBaseId() const
 {
 	return mId;
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 void PersonView::setTouchEnable(bool value)
 {
 	if (value) CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, 1, false);
 	else CCDirector::sharedDirector()->getTouchDispatcher()->removeDelegate(this);
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 AvatarAsset* PersonView::getConfig()
 {
 	return mConfig;
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 // 设置形象
 void PersonView::setAvatar(CCArmature* avatar)
 {
@@ -133,6 +150,7 @@ void PersonView::setAvatar(CCArmature* avatar)
 	mAvatar->getAnimation()->play(STATE_STAND);
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 // 设置控制器
 void PersonView::setController(ControllerBase* controller)
 {
@@ -144,12 +162,14 @@ void PersonView::setController(ControllerBase* controller)
 	controller->setSpeed(sp);
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 // 获取控制器
 ControllerBase* PersonView::getController()
 {
 	return (ControllerBase*)mController;
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 // 移除控制器
 void PersonView::removeController()
 {
@@ -160,30 +180,35 @@ void PersonView::removeController()
 	}
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 // 设置位置
 void PersonView::setSimplePostion(float x, float y)
 {
 	setPosition(ccp(x, y));
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 // 获取位置
 CCPoint PersonView::getCurPostion()
 {
 	return getPosition();
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 //设置进攻的目标
 void PersonView::setTarget(CCNode* target)
 {
 	mTarget = target;
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 // 是否有进攻目标
 bool PersonView::isTarget() const
 {
 	return mTarget != NULL;
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 // 移除进攻目标
 CCNode* PersonView::removeTarget()
 {
@@ -192,6 +217,7 @@ CCNode* PersonView::removeTarget()
 	return temp;
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 // 改变方向
 void PersonView::changeDirection(PERSON_DIRECTION dir)
 {
@@ -207,18 +233,21 @@ void PersonView::changeDirection(PERSON_DIRECTION dir)
 	}
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 // 获取方向
 PERSON_DIRECTION PersonView::getDirection()
 {
 	return mDirection;
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 // 获取进攻目标
 CCNode* PersonView::getTarget()
 {
 	return mTarget;
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 // 改变状态
 void PersonView::changeState(PERSON_STATE state)
 {
@@ -256,6 +285,7 @@ void PersonView::changeState(PERSON_STATE state)
 	}
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 // 设置基本信息
 void PersonView::setInfo(PersonVo* info)
 {
@@ -267,12 +297,14 @@ void PersonView::setInfo(PersonVo* info)
 	CC_SAFE_RETAIN(mInfo);
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 // 获取基本信息
 PersonVo* PersonView::getInfo() const
 {
 	return mInfo;
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 // 一个动作播放完毕
 void PersonView::onAnimationComplete(CCArmature * arm, MovementEventType etype, const char * ename)
 {
@@ -293,17 +325,20 @@ void PersonView::onAnimationComplete(CCArmature * arm, MovementEventType etype, 
 	}
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 // 获取当前状态
 PERSON_STATE PersonView::getState()
 {
 	return mCurState;
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 PersonVo* PersonView::getSelfInfo()
 {
 	return mInfo;
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 // 死出去
 void PersonView::dieOut()
 {
@@ -311,12 +346,14 @@ void PersonView::dieOut()
 	CCNotificationCenter::sharedNotificationCenter()->postNotification(EVENT_WAR_ENTITY_DIE, this);
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 // 获取自身
 CCNode* PersonView::getSelfEntity()
 {
 	return this;
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 bool PersonView::checkHp()
 {
 	if (mInfo->hp < 0) mInfo->hp = 0;
@@ -329,6 +366,7 @@ bool PersonView::checkHp()
 	return mInfo->hp == 0 ? false : true;
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 //触摸事件
 bool PersonView::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
 {
@@ -347,25 +385,33 @@ bool PersonView::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
 	}
 	return true;
 }
+
+//-----------------------------------------------------------------------------------------------------------------------------
 // 触摸结束事件
 void PersonView::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)
 {
 	CCNotificationCenter::sharedNotificationCenter()->postNotification(EVENT_WAR_ADD_TOUCH_END, this);
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 float PersonView::getContentHeight()
 {
 	if (mAvatar) return mAvatar->getContentSize().height;
 	return 0;
 }
+
+//-----------------------------------------------------------------------------------------------------------------------------
 float PersonView::getContentWidth()
 {
 	if (mAvatar) return mAvatar->getContentSize().width;
 	return 0;
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 //设置对应头像
 void PersonView::setHeadBtn(HeadBtn* btn)
 {
 	mHeadBtn = btn;
 }
+
+//-----------------------------------------------------------------------------------------------------------------------------

@@ -25,6 +25,11 @@ LuaManager* LuaManager::shareLuaManager()
 	return mShareManager;
 }
 
+void LuaManager::pure()
+{
+	CC_SAFE_DELETE(mShareManager);
+}
+
 MLua* LuaManager::getMLua(void)
 {
 	return mMlua;

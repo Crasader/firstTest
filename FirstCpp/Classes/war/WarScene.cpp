@@ -11,10 +11,12 @@
 #include "loader\LoadManager.h"
 #include "PersonVo.h"
 #include "LuaManager.h"
+#include "I18N.h"
 
 using namespace cocos2d::extension;
 USING_NS_CC;
 
+//-----------------------------------------------------------------------------------------------------------------------------
 WarScene::WarScene(void):mTouchEntity(NULL)
 {
 	touchEntityArr = CCArray::create();
@@ -25,7 +27,7 @@ WarScene::WarScene(void):mTouchEntity(NULL)
 	CC_SAFE_RETAIN(mHeadBtnArr);
 }
 
-
+//-----------------------------------------------------------------------------------------------------------------------------
 WarScene::~WarScene(void)
 {
 
@@ -34,6 +36,7 @@ WarScene::~WarScene(void)
 	CC_SAFE_RELEASE_NULL(mHeadBtnArr);
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 void WarScene::onEnter()
 {
 	CCLayer::onEnter();
@@ -92,9 +95,16 @@ void WarScene::onEnter()
 	root->setPosition(origin);
 	mBgUILayer->addWidget(root);
 
-	//CCLabelTTF* pLabel = CCLabelTTF::create("", "Arial", 24);
-	//pLabel->setPosition(ccp(origin.x + visibleSize.width/2, origin.y + visibleSize.height - pLabel->getContentSize().height - 100));
-	//mLayerUI->addChild(pLabel);
+	mPreUILayer = UILayer::create();
+	addChild(mPreUILayer, 1);
+	UIWidget* preui = GUIReader::shareReader()->widgetFromJsonFile("WarPreUI_1/WarPreUI_1.json");
+	preui->setPosition(ccp(0,0));
+	mPreUILayer->addWidget(preui);
+
+	string labelstr = I18N::sharedI18N()->getStringArgs("chinese", "five", 1.324f, 21);
+	CCLabelTTF* pLabel = CCLabelTTF::create(labelstr.c_str(), "Arial", 24);
+	pLabel->setPosition(ccp(origin.x + visibleSize.width/2, origin.y + visibleSize.height - pLabel->getContentSize().height - 100));
+	mLayerUI->addChild(pLabel);
 
 	//CCDictionary* strings = CCDictionary::createWithContentsOfFile("i18n_cn.xml");
 	//const char* str = ((CCString*)strings->objectForKey("japanese"))->m_sString.c_str();
@@ -120,6 +130,7 @@ void WarScene::onEnter()
 
 		HeadBtn* hbtn1 = HeadBtn::create();
 		mLayerUI->addChild(hbtn1);
+		hbtn1->setVisible(false);
 		hbtn1->setTaget(pObj);
 		hbtn1->setPosition(ccp(origin.x + 50, origin.y + 100 * i + 80));
 		mHeadBtnArr->addObject(hbtn1);
@@ -148,6 +159,7 @@ void WarScene::onEnter()
 	scheduleUpdate();
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 void WarScene::onExit()
 {
 	
@@ -156,6 +168,7 @@ void WarScene::onExit()
 	CCLayer::onExit();
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 CCScene* WarScene::scene()
 {
 	CCScene* mScene = CCScene::create();
@@ -166,6 +179,7 @@ CCScene* WarScene::scene()
 	return mScene;
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 bool WarScene::init()
 {
 	if (!CCLayer::init())
@@ -176,6 +190,7 @@ bool WarScene::init()
 
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 void WarScene::purgeSelf()
 {
 	// 移除侦听事件
@@ -197,6 +212,7 @@ void WarScene::purgeSelf()
 	this->removeAllChildrenWithCleanup(true);
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 void WarScene::initUI()
 {
 	CCSize visibleSize = CCDirector::sharedDirector()->getVisibleSize();
@@ -224,6 +240,7 @@ void WarScene::initUI()
 	mLayerUI->addChild(pMenu);
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 // 返回按钮事件处理
 void WarScene::menuCloseCallback(CCObject* pSender)
 {
@@ -244,8 +261,8 @@ void WarScene::menuCloseCallback(CCObject* pSender)
 	//CCScene *pScene = GameWorld::scene();
 	//CCDirector::sharedDirector()->replaceScene(pScene);
 
-	//LoadManager::shardLoadManager()->load(SCENE_MAIN);
-	//return;
+	LoadManager::shardLoadManager()->load(SCENE_MAIN);
+	return;
 
 	LuaManager* luamanager = LuaManager::shareLuaManager();
 	CCArray* partener = WarModel::shardWarModel()->getPartenerArray();
@@ -310,6 +327,7 @@ void WarScene::menuCloseCallback(CCObject* pSender)
 	LoadManager::shardLoadManager()->load(SCENE_WAR);
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 void WarScene::onSkillTimerHandler(float dt)
 {
 	CCArray* heros = WarModel::shardWarModel()->getPartenerArray();
@@ -337,12 +355,14 @@ void WarScene::onSkillTimerHandler(float dt)
 	}
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 // 每帧执行
 void WarScene::update(float delta)
 {
 	
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 // 该函数每秒钟执行一次
 void WarScene::onTimerHandler(float dt)
 {
@@ -370,6 +390,7 @@ void WarScene::onTimerHandler(float dt)
 	checkDeep(); // 深度排序
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 PersonView* WarScene::getTargetBySelfPos(int selfType, int selfPos)
 {
 	CCArray* arr = selfType != 0 ? WarModel::shardWarModel()->getPartenerArray() : WarModel::shardWarModel()->getEnemyArray();
@@ -390,6 +411,7 @@ PersonView* WarScene::getTargetBySelfPos(int selfType, int selfPos)
 	return NULL;
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 // 检查深度排序
 void WarScene::checkDeep()
 {
@@ -409,6 +431,7 @@ void WarScene::checkDeep()
 	}
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 // 触摸开始
 bool WarScene::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
 {
@@ -417,6 +440,7 @@ bool WarScene::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
 	return true;
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 // 触摸移动
 void WarScene::ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent)
 {
@@ -430,6 +454,7 @@ void WarScene::ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent)
 	}
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 // 触摸结束
 void WarScene::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)
 {
@@ -437,6 +462,7 @@ void WarScene::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)
 	mTouchX = 0;
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 // 添加人物实体
 void WarScene::addEntity(CCNode* entity)
 {
@@ -444,18 +470,21 @@ void WarScene::addEntity(CCNode* entity)
 	mLayerEntity->reorderChild(entity, 1000 - entity->getPositionY());
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 // 添加效果动画
 void WarScene::addEffect(CCObject* effect)
 {
 	mLayerEffect->addChild((CCNode*)effect);
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 //添加当前触摸的对象
 void WarScene::addTouchedEntity(CCObject* p)
 {
 	touchEntityArr->addObject(p);
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 //对象触摸结束
 void WarScene::entityTouchEnd(CCObject* obj)
 {
@@ -500,6 +529,7 @@ void WarScene::entityTouchEnd(CCObject* obj)
 	}
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 // 人物死亡
 void WarScene::onEntityDie(CCObject* value)
 {
@@ -515,6 +545,7 @@ void WarScene::onEntityDie(CCObject* value)
 	}
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
 //// 使用技能
 //void WarScene::onUseSkill(CCObject* value)
 //{
@@ -531,6 +562,7 @@ void WarScene::onEntityDie(CCObject* value)
 //	}
 //}
 
+//-----------------------------------------------------------------------------------------------------------------------------
 // 单击头像按钮
 void WarScene::onSelectHeadbtn(CCObject* value)
 {
@@ -540,3 +572,5 @@ void WarScene::onSelectHeadbtn(CCObject* value)
 		btn->setSelected(btn == value);
 	}
 }
+
+//-----------------------------------------------------------------------------------------------------------------------------

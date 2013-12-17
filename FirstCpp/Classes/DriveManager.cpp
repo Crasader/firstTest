@@ -4,8 +4,6 @@
 #include"platform/android/jni/JniHelper.h"
 #endif
 
-#include <string>
-#include "I18N.h"
 
 static DriveManager* mDriveManager = NULL;
 
@@ -40,7 +38,7 @@ void DriveManager::showTestDialog()
 	bool isHave = JniHelper::getStaticMethodInfo(minfo,"com/the9/first/DriveHandler","viewDialog", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
 	if (isHave)
 	{
-		jstring title = minfo.env->NewStringUTF(I18N::sharedI18N()->getCharArray("chinese"));
+		jstring title = minfo.env->NewStringUTF(I18N::sharedI18N()->getStringArgs("chinese", "wsf").c_str());
 		jstring msg = minfo.env->NewStringUTF("提示内容");
 		jstring btnlabel = minfo.env->NewStringUTF("确定");
 		//jstring args[] = {title, msg, btnlabel};
